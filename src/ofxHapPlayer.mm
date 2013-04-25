@@ -14,7 +14,7 @@ bool ofxHapPlayer::loadMovie(string movieFilePath, ofQTKitDecodeMode mode) {
      Most of this is lifted verbatim from ofxQTKitPlayer
      */
 	if(mode != OF_QTKIT_DECODE_PIXELS_ONLY && mode != OF_QTKIT_DECODE_TEXTURE_ONLY && mode != OF_QTKIT_DECODE_PIXELS_AND_TEXTURE){
-		ofLogError("ofQTKitPlayer") << "Invalid ofQTKitDecodeMode mode specified while loading movie.";
+		ofLogError("ofxHapPlayer") << "Invalid ofQTKitDecodeMode mode specified while loading movie.";
 		return false;
 	}
 	
@@ -62,7 +62,7 @@ bool ofxHapPlayer::loadMovie(string movieFilePath, ofQTKitDecodeMode mode) {
 		firstFrame(); //will load the first frame
 	}
 	else {
-		ofLogError("ofQTKitPlayer") << "Loading file " << movieFilePath << " failed.";
+		ofLogError("ofxHapPlayer") << "Loading file " << movieFilePath << " failed.";
 		[moviePlayer release];
 		moviePlayer = NULL;
 	}
