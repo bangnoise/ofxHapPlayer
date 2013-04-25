@@ -2,27 +2,30 @@
 
 //--------------------------------------------------------------
 void testApp::setup(){
-    ofBackground(255, 255, 255);
+    // Don't let OF hammer the system with pointless never-seen screen updates
+    ofSetVerticalSync(true);
     
-    player.setPixelFormat(OF_PIXELS_RGBA);
+    ofBackground(240, 240, 240);
     
+    // Load a movie file
     player.loadMovie("movies/SampleHap.mov", OF_QTKIT_DECODE_TEXTURE_ONLY);
     
+    // Start playback
     player.play();
 }
 
 //--------------------------------------------------------------
 void testApp::update(){
+    // Signal the player to update
     player.update();
 }
 
 //--------------------------------------------------------------
 void testApp::draw(){
-    
-    ofSetColor(255, 255, 255);
-    
     if (player.isLoaded())
     {
+        // Draw the frame
+        ofSetColor(255, 255, 255);
         player.draw(20, 20);
     }
 }
