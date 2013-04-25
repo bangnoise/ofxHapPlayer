@@ -8,14 +8,15 @@
 
 #import "ofQTKitMovieRenderer.h"
 
-@class HapPixelBufferTexture;
+@class HapOFPixelBufferTexture;
 
 @interface HapMovieRenderer : QTKitMovieRenderer {
 @private
     BOOL isHap;
     BOOL textureNeedsUpdate;
-    HapPixelBufferTexture *hapTexture;
+    HapOFPixelBufferTexture *hapTexture;
 }
 @property (readonly) GLuint textureWidth;
 @property (readonly) GLuint textureHeight;
+@property (readonly) BOOL textureWantsShader;
 @end

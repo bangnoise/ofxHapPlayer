@@ -25,7 +25,7 @@
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "HapPixelBufferTexture.h"
+#import "HapOFPixelBufferTexture.h"
 #import <OpenGL/CGLMacro.h>
 #import "HapSupport.h"
 
@@ -37,11 +37,11 @@ static int roundUpToMultipleOf4( int n )
 	return n;
 }
 
-@interface HapPixelBufferTexture (Shader)
+@interface HapOFPixelBufferTexture (Shader)
 - (GLhandleARB)loadShaderOfType:(GLenum)type;
 @end
 
-@implementation HapPixelBufferTexture
+@implementation HapOFPixelBufferTexture
 - (id)initWithContext:(CGLContextObj)context
 {
     self = [super init];
@@ -55,7 +55,6 @@ static int roundUpToMultipleOf4( int n )
 - (void)dealloc
 {
     if (texture != 0) glDeleteTextures(1, &texture);
-    if (shader != NULL) glDeleteObjectARB(shader);
     CVBufferRelease(buffer);
     CGLReleaseContext(cgl_ctx);
     [super dealloc];
@@ -231,67 +230,10 @@ static int roundUpToMultipleOf4( int n )
     else return 0;
 }
 
-- (GLhandleARB)shaderProgramObject
+- (BOOL)textureIsYCoCg
 {
-    if (valid && buffer && CVPixelBufferGetPixelFormatType(buffer) == kHapPixelFormatTypeYCoCg_DXT5)
-    {
-        if (shader == NULL)
-        {
-            GLhandleARB vert = [self loadShaderOfType:GL_VERTEX_SHADER_ARB];
-            GLhandleARB frag = [self loadShaderOfType:GL_FRAGMENT_SHADER_ARB];
-            GLint programLinked = 0;
-            if (frag && vert)
-            {
-                shader = glCreateProgramObjectARB();
-                glAttachObjectARB(shader, vert);
-                glAttachObjectARB(shader, frag);
-                glLinkProgramARB(shader);
-                glGetObjectParameterivARB(shader,
-                                          GL_OBJECT_LINK_STATUS_ARB,
-                                          &programLinked);
-                if(programLinked == 0 )
-                {
-                    glDeleteObjectARB(shader);
-                    shader = NULL;
-                }
-            }
-            if (frag) glDeleteObjectARB(frag);
-            if (vert) glDeleteObjectARB(vert);
-        }
-        return shader;
-    }
-    return NULL;
+    if (valid && buffer && CVPixelBufferGetPixelFormatType(buffer) == kHapPixelFormatTypeYCoCg_DXT5) return YES;
+    else return NO;
 }
 
-- (GLhandleARB)loadShaderOfType:(GLenum)type
-{
-    NSString *extension = (type == GL_VERTEX_SHADER_ARB ? @"vert" : @"frag");
-    
-    NSString  *path = [[NSBundle bundleForClass:[self class]] pathForResource:@"ScaledCoCgYToRGBA"
-                                                                       ofType:extension];
-    NSString *source = nil;
-    if (path) source = [NSString stringWithContentsOfFile:path usedEncoding:nil error:nil];
-    
-    GLint       shaderCompiled = 0;
-	GLhandleARB shaderObject = NULL;
-    
-	if(source != nil)
-	{
-        const GLcharARB *glSource = [source cStringUsingEncoding:NSASCIIStringEncoding];
-		
-		shaderObject = glCreateShaderObjectARB(type);
-		glShaderSourceARB(shaderObject, 1, &glSource, NULL);
-		glCompileShaderARB(shaderObject);
-		glGetObjectParameterivARB(shaderObject,
-								  GL_OBJECT_COMPILE_STATUS_ARB,
-								  &shaderCompiled);
-		
-		if(shaderCompiled == 0 )
-		{
-            glDeleteObjectARB(shaderObject);
-			shaderObject = NULL;
-		}
-	}
-	return shaderObject;
-}
 @end

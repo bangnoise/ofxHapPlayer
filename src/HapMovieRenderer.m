@@ -7,7 +7,7 @@
 //
 
 #import "HapMovieRenderer.h"
-#import "HapPixelBufferTexture.h"
+#import "HapOFPixelBufferTexture.h"
 #include "HapSupport.h"
 
 @interface QTMovie (QTFrom763)
@@ -145,7 +145,7 @@ static void frameAvailable(QTVisualContextRef _visualContext, const CVTimeStamp 
         /*
          Create our texture object
          */
-        hapTexture = [[HapPixelBufferTexture alloc] initWithContext:CGLGetCurrentContext()];
+        hapTexture = [[HapOFPixelBufferTexture alloc] initWithContext:CGLGetCurrentContext()];
         
         /*
          The rest is as done in the superclass...
@@ -258,6 +258,16 @@ static void frameAvailable(QTVisualContextRef _visualContext, const CVTimeStamp 
 - (void) unbindTexture
 {
 	// Not used by OF, we just override to stop the superclass's implementation being called
+}
+
+- (BOOL)textureWantsShader
+{
+    if (isHap)
+    {
+        [self updateHapTextureIfNeeded];
+        return hapTexture.textureIsYCoCg;
+    }
+    else return NO;
 }
 
 @end

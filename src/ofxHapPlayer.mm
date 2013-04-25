@@ -24,6 +24,7 @@ bool ofxHapPlayer::loadMovie(string movieFilePath, ofQTKitDecodeMode mode) {
     
 	NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
     
+    shaderLoaded = false;
     decodeMode = mode;
 	bool useTexture = (mode == OF_QTKIT_DECODE_TEXTURE_ONLY || mode == OF_QTKIT_DECODE_PIXELS_AND_TEXTURE);
 	bool usePixels  = (mode == OF_QTKIT_DECODE_PIXELS_ONLY  || mode == OF_QTKIT_DECODE_PIXELS_AND_TEXTURE);
@@ -104,11 +105,42 @@ ofTexture* ofxHapPlayer::getTexture() {
     }
 }
 
+ofShader *ofxHapPlayer::getShader()
+{
+    if (moviePlayer.textureAllocated && ((HapMovieRenderer *)moviePlayer).textureWantsShader)
+    {
+        if (shaderLoaded == false)
+        {
+            /*
+             Is there a better way to find the addons folder?
+             */
+            string path = ofFilePath::getCurrentWorkingDirectory();
+            path += "/../../../../../../../addons/ofxHapPlayer/src/ScaledCoCgYToRGBA";
+            bool success = shader.load(path);
+            if (success)
+            {
+                shaderLoaded = true;
+            }
+        }
+        if (shaderLoaded) return &shader;
+    }
+    return NULL;
+}
+
 void ofxHapPlayer::draw(float x, float y) {
 	draw(x,y, moviePlayer.movieSize.width, moviePlayer.movieSize.height);
 }
 
 void ofxHapPlayer::draw(float x, float y, float w, float h) {
 	updateTexture();
+    ofShader *sh = getShader();
+    if (sh)
+    {
+        sh->begin();
+    }
 	tex.draw(x,y,w,h);
+    if (sh)
+    {
+        sh->end();
+    }
 }

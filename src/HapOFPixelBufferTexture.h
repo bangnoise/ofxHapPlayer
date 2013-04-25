@@ -1,6 +1,6 @@
 /*
  HapPixelBufferTexture.h
- Hap QuickTime Playback
+ ofxHapPlayer
  
  Copyright (c) 2012-2013, Tom Butterworth and Vidvox LLC. All rights reserved.
  Redistribution and use in source and binary forms, with or without
@@ -30,13 +30,17 @@
 #import <OpenGL/OpenGL.h>
 
 /**
+ Note this class differs from the Hap QuickTime Playback example: the shader is handled by OpenFrameworks.
+ */
+
+/**
  A class to maintain a DXT-compressed texture for upload of DXT frames from CoreVideo pixel-buffers.
  
  Handling Scaled YCoCg DXT5 (Hap Q), requires an accompanying shader in two resource files:
     ScaledCoCgYToRGBA.vert
     ScaledCoCgYToRGBA.frag
  */
-@interface HapPixelBufferTexture : NSObject
+@interface HapOFPixelBufferTexture : NSObject
 {
 @private
     CGLContextObj   cgl_ctx;
@@ -48,7 +52,6 @@
     GLuint           height;
     BOOL              valid;
     GLenum   internalFormat;
-    GLhandleARB      shader;
 }
 /**
  Returns a HapPixelBufferTexture to draw in the provided CGL context.
@@ -88,10 +91,10 @@
 
 /**
  Scaled YCoCg DXT5 requires a shader to convert color values when it is drawn.
- If the attached pixel-buffer contains Scaled YCoCg DXT5 pixels, the value of this property will be non-NULL
- and should be bound to the GL context prior to drawing the texture.
+ If the attached pixel-buffer contains Scaled YCoCg DXT5 pixels, the value of this property will be YES
+ and an appropriate shader should be bound to the GL context prior to drawing the texture.
  */
-@property (readonly) GLhandleARB shaderProgramObject;
+@property (readonly) BOOL textureIsYCoCg;
 
 // @property (readonly) GLenum textureTarget; // is always GL_TEXTURE_2D
 
