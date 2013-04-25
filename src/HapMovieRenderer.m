@@ -197,7 +197,15 @@ static void frameAvailable(QTVisualContextRef _visualContext, const CVTimeStamp 
 {
     if (isHap && textureNeedsUpdate)
     {
-        hapTexture.buffer = _latestTextureFrame;
+        CVPixelBufferRef buffer = NULL;
+        // The buffer is updated from the visual context's thread
+        // so we retain it using the same lock as the superclass uses
+        // to ensure it isn't released while we're updating the texture
+        @synchronized(self) {
+            buffer = CVBufferRetain(_latestTextureFrame);
+        }
+        hapTexture.buffer = buffer;
+        CVBufferRelease(buffer);
         textureNeedsUpdate = NO;
     }
 }
