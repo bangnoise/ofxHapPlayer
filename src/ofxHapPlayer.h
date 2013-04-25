@@ -13,10 +13,11 @@
 class ofxHapPlayer : public ofQTKitPlayer {
 public:
     bool        loadMovie(string path, ofQTKitDecodeMode mode);
-    void        updateTexture();
     ofTexture * getTexture();
     void        draw(float x, float y);
     void        draw(float x, float y, float w, float h);
+protected:
+    void        updateTexture();
 };
 
 #endif /* defined(__ofxHapPlayer__) */
