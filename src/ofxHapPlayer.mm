@@ -86,9 +86,17 @@ void ofxHapPlayer::updateTexture(){
 		data.width = getWidth();
 		data.height = getHeight();
 		data.tex_w = ((HapMovieRenderer *)moviePlayer).textureWidth;
-		data.tex_h = ((HapMovieRenderer *)moviePlayer).textureWidth;
-		data.tex_t = data.width / data.tex_w;
-		data.tex_u = data.height / data.tex_h;
+		data.tex_h = ((HapMovieRenderer *)moviePlayer).textureHeight;
+        if (data.textureTarget == GL_TEXTURE_2D)
+        {
+            data.tex_t = data.width / data.tex_w;
+            data.tex_u = data.height / data.tex_h;
+        }
+        else
+        {
+            data.tex_t = data.width;
+            data.tex_u = data.height;
+        }
 	}
 }
 
