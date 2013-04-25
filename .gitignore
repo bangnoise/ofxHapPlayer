@@ -1,3 +1,4 @@
+*.app/
 # Xcode
 .DS_Store
 build/
