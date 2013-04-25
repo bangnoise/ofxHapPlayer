@@ -70,3 +70,45 @@ bool ofxHapPlayer::loadMovie(string movieFilePath, ofQTKitDecodeMode mode) {
 	
 	return success;
 }
+
+/*
+ We override updateTexture() because our 2D textures for Hap have dimensions beyond
+ the image extent.
+ */
+void ofxHapPlayer::updateTexture(){
+	if(moviePlayer.textureAllocated){
+        
+		tex.setUseExternalTextureID(moviePlayer.textureID);
+		
+		ofTextureData& data = tex.getTextureData();
+		data.textureTarget = moviePlayer.textureTarget;
+		data.width = getWidth();
+		data.height = getHeight();
+		data.tex_w = ((HapMovieRenderer *)moviePlayer).textureWidth;
+		data.tex_h = ((HapMovieRenderer *)moviePlayer).textureWidth;
+		data.tex_t = data.width / data.tex_w;
+		data.tex_u = data.height / data.tex_h;
+	}
+}
+
+/*
+ Unfortunately ofQTKitPlayer doesn't declare these functions virtual so we have to override everything that calls updateTexture()
+ */
+ofTexture* ofxHapPlayer::getTexture() {
+    ofTexture* texPtr = NULL;
+	if(moviePlayer.textureAllocated){
+		updateTexture();
+        return &tex;
+	} else {
+        return NULL;
+    }
+}
+
+void ofxHapPlayer::draw(float x, float y) {
+	draw(x,y, moviePlayer.movieSize.width, moviePlayer.movieSize.height);
+}
+
+void ofxHapPlayer::draw(float x, float y, float w, float h) {
+	updateTexture();
+	tex.draw(x,y,w,h);
+}
