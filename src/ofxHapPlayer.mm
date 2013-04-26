@@ -99,7 +99,7 @@ void ofxHapPlayer::updateTexture(){
         }
 	}
 }
-
+ 
 /*
  Unfortunately ofQTKitPlayer doesn't declare these functions virtual so we have to override everything that calls updateTexture()
  */
@@ -119,11 +119,7 @@ ofShader *ofxHapPlayer::getShader()
     {
         if (shaderLoaded == false)
         {
-            /*
-             Is there a better way to find the addons folder?
-             */
-            string path = ofFilePath::getCurrentWorkingDirectory();
-            path += "/../../../../../../../addons/ofxHapPlayer/src/ScaledCoCgYToRGBA";
+            string path = "shaders/ScaledCoCgYToRGBA";
             bool success = shader.load(path);
             if (success)
             {

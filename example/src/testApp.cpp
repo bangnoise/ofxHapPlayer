@@ -28,6 +28,8 @@ void testApp::draw(){
         ofSetColor(255, 255, 255);
         player.draw(20, 20);
     }
+    ofSetColor(255,0,0);
+    ofDrawBitmapString(ofToString(ofGetFrameRate()),20,20);
 }
 
 //--------------------------------------------------------------
@@ -72,5 +74,7 @@ void testApp::gotMessage(ofMessage msg){
 
 //--------------------------------------------------------------
 void testApp::dragEvent(ofDragInfo dragInfo){ 
-
+	vector< string > fileList = dragInfo.files;
+    cout << fileList[0] << endl;
+    player.loadMovie(fileList[0], OF_QTKIT_DECODE_TEXTURE_ONLY);
 }
