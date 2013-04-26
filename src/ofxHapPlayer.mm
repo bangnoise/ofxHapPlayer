@@ -9,6 +9,26 @@
 #include "Poco/String.h"
 #import "HapMovieRenderer.h"
 
+const string mofxHapPlayerVertexShader = "void main(void)\
+{\
+gl_Position = ftransform();\
+gl_TexCoord[0] = gl_MultiTexCoord0;\
+}";
+
+const string mofxHapPlayerFragmentShader = "uniform sampler2D cocgsy_src;\
+const vec4 offsets = vec4(-0.50196078431373, -0.50196078431373, 0.0, 0.0);\
+void main()\
+{\
+    vec4 CoCgSY = texture2D(cocgsy_src, gl_TexCoord[0].xy);\
+    CoCgSY += offsets;\
+    float scale = ( CoCgSY.z * ( 255.0 / 8.0 ) ) + 1.0;\
+    float Co = CoCgSY.x / scale;\
+    float Cg = CoCgSY.y / scale;\
+    float Y = CoCgSY.w;\
+    vec4 rgba = vec4(Y + Co - Cg, Y + Cg, Y - Co - Cg, 1.0);\
+    gl_FragColor = rgba;\
+}";
+
 bool ofxHapPlayer::loadMovie(string movieFilePath, ofQTKitDecodeMode mode) {
     /*
      Most of this is lifted verbatim from ofxQTKitPlayer
@@ -119,8 +139,15 @@ ofShader *ofxHapPlayer::getShader()
     {
         if (shaderLoaded == false)
         {
-            string path = "shaders/ScaledCoCgYToRGBA";
-            bool success = shader.load(path);
+            bool success = shader.setupShaderFromSource(GL_VERTEX_SHADER, mofxHapPlayerVertexShader);
+            if (success)
+            {
+                success = shader.setupShaderFromSource(GL_FRAGMENT_SHADER, mofxHapPlayerFragmentShader);
+            }
+            if (success)
+            {
+                success = shader.linkProgram();
+            }
             if (success)
             {
                 shaderLoaded = true;
