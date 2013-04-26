@@ -29,10 +29,10 @@
 
 //--------------------------------------------------------------
 void testApp::setup(){
-    // Don't let OF hammer the system with pointless never-seen screen updates
+    // Limit drawing to a sane rate
     ofSetVerticalSync(true);
     
-    ofBackground(240, 240, 240);
+    ofBackground(220, 220, 220);
     
     // Load a movie file
     player.loadMovie("movies/SampleHap.mov", OF_QTKIT_DECODE_TEXTURE_ONLY);
@@ -49,14 +49,17 @@ void testApp::update(){
 
 //--------------------------------------------------------------
 void testApp::draw(){
+    
     if (player.isLoaded())
     {
         // Draw the frame
         ofSetColor(255, 255, 255);
-        player.draw(20, 20);
+        player.draw(20, 30);
     }
-    ofSetColor(255,0,0);
-    ofDrawBitmapString(ofToString(ofGetFrameRate()),20,20);
+    
+    // Draw the FPS display
+    ofSetColor(20,20,20);
+    ofDrawBitmapString(ofToString(ofGetFrameRate(), 0) + " FPS", 20, 20);
 }
 
 //--------------------------------------------------------------
@@ -102,6 +105,5 @@ void testApp::gotMessage(ofMessage msg){
 //--------------------------------------------------------------
 void testApp::dragEvent(ofDragInfo dragInfo){ 
 	vector< string > fileList = dragInfo.files;
-    cout << fileList[0] << endl;
     player.loadMovie(fileList[0], OF_QTKIT_DECODE_TEXTURE_ONLY);
 }
