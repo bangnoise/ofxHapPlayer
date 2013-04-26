@@ -69,6 +69,7 @@
 		BD425DA81728861B008E951D /* HapSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HapSupport.h; sourceTree = "<group>"; };
 		BD425DAA172890AB008E951D /* HapOFPixelBufferTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HapOFPixelBufferTexture.h; sourceTree = "<group>"; };
 		BD425DAB172890AB008E951D /* HapOFPixelBufferTexture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HapOFPixelBufferTexture.m; sourceTree = "<group>"; };
+		BD425DB6172B159F008E951D /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		E21954701728202900F858DB /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		E28232971728582A00F850EF /* ofxHapPlayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ofxHapPlayer.mm; sourceTree = "<group>"; };
 		E28232981728582A00F850EF /* ofxHapPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxHapPlayer.h; sourceTree = "<group>"; };
@@ -169,6 +170,7 @@
 			isa = PBXGroup;
 			children = (
 				E21954701728202900F858DB /* README.md */,
+				BD425DB6172B159F008E951D /* LICENSE */,
 				E21954711728202900F858DB /* src */,
 			);
 			name = ofxHapPlayer;

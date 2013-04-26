@@ -1,6 +1,8 @@
 /*
- HapPixelBufferTexture.m
- Hap QuickTime Playback
+ HapOFPixelBufferTexture.m
+ ofxHapPlayer
+ 
+ An abbreviated version of HapPixelBufferTexture.m
  
  Copyright (c) 2012-2013, Tom Butterworth and Vidvox LLC. All rights reserved.
  Redistribution and use in source and binary forms, with or without

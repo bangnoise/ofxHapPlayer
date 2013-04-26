@@ -1,7 +1,7 @@
 ofxHapPlayer
 ============
 
-A Hap player for OpenFrameworks.
+A Hap player for OpenFrameworks 0.7.4. [Hap](http://github.com/Vidvox/hap) is a codec for fast video playback.
 
 Usage
 -----
@@ -39,3 +39,7 @@ Note that if you access the texture directly for a Hap Q movie, you will need to
         shader->end();
     }
     
+Credits and License
+-------------------
+
+ofxHapPlayer was written by [Tom Butterworth](http://kriss.cx/tom), April 2013, supported by [Igloo Vision](http://www.igloovision.com/) and James Sheridan. It is released under a [FreeBSD License](http://github.com/bangnoise/ofxHapPlayer/blob/master/LICENSE).
