@@ -1,0 +1,46 @@
+
+<install>
+    <author>Tom Butterworth and James Sheridan</author>
+    <version>0.01</version>
+    <url>https://github.com/bangnoise/ofxHapPlayer</url>
+    <add>
+        
+        <!--    =====================================================================   -->
+        <!--    ========================== add for the "installation" of OF =========   -->
+        <!--    =====================================================================   -->
+        
+        <addons_h>
+            
+        </addons_h>
+        
+        
+        
+        <!-- =========================================================================  -->
+        <!--    setting per project                                                                                                             -->
+        <!-- =========================================================================  -->
+        
+        <src>
+            <folder name="addons/ofxHapPlayer/src">
+                <src>../../../addons/ofxHapPlayer/src/HapOFPixelBufferTexture.h</src>
+                <src>../../../addons/ofxHapPlayer/src/HapOFPixelBufferTexture.m</src>
+                <src>../../../addons/ofxHapPlayer/src/HapSupport.c</src>
+                <src>../../../addons/ofxHapPlayer/src/HapSupport.h</src>
+                <src>../../../addons/ofxHapPlayer/src/HapMovieRenderer.h</src>
+                <src>../../../addons/ofxHapPlayer/src/HapMovieRenderer.m</src>
+                <src>../../../addons/ofxHapPlayer/src/ofxHapPlayer.h</src>
+                <src>../../../addons/ofxHapPlayer/src/ofxHapPlayer.mm</src>
+            </folder>
+        </src>
+        
+        <include>
+            <path>../../../addons/ofxHapPlayer/src</path>
+        </include>
+        
+		<!-- 
+        <link>
+            <lib os="mac"   compiler="xcode"></lib>
+        </link>
+		-->
+
+    </add>
+</install>
