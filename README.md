@@ -1,7 +1,7 @@
 ofxHapPlayer
 ============
 
-A Hap player for OpenFrameworks 0.7.4. [Hap](http://github.com/Vidvox/hap) is a codec for fast video playback.
+A Hap player for OpenFrameworks 0.7.4 on MacOS X. [Hap](http://github.com/Vidvox/hap) is a codec for fast video playback.
 
 Usage
 -----
