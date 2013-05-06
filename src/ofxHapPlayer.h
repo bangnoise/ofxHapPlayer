@@ -58,19 +58,20 @@ public:
     virtual ofPixelFormat       getPixelFormat();
         
     //should implement!
-    /*
     virtual float               getPosition();
     virtual float               getSpeed();
     virtual float               getDuration();
+    /*
     virtual bool                getIsMovieDone();
-    
-    virtual void                setPaused(bool bPause);
+    */
+    virtual void                setPaused(bool pause);
     virtual void                setPosition(float pct);
+    /*
     virtual void                setVolume(float volume); // 0..1
     */
     virtual void                setLoopState(ofLoopType state);
-    /*
     virtual void                setSpeed(float speed);
+    /*
     virtual void                setFrame(int frame);  // frame 0 = first frame...
     
     virtual int                 getCurrentFrame();
@@ -95,6 +96,8 @@ private:
     ofTexture       _texture;
     bool            _shaderLoaded;
     bool            _playing;
+    float           _speed;
+    bool            _paused;
     ofLoopType      _loopState;
     bool            _wantsUpdate;
 };

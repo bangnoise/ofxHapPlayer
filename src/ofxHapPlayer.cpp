@@ -117,7 +117,7 @@ OSErr ofxHapPlayerDrawComplete(Movie theMovie, long refCon){
     return noErr;
 }
 
-ofxHapPlayer::ofxHapPlayer() : _movie(NULL), _gWorld(NULL), _shaderLoaded(false), _playing(false), _loopState(OF_LOOP_NORMAL), _wantsUpdate(false)
+ofxHapPlayer::ofxHapPlayer() : _movie(NULL), _gWorld(NULL), _shaderLoaded(false), _playing(false), _speed(1.0), _loopState(OF_LOOP_NORMAL), _wantsUpdate(false)
 {
     /*
     http://developer.apple.com/library/mac/#documentation/QuickTime/Conceptual/QT_InitializingQT/InitializingQT/InitializingQTfinal.html
@@ -392,6 +392,7 @@ bool ofxHapPlayer::loadMovie(string name)
     /*
     Apply our current state to the movie
     */
+    this->setSpeed(_speed);
     this->setLoopState(_loopState);
     if (_playing) this->play();
 
@@ -526,8 +527,9 @@ void ofxHapPlayer::play()
     if (_movie)
     {
         StartMovie((Movie)_movie);
-        _playing = true;
+        SetMovieRate((Movie)_movie, FloatToFixed(_speed));
     }
+    _playing = true;
 }
 
 void ofxHapPlayer::stop()
@@ -535,8 +537,31 @@ void ofxHapPlayer::stop()
     if (_movie)
     {
         StopMovie((Movie)_movie);
-        _playing = false;
     }
+    _playing = false;
+}
+
+void ofxHapPlayer::setPaused(bool pause)
+{
+    if (_movie)
+    {
+        if (pause)
+        {
+            if (GetMovieActive((Movie)_movie) == true)
+            {
+                SetMovieRate((Movie)_movie, FloatToFixed(0.0));
+            }
+        }
+        else
+        {
+            if (GetMovieActive((Movie)_movie) == false)
+            {
+                StartMovie((Movie)_movie);
+            }
+            SetMovieRate((Movie)_movie, FloatToFixed(_speed));
+        }
+    }
+    _paused = pause;
 }
 
 bool ofxHapPlayer::isFrameNew()
@@ -566,7 +591,7 @@ float ofxHapPlayer::getHeight()
 
 bool ofxHapPlayer::isPaused()
 {
-    return false;
+    return _paused;
 }
 
 bool ofxHapPlayer::isLoaded()
@@ -625,4 +650,53 @@ void ofxHapPlayer::setLoopState(ofLoopType state)
 ofLoopType ofxHapPlayer::getLoopState()
 {
     return _loopState;
+}
+
+float ofxHapPlayer::getSpeed()
+{
+    return _speed;
+}
+
+void ofxHapPlayer::setSpeed(float speed)
+{
+    if (_movie && _playing)
+    {
+        SetMovieRate((Movie)_movie, FloatToFixed(speed));
+    }
+    _speed = speed;
+}
+
+float ofxHapPlayer::getDuration()
+{
+    if (_movie)
+    {
+        TimeValue duration = GetMovieDuration((Movie)_movie);
+        TimeScale timescale = GetMovieTimeScale((Movie)_movie);
+        return (float)duration / (float)timescale;
+    }
+    return 0.0;
+}
+
+float ofxHapPlayer::getPosition()
+{
+    if (_movie)
+    {
+        TimeValue duration = GetMovieDuration((Movie)_movie);
+        if (duration != 0)
+        {
+            return (float)GetMovieTime((Movie)_movie, NULL) / (float)duration;
+        }
+    }
+    return 0.0;
+}
+
+void ofxHapPlayer::setPosition(float pct)
+{
+    if (_movie)
+    {
+        pct = ofClamp(pct, 0.0, 1.0);
+        TimeValue duration = GetMovieDuration((Movie)_movie);
+        
+        SetMovieTimeValue((Movie)_movie, (float)duration * pct);
+    }
 }
