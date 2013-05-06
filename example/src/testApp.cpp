@@ -35,7 +35,7 @@ void testApp::setup(){
     ofBackground(220, 220, 220);
     
     // Load a movie file
-    player.loadMovie("movies/SampleHap.mov", OF_QTKIT_DECODE_TEXTURE_ONLY);
+    player.loadMovie("movies/SampleHap.mov");
     
     // Start playback
     player.play();
@@ -105,5 +105,5 @@ void testApp::gotMessage(ofMessage msg){
 //--------------------------------------------------------------
 void testApp::dragEvent(ofDragInfo dragInfo){ 
 	vector< string > fileList = dragInfo.files;
-    player.loadMovie(fileList[0], OF_QTKIT_DECODE_TEXTURE_ONLY);
+    player.loadMovie(fileList[0]);
 }

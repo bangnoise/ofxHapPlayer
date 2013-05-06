@@ -7,11 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9dece28de972dd39553dd35cd6384fe2 /* ofxHapPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = b3a8b29f47fd67274d82443db5039783 /* ofxHapPlayer.cpp */; };
 		BBAB23CB13894F3D00AA2426 /* GLUT.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BBAB23BE13894E4700AA2426 /* GLUT.framework */; };
-		BD425DA91728861B008E951D /* HapSupport.c in Sources */ = {isa = PBXBuildFile; fileRef = BD425DA71728861B008E951D /* HapSupport.c */; };
-		BD425DAC172890AB008E951D /* HapOFPixelBufferTexture.m in Sources */ = {isa = PBXBuildFile; fileRef = BD425DAB172890AB008E951D /* HapOFPixelBufferTexture.m */; };
-		E28232991728582A00F850EF /* ofxHapPlayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = E28232971728582A00F850EF /* ofxHapPlayer.mm */; };
-		E282329D17285BD000F850EF /* HapMovieRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = E282329C17285BD000F850EF /* HapMovieRenderer.m */; };
 		E4328149138ABC9F0047C5CB /* openFrameworksDebug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4328148138ABC890047C5CB /* openFrameworksDebug.a */; };
 		E45BE97B0E8CC7DD009D7055 /* AGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E45BE9710E8CC7DD009D7055 /* AGL.framework */; };
 		E45BE97C0E8CC7DD009D7055 /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E45BE9720E8CC7DD009D7055 /* ApplicationServices.framework */; };
@@ -31,6 +28,7 @@
 		E7E077E515D3B63C0020DFD4 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7E077E415D3B63C0020DFD4 /* CoreVideo.framework */; };
 		E7E077E815D3B6510020DFD4 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7E077E715D3B6510020DFD4 /* QTKit.framework */; };
 		E7F985F815E0DEA3003869B5 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7F985F515E0DE99003869B5 /* Accelerate.framework */; };
+		d58d428a766f04e0f7be51a5042fd229 /* HapSupport.c in Sources */ = {isa = PBXBuildFile; fileRef = 061a451497285adbaf4c6ac507eba7f7 /* HapSupport.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,17 +62,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		061a451497285adbaf4c6ac507eba7f7 /* HapSupport.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 30; name = HapSupport.c; path = ../../../addons/ofxHapPlayer/libs/HapSupport/src/HapSupport.c; sourceTree = SOURCE_ROOT; };
+		4b1a217c1373d539f9e2880e346a08b5 /* HapSupport.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = HapSupport.h; path = ../../../addons/ofxHapPlayer/libs/HapSupport/src/HapSupport.h; sourceTree = SOURCE_ROOT; };
 		BBAB23BE13894E4700AA2426 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = ../../../libs/glut/lib/osx/GLUT.framework; sourceTree = "<group>"; };
-		BD425DA71728861B008E951D /* HapSupport.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = HapSupport.c; sourceTree = "<group>"; };
-		BD425DA81728861B008E951D /* HapSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HapSupport.h; sourceTree = "<group>"; };
-		BD425DAA172890AB008E951D /* HapOFPixelBufferTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HapOFPixelBufferTexture.h; sourceTree = "<group>"; };
-		BD425DAB172890AB008E951D /* HapOFPixelBufferTexture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HapOFPixelBufferTexture.m; sourceTree = "<group>"; };
-		BD425DB6172B159F008E951D /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
-		E21954701728202900F858DB /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
-		E28232971728582A00F850EF /* ofxHapPlayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ofxHapPlayer.mm; sourceTree = "<group>"; };
-		E28232981728582A00F850EF /* ofxHapPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxHapPlayer.h; sourceTree = "<group>"; };
-		E282329B17285BD000F850EF /* HapMovieRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HapMovieRenderer.h; sourceTree = "<group>"; };
-		E282329C17285BD000F850EF /* HapMovieRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HapMovieRenderer.m; sourceTree = "<group>"; };
 		E4328143138ABC890047C5CB /* openFrameworksLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = openFrameworksLib.xcodeproj; path = ../../../libs/openFrameworksCompiled/project/osx/openFrameworksLib.xcodeproj; sourceTree = SOURCE_ROOT; };
 		E45BE9710E8CC7DD009D7055 /* AGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AGL.framework; path = /System/Library/Frameworks/AGL.framework; sourceTree = "<absolute>"; };
 		E45BE9720E8CC7DD009D7055 /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = /System/Library/Frameworks/ApplicationServices.framework; sourceTree = "<absolute>"; };
@@ -98,6 +88,8 @@
 		E7E077E415D3B63C0020DFD4 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = /System/Library/Frameworks/CoreVideo.framework; sourceTree = "<absolute>"; };
 		E7E077E715D3B6510020DFD4 /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = /System/Library/Frameworks/QTKit.framework; sourceTree = "<absolute>"; };
 		E7F985F515E0DE99003869B5 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = /System/Library/Frameworks/Accelerate.framework; sourceTree = "<absolute>"; };
+		a9816531495affbc1bb87cf32e38be6e /* ofxHapPlayer.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxHapPlayer.h; path = ../../../addons/ofxHapPlayer/src/ofxHapPlayer.h; sourceTree = SOURCE_ROOT; };
+		b3a8b29f47fd67274d82443db5039783 /* ofxHapPlayer.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxHapPlayer.cpp; path = ../../../addons/ofxHapPlayer/src/ofxHapPlayer.cpp; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,10 +120,44 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		123746a97018087522d6bdffd6ec6e49 /* ofxHapPlayer */ = {
+			isa = PBXGroup;
+			children = (
+				bbdadacacb6eab5beda05fdecf0f2002 /* src */,
+				79fd7615976472bc2d2c38515c8819eb /* libs */,
+			);
+			name = ofxHapPlayer;
+			sourceTree = "<group>";
+		};
+		3efbebb524e8213b0f907a593b8e7e5c /* HapSupport */ = {
+			isa = PBXGroup;
+			children = (
+				80399878c64616fd40831c0e45a0fb4b /* src */,
+			);
+			name = HapSupport;
+			sourceTree = "<group>";
+		};
+		79fd7615976472bc2d2c38515c8819eb /* libs */ = {
+			isa = PBXGroup;
+			children = (
+				3efbebb524e8213b0f907a593b8e7e5c /* HapSupport */,
+			);
+			name = libs;
+			sourceTree = "<group>";
+		};
+		80399878c64616fd40831c0e45a0fb4b /* src */ = {
+			isa = PBXGroup;
+			children = (
+				061a451497285adbaf4c6ac507eba7f7 /* HapSupport.c */,
+				4b1a217c1373d539f9e2880e346a08b5 /* HapSupport.h */,
+			);
+			name = src;
+			sourceTree = "<group>";
+		};
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
-				E21954611728202900F858DB /* ofxHapPlayer */,
+				123746a97018087522d6bdffd6ec6e49 /* ofxHapPlayer */,
 			);
 			name = addons;
 			sourceTree = "<group>";
@@ -164,32 +190,6 @@
 				BBAB23BE13894E4700AA2426 /* GLUT.framework */,
 			);
 			name = "3rd party frameworks";
-			sourceTree = "<group>";
-		};
-		E21954611728202900F858DB /* ofxHapPlayer */ = {
-			isa = PBXGroup;
-			children = (
-				E21954701728202900F858DB /* README.md */,
-				BD425DB6172B159F008E951D /* LICENSE */,
-				E21954711728202900F858DB /* src */,
-			);
-			name = ofxHapPlayer;
-			path = ..;
-			sourceTree = "<group>";
-		};
-		E21954711728202900F858DB /* src */ = {
-			isa = PBXGroup;
-			children = (
-				E28232981728582A00F850EF /* ofxHapPlayer.h */,
-				E28232971728582A00F850EF /* ofxHapPlayer.mm */,
-				E282329B17285BD000F850EF /* HapMovieRenderer.h */,
-				E282329C17285BD000F850EF /* HapMovieRenderer.m */,
-				BD425DA81728861B008E951D /* HapSupport.h */,
-				BD425DA71728861B008E951D /* HapSupport.c */,
-				BD425DAA172890AB008E951D /* HapOFPixelBufferTexture.h */,
-				BD425DAB172890AB008E951D /* HapOFPixelBufferTexture.m */,
-			);
-			path = src;
 			sourceTree = "<group>";
 		};
 		E4328144138ABC890047C5CB /* Products */ = {
@@ -239,6 +239,15 @@
 				E4328143138ABC890047C5CB /* openFrameworksLib.xcodeproj */,
 			);
 			name = openFrameworks;
+			sourceTree = "<group>";
+		};
+		bbdadacacb6eab5beda05fdecf0f2002 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				b3a8b29f47fd67274d82443db5039783 /* ofxHapPlayer.cpp */,
+				a9816531495affbc1bb87cf32e38be6e /* ofxHapPlayer.h */,
+			);
+			name = src;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -330,10 +339,8 @@
 			files = (
 				E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */,
 				E4B69E210A3A1BDC003C02F2 /* testApp.cpp in Sources */,
-				E28232991728582A00F850EF /* ofxHapPlayer.mm in Sources */,
-				E282329D17285BD000F850EF /* HapMovieRenderer.m in Sources */,
-				BD425DA91728861B008E951D /* HapSupport.c in Sources */,
-				BD425DAC172890AB008E951D /* HapOFPixelBufferTexture.m in Sources */,
+				9dece28de972dd39553dd35cd6384fe2 /* ofxHapPlayer.cpp in Sources */,
+				d58d428a766f04e0f7be51a5042fd229 /* HapSupport.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -370,7 +377,10 @@
 				GCC_WARN_UNUSED_VARIABLE = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(OF_CORE_HEADERS)",
-					src,
+					../../../addons/ofxHapPlayer/libs,
+					../../../addons/ofxHapPlayer/libs/HapSupport,
+					../../../addons/ofxHapPlayer/libs/HapSupport/src,
+					../../../addons/ofxHapPlayer/src,
 				);
 				OTHER_CPLUSPLUSFLAGS = (
 					"-D__MACOSX_CORE__",
@@ -404,7 +414,10 @@
 				GCC_WARN_UNUSED_VARIABLE = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(OF_CORE_HEADERS)",
-					src,
+					../../../addons/ofxHapPlayer/libs,
+					../../../addons/ofxHapPlayer/libs/HapSupport,
+					../../../addons/ofxHapPlayer/libs/HapSupport/src,
+					../../../addons/ofxHapPlayer/src,
 				);
 				OTHER_CPLUSPLUSFLAGS = (
 					"-D__MACOSX_CORE__",
@@ -498,7 +511,7 @@
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_52)",
 				);
 				PREBINDING = NO;
-				PRODUCT_NAME = ofxHapPlayerExampleDebug;
+				PRODUCT_NAME = "$(TARGET_NAME)Debug";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -585,7 +598,7 @@
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_51)",
 				);
 				PREBINDING = NO;
-				PRODUCT_NAME = ofxHapPlayerExample;
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
