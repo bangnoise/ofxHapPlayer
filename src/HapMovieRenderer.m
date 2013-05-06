@@ -289,4 +289,10 @@ static void frameAvailable(QTVisualContextRef _visualContext, const CVTimeStamp 
     else return NO;
 }
 
+- (void)dealloc
+{
+    [hapTexture release];
+    [super dealloc];
+}
+
 @end
