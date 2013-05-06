@@ -393,7 +393,7 @@ bool ofxHapPlayer::loadMovie(string name)
     this->setLoopState(_loopState);
     if (_playing) this->play();
 
-    return true;
+    return (result == noErr ? true : false);
 }
 
 void ofxHapPlayer::close()
