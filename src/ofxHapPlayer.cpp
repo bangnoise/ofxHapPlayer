@@ -40,6 +40,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #if defined(TARGET_WIN32)
 #include <QTML.h>
 #include <Movies.h>
+#define ofxHapPlayerFloatToFixed(x) X2Fix(x)
 #elif defined(TARGET_OSX)
 #include <QuickTime/QuickTime.h>
 /*
@@ -60,6 +61,7 @@ extern "C" {
     };
 }
 #endif
+#define ofxHapPlayerFloatToFixed(x) FloatToFixed(x)
 #endif
 
 const string ofxHapPlayerVertexShader = "void main(void)\
@@ -527,7 +529,7 @@ void ofxHapPlayer::play()
     if (_movie)
     {
         StartMovie((Movie)_movie);
-        SetMovieRate((Movie)_movie, X2Fix(_speed));
+        SetMovieRate((Movie)_movie, ofxHapPlayerFloatToFixed(_speed));
     }
     _playing = true;
 }
@@ -549,7 +551,7 @@ void ofxHapPlayer::setPaused(bool pause)
         {
             if (GetMovieActive((Movie)_movie))
             {
-                SetMovieRate((Movie)_movie, X2Fix(0.0));
+                SetMovieRate((Movie)_movie, ofxHapPlayerFloatToFixed(0.0));
             }
         }
         else
@@ -558,7 +560,7 @@ void ofxHapPlayer::setPaused(bool pause)
             {
                 StartMovie((Movie)_movie);
             }
-            SetMovieRate((Movie)_movie, X2Fix(_speed));
+            SetMovieRate((Movie)_movie, ofxHapPlayerFloatToFixed(_speed));
         }
     }
     _paused = pause;
@@ -661,7 +663,7 @@ void ofxHapPlayer::setSpeed(float speed)
 {
     if (_movie && _playing)
     {
-        SetMovieRate((Movie)_movie, X2Fix(speed));
+        SetMovieRate((Movie)_movie, ofxHapPlayerFloatToFixed(speed));
     }
     _speed = speed;
 }
