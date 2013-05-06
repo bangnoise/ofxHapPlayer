@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<ItemGroup>
+		<ClCompile Include="src\testApp.cpp">
+			<Filter>src</Filter>
+		</ClCompile>
+		<ClCompile Include="src\main.cpp">
+			<Filter>src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxHapPlayer\src\ofxHapPlayer.cpp">
+			<Filter>addons\ofxHapPlayer\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxHapPlayer\libs\HapSupport\src\HapSupport.c">
+			<Filter>addons\ofxHapPlayer\libs\HapSupport\src</Filter>
+		</ClCompile>
+	</ItemGroup>
+	<ItemGroup>
+		<Filter Include="src">
+			<UniqueIdentifier>{d8376475-7454-4a24-b08a-aac121d3ad6f}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons">
+			<UniqueIdentifier>{71834f65-f3a9-211e-73b8-dc8563776aec}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxHapPlayer">
+			<UniqueIdentifier>{3abf0718-7ef0-c616-645a-bc487ca04644}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxHapPlayer\src">
+			<UniqueIdentifier>{b922e112-1099-333c-0cfd-9815b7459752}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxHapPlayer\libs">
+			<UniqueIdentifier>{0b971793-ef6d-afdc-9cc8-d4384d0fbab0}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxHapPlayer\libs\HapSupport">
+			<UniqueIdentifier>{50a9e79a-35cd-48ab-2b6b-36b23bf602e7}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxHapPlayer\libs\HapSupport\src">
+			<UniqueIdentifier>{fe9c83aa-0ecd-3948-bcaa-42e18f952e8d}</UniqueIdentifier>
+		</Filter>
+	</ItemGroup>
+	<ItemGroup>
+		<ClInclude Include="src\testApp.h">
+			<Filter>src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxHapPlayer\src\ofxHapPlayer.h">
+			<Filter>addons\ofxHapPlayer\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxHapPlayer\libs\HapSupport\src\HapSupport.h">
+			<Filter>addons\ofxHapPlayer\libs\HapSupport\src</Filter>
+		</ClInclude>
+	</ItemGroup>
+</Project>
