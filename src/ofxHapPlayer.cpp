@@ -527,7 +527,7 @@ void ofxHapPlayer::play()
     if (_movie)
     {
         StartMovie((Movie)_movie);
-        SetMovieRate((Movie)_movie, FloatToFixed(_speed));
+        SetMovieRate((Movie)_movie, X2Fix(_speed));
     }
     _playing = true;
 }
@@ -547,18 +547,18 @@ void ofxHapPlayer::setPaused(bool pause)
     {
         if (pause)
         {
-            if (GetMovieActive((Movie)_movie) == true)
+            if (GetMovieActive((Movie)_movie))
             {
-                SetMovieRate((Movie)_movie, FloatToFixed(0.0));
+                SetMovieRate((Movie)_movie, X2Fix(0.0));
             }
         }
         else
         {
-            if (GetMovieActive((Movie)_movie) == false)
+            if (!GetMovieActive((Movie)_movie))
             {
                 StartMovie((Movie)_movie);
             }
-            SetMovieRate((Movie)_movie, FloatToFixed(_speed));
+            SetMovieRate((Movie)_movie, X2Fix(_speed));
         }
     }
     _paused = pause;
@@ -661,7 +661,7 @@ void ofxHapPlayer::setSpeed(float speed)
 {
     if (_movie && _playing)
     {
-        SetMovieRate((Movie)_movie, FloatToFixed(speed));
+        SetMovieRate((Movie)_movie, X2Fix(speed));
     }
     _speed = speed;
 }
