@@ -17,3 +17,9 @@ profile
 *.moved-aside
 DerivedData
 .idea/
+example/bin/
+obj/
+#Visual Studio
+*.sdf
+*.suo
+*.opensdf
