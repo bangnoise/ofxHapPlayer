@@ -45,6 +45,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /*
  These functions have been excised from modern MacOS headers but remain available
  */
+#if !defined(__QDOFFSCREEN__)
 extern "C" {
     void DisposeGWorld(GWorldPtr offscreenGWorld);
     void GetGWorld(CGrafPtr *port, GDHandle *gdh);
@@ -58,6 +59,7 @@ extern "C" {
         keepLocal = 1L << 3
     };
 }
+#endif
 #endif
 
 const string ofxHapPlayerVertexShader = "void main(void)\
