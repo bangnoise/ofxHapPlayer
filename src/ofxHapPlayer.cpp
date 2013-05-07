@@ -394,9 +394,9 @@ bool ofxHapPlayer::loadMovie(string name)
     /*
     Apply our current state to the movie
     */
-    this->setSpeed(_speed);
     this->setLoopState(_loopState);
     if (_playing) this->play();
+    this->setSpeed(_speed);
 
     return (result == noErr ? true : false);
 }
