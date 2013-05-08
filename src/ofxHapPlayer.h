@@ -56,11 +56,14 @@ public:
     
     virtual bool                setPixelFormat(ofPixelFormat pixelFormat) {return false;};
     virtual ofPixelFormat       getPixelFormat();
-        
+    virtual string              getMoviePath();
+    virtual bool				getHapAvailable();
+	
     //should implement!
     virtual float               getPosition();
     virtual float               getSpeed();
     virtual float               getDuration();
+	
     /*
     virtual bool                getIsMovieDone();
     */
@@ -100,6 +103,8 @@ private:
     bool            _paused;
     ofLoopType      _loopState;
     bool            _wantsUpdate;
+	string			_moviePath;
+	bool			_hapAvailable;
 };
 
 #endif /* defined(__ofxHapPlayer__) */

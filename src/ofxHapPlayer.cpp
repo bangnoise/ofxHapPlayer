@@ -167,7 +167,8 @@ ofxHapPlayer::~ofxHapPlayer()
 bool ofxHapPlayer::loadMovie(string name)
 {
     OSStatus result = noErr;
-
+	_moviePath = name;
+	
     /*
     Close any open movie
     */
@@ -285,7 +286,8 @@ bool ofxHapPlayer::loadMovie(string name)
     OSType wantedPixelFormat;
     Rect renderRect;
     size_t bitsPerPixel;
-
+	_hapAvailable = false;
+	
     if (result == noErr)
     {
         /*
@@ -297,6 +299,7 @@ bool ofxHapPlayer::loadMovie(string name)
         */
         if (HapQTQuickTimeMovieHasHapTrackPlayable((Movie)_movie))
         {
+			_hapAvailable = true;
             wantedPixelFormat = HapQTGetQuickTimeMovieHapPixelFormat((Movie)_movie);
             renderRect.bottom = roundUpToMultipleOf4(renderRect.bottom);
             renderRect.right = roundUpToMultipleOf4(renderRect.right);
@@ -416,6 +419,11 @@ void ofxHapPlayer::update()
     if (_movie) MoviesTask((Movie)_movie, 0);
 }
 
+bool ofxHapPlayer::getHapAvailable()
+{
+	return _hapAvailable;
+}
+
 ofTexture* ofxHapPlayer::getTexture()
 {
     if (_wantsUpdate && _gWorld != NULL)
@@ -504,6 +512,10 @@ ofShader *ofxHapPlayer::getShader()
         }
     }
     return NULL;
+}
+
+string ofxHapPlayer::getMoviePath() {
+	return _moviePath;
 }
 
 void ofxHapPlayer::draw(float x, float y) {
