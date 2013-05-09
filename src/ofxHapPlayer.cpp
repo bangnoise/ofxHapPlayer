@@ -305,8 +305,10 @@ bool ofxHapPlayer::loadMovie(string name)
         }
         else
         {
-            // TODO: be more energetic or only support Hap
-            wantedPixelFormat = k32BGRAPixelFormat;
+            /*
+             For now we fail for non-Hap movies
+             */
+            result = 1;
         }
     }
     
