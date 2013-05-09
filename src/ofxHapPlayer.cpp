@@ -369,10 +369,9 @@ bool ofxHapPlayer::loadMovie(string name)
         _texture.allocate(texData);
 
 #if defined(TARGET_OSX)
-        // TODO: bind, do, unbind, check no conflict between drawing and updating
-        /*
+        _texture.bind();
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_STORAGE_HINT_APPLE , GL_STORAGE_SHARED_APPLE);
-        */
+        _texture.unbind();
 #endif     
     }
 
