@@ -392,14 +392,22 @@ bool ofxHapPlayer::loadMovie(string name)
     SetGWorld(previousGWorld, previousGDH);
     DisposeGWorld(tempGWorld);
     
-    /*
-    Apply our current state to the movie
-    */
-    this->setLoopState(_loopState);
-    if (_playing) this->play();
-    this->setSpeed(_speed);
+    if (result == noErr)
+    {
+        /*
+        Apply our current state to the movie
+        */
+        this->setLoopState(_loopState);
+        if (_playing) this->play();
+        this->setSpeed(_speed);
 
-    return (result == noErr ? true : false);
+        return true;
+    }
+    else
+    {
+        this->close();
+        return false;
+    }
 }
 
 void ofxHapPlayer::close()
@@ -612,8 +620,8 @@ bool ofxHapPlayer::isPaused()
 
 bool ofxHapPlayer::isLoaded()
 {
-    // TODO:
-    return true;
+    if (_movie) return true;
+    else return false;
 }
 
 bool ofxHapPlayer::isPlaying()
