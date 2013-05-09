@@ -119,7 +119,7 @@ OSErr ofxHapPlayerDrawComplete(Movie theMovie, long refCon){
     return noErr;
 }
 
-ofxHapPlayer::ofxHapPlayer() : _movie(NULL), _gWorld(NULL), _shaderLoaded(false), _playing(false), _speed(1.0), _loopState(OF_LOOP_NORMAL), _wantsUpdate(false), _totalNumFrames(-1), _lastKnownFrameNumber(0), _lastKnownFrameTime(0)
+ofxHapPlayer::ofxHapPlayer() : _movie(NULL), _gWorld(NULL), _shaderLoaded(false), _playing(false), _speed(1.0), _loopState(OF_LOOP_NORMAL), _wantsUpdate(false), _hapAvailable(false), _totalNumFrames(-1), _lastKnownFrameNumber(0), _lastKnownFrameTime(0)
 {
     /*
     http://developer.apple.com/library/mac/#documentation/QuickTime/Conceptual/QT_InitializingQT/InitializingQT/InitializingQTfinal.html
@@ -286,7 +286,6 @@ bool ofxHapPlayer::loadMovie(string name)
     OSType wantedPixelFormat;
     Rect renderRect;
     size_t bitsPerPixel;
-	_hapAvailable = false;
 	
     if (result == noErr)
     {
@@ -410,6 +409,7 @@ void ofxHapPlayer::close()
         DisposeMovie((Movie)_movie);
         _movie = NULL;
         _wantsUpdate = false;
+        _hapAvailable = false;
         _totalNumFrames = -1;
         _lastKnownFrameNumber = 0;
         _lastKnownFrameTime = 0;
