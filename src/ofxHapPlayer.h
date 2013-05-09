@@ -74,12 +74,11 @@ public:
     */
     virtual void                setLoopState(ofLoopType state);
     virtual void                setSpeed(float speed);
-    /*
+#if defined(TARGET_OSX) // TODO: test and enable on Windows
     virtual void                setFrame(int frame);  // frame 0 = first frame...
-    
     virtual int                 getCurrentFrame();
     virtual int                 getTotalNumFrames();
-    */
+#endif
     virtual ofLoopType          getLoopState();
     /*
     virtual void                firstFrame();
@@ -105,6 +104,9 @@ private:
     bool            _wantsUpdate;
 	string			_moviePath;
 	bool			_hapAvailable;
+    int             _totalNumFrames;
+    int             _lastKnownFrameNumber;
+    int             _lastKnownFrameTime;
 };
 
 #endif /* defined(__ofxHapPlayer__) */

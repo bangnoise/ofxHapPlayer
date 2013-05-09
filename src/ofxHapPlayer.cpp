@@ -119,7 +119,7 @@ OSErr ofxHapPlayerDrawComplete(Movie theMovie, long refCon){
     return noErr;
 }
 
-ofxHapPlayer::ofxHapPlayer() : _movie(NULL), _gWorld(NULL), _shaderLoaded(false), _playing(false), _speed(1.0), _loopState(OF_LOOP_NORMAL), _wantsUpdate(false)
+ofxHapPlayer::ofxHapPlayer() : _movie(NULL), _gWorld(NULL), _shaderLoaded(false), _playing(false), _speed(1.0), _loopState(OF_LOOP_NORMAL), _wantsUpdate(false), _totalNumFrames(-1), _lastKnownFrameNumber(0), _lastKnownFrameTime(0)
 {
     /*
     http://developer.apple.com/library/mac/#documentation/QuickTime/Conceptual/QT_InitializingQT/InitializingQT/InitializingQTfinal.html
@@ -410,6 +410,9 @@ void ofxHapPlayer::close()
         DisposeMovie((Movie)_movie);
         _movie = NULL;
         _wantsUpdate = false;
+        _totalNumFrames = -1;
+        _lastKnownFrameNumber = 0;
+        _lastKnownFrameTime = 0;
     }
 }
 
@@ -713,3 +716,114 @@ void ofxHapPlayer::setPosition(float pct)
         SetMovieTimeValue((Movie)_movie, (float)duration * pct);
     }
 }
+
+#if defined(TARGET_OSX)
+void ofxHapPlayer::setFrame(int frame)
+{
+    if (_movie)
+    {
+        TimeValue time = _lastKnownFrameTime;
+        int search = _lastKnownFrameNumber;
+        OSType mediaType = VideoMediaType;
+        Fixed searchDirection = search > frame ? ofxHapPlayerFloatToFixed(-1.0) : ofxHapPlayerFloatToFixed(1.0);
+        int searchIncrement = search > frame ? -1 : 1;
+        while (search != frame && time != -1)
+        {
+            TimeValue nextTime = 0;
+            GetMovieNextInterestingTime((Movie)_movie,
+                                        nextTimeMediaSample,
+                                        1,
+                                        &mediaType,
+                                        time,
+                                        searchDirection,
+                                        &nextTime,
+                                        NULL);
+            if (nextTime == -1)
+            {
+                break;
+            }
+            time = nextTime;
+            search += searchIncrement;
+            _lastKnownFrameTime = time;
+            _lastKnownFrameNumber = search;
+        }
+        SetMovieTimeValue((Movie)_movie, time);
+    }
+}
+
+int ofxHapPlayer::getCurrentFrame()
+{
+    int frameNumber = 0;
+    if (_movie)
+    {
+        TimeValue now = GetMovieTime((Movie)_movie, NULL);
+        OSType mediaType = VideoMediaType;
+        /*
+         Find the actual time of the current frame
+         */
+        GetMovieNextInterestingTime((Movie)_movie,
+                                    nextTimeMediaSample | nextTimeEdgeOK,
+                                    1,
+                                    &mediaType,
+                                    now,
+                                    (_speed > 0.0 ? ofxHapPlayerFloatToFixed(-1.0) : ofxHapPlayerFloatToFixed(1.0)),
+                                    &now,
+                                    NULL);
+        /*
+         Step through frames until we get to the current frame
+         */
+        TimeValue searched = _lastKnownFrameTime;
+        frameNumber = _lastKnownFrameNumber;
+        Fixed searchDirection = searched > now ? ofxHapPlayerFloatToFixed(-1.0) : ofxHapPlayerFloatToFixed(1.0);
+        int searchIncrement = searched > now ? -1 : 1;
+        while (searched != now && searched != -1)
+        {
+            GetMovieNextInterestingTime((Movie)_movie,
+                                        nextTimeMediaSample,
+                                        1,
+                                        &mediaType,
+                                        searched,
+                                        searchDirection,
+                                        &searched,
+                                        NULL);
+            if (searched != -1)
+            {
+                frameNumber += searchIncrement;
+            }
+        }
+    }
+    return frameNumber;
+}
+
+int ofxHapPlayer::getTotalNumFrames()
+{
+    int frameCount = 0;
+    if (_movie)
+    {
+        if (_totalNumFrames == -1)
+        {
+            TimeValue searched = _lastKnownFrameTime;
+            frameCount = _lastKnownFrameNumber;
+            OSType mediaType = VideoMediaType;
+            while (searched != -1)
+            {
+                GetMovieNextInterestingTime((Movie)_movie,
+                                            nextTimeMediaSample,
+                                            1,
+                                            &mediaType,
+                                            searched,
+                                            ofxHapPlayerFloatToFixed(1.0),
+                                            &searched,
+                                            NULL);
+                frameCount++;
+            }
+            _totalNumFrames = frameCount;
+        }
+        else
+        {
+            frameCount = _totalNumFrames;
+        }
+    }
+    return frameCount;
+}
+#endif
