@@ -207,7 +207,22 @@ bool ofxHapPlayer::loadMovie(string name)
 #if defined(TARGET_WIN32)
     if (isURL)
     {
-        // TODO: Windows URL loading
+        // TODO: enable once tested on Windows
+#if 0
+        Handle dataRef;
+        const char *url = (char *)name.c_str();
+
+        dataRef = NewHandle(strlen(url) + 1);
+        result = MemError();
+
+        if (result == noErr)
+        {
+            BlockMoveData(url, *dataRef, strlen(url) + 1);
+
+            result = NewMovieFromDataRef((Movie *)&_movie, 0, NULL, dataRef, URLDataHandlerSubType);
+            DisposeHandle(dataRef);
+        }
+#endif
     }
     else
     {
