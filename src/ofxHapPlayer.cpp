@@ -119,7 +119,7 @@ OSErr ofxHapPlayerDrawComplete(Movie theMovie, long refCon){
     return noErr;
 }
 
-ofxHapPlayer::ofxHapPlayer() : _movie(NULL), _gWorld(NULL), _shaderLoaded(false), _playing(false), _speed(1.0), _loopState(OF_LOOP_NORMAL), _wantsUpdate(false), _hapAvailable(false), _totalNumFrames(-1), _lastKnownFrameNumber(0), _lastKnownFrameTime(0)
+ofxHapPlayer::ofxHapPlayer() : _movie(NULL), _buffer(NULL), _gWorld(NULL), _shaderLoaded(false), _playing(false), _speed(1.0), _loopState(OF_LOOP_NORMAL), _wantsUpdate(false), _hapAvailable(false), _totalNumFrames(-1), _lastKnownFrameNumber(0), _lastKnownFrameTime(0)
 {
     /*
     http://developer.apple.com/library/mac/#documentation/QuickTime/Conceptual/QT_InitializingQT/InitializingQT/InitializingQTfinal.html
@@ -742,7 +742,6 @@ void ofxHapPlayer::setPosition(float pct)
     }
 }
 
-#if defined(TARGET_OSX)
 void ofxHapPlayer::setFrame(int frame)
 {
     if (_movie)
@@ -851,4 +850,3 @@ int ofxHapPlayer::getTotalNumFrames()
     }
     return frameCount;
 }
-#endif
