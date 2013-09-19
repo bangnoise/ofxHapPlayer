@@ -84,7 +84,9 @@ void testApp::mouseDragged(int x, int y, int button){
 
 //--------------------------------------------------------------
 void testApp::mousePressed(int x, int y, int button){
-
+    float position = (float) x / (float) ofGetWindowWidth();
+    cout << "Setting playhead to " << ofToString(position) << endl;
+    player.setPosition(position);
 }
 
 //--------------------------------------------------------------
