@@ -746,6 +746,14 @@ void ofxHapPlayer::setPosition(float pct)
     }
 }
 
+void ofxHapPlayer::setVolume(float volume)
+{
+    if (_movie)
+    {
+        SetMovieVolume((Movie)_movie, (short) (volume * 256));
+    }
+}
+
 void ofxHapPlayer::setFrame(int frame)
 {
     if (_movie)
