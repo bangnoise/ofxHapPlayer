@@ -30,6 +30,8 @@
 #if defined(__APPLE__)
 #define HAP_BZERO(x,y) bzero((x),(y))
 #else
+#define WINVER 0x0600
+#define _WIN32_WINNT 0x0600
 #include <Windows.h>
 #define HAP_BZERO(x,y) ZeroMemory((x),(y))
 #endif
@@ -65,8 +67,10 @@ static Boolean HapQTCodecIsAvailable(OSType codecType)
  Much of QuickTime is deprecated in recent MacOS but no equivalent functionality exists in modern APIs,
  so we ignore these warnings.
  */
+#if !defined(_MSC_VER)
 #pragma GCC push
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 static OSType HapQTGetQuickTimeMovieHapCodecSubType(Movie movie)
 {
     if (movie)
@@ -98,7 +102,9 @@ static OSType HapQTGetQuickTimeMovieHapCodecSubType(Movie movie)
     }
     return 0;
 }
+#if !defined(_MSC_VER)
 #pragma GCC pop
+#endif
 
 Boolean HapQTQuickTimeMovieHasHapTrackPlayable(Movie movie)
 {
