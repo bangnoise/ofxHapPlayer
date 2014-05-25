@@ -44,6 +44,15 @@
 #define kHapYCoCgCodecSubType 'HapY'
 
 /*
+ Much of QuickTime is deprecated in recent MacOS but no equivalent functionality exists in modern APIs,
+ so we ignore these warnings.
+ */
+#if !defined(_MSC_VER)
+#pragma GCC push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
+
+/*
  Searches the list of installed codecs for a given codec
  */
 static Boolean HapQTCodecIsAvailable(OSType codecType)
@@ -63,14 +72,6 @@ static Boolean HapQTCodecIsAvailable(OSType codecType)
     return false;
 }
 
-/*
- Much of QuickTime is deprecated in recent MacOS but no equivalent functionality exists in modern APIs,
- so we ignore these warnings.
- */
-#if !defined(_MSC_VER)
-#pragma GCC push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-#endif
 static OSType HapQTGetQuickTimeMovieHapCodecSubType(Movie movie)
 {
     if (movie)

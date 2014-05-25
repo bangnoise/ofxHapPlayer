@@ -44,6 +44,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #elif defined(TARGET_OSX)
 #include <QuickTime/QuickTime.h>
 /*
+ Much of QuickTime is deprecated in recent MacOS but no equivalent functionality exists in modern APIs,
+ so we ignore these warnings.
+ */
+#pragma GCC push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+/*
  These functions have been excised from modern MacOS headers but remain available
  */
 #if !defined(__QDOFFSCREEN__)
@@ -862,3 +868,6 @@ int ofxHapPlayer::getTotalNumFrames()
     }
     return frameCount;
 }
+#if defined(TARGET_OSX)
+#pragma GCC pop
+#endif
