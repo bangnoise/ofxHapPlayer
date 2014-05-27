@@ -30,17 +30,79 @@
 
 #include "ofMain.h"
 
-class ofxHapPlayer : public ofQTKitPlayer {
+class ofxHapPlayer : public ofBaseVideoPlayer {
 public:
-    bool        loadMovie(string path, ofQTKitDecodeMode mode);
-    ofTexture * getTexture();
-    ofShader *  getShader();
-    void        draw(float x, float y);
-    void        draw(float x, float y, float w, float h);
+    ofxHapPlayer();
+    virtual ~ofxHapPlayer();
+    
+    virtual bool                loadMovie(string name);
+    virtual void                close();
+    virtual void                update();
+    
+    virtual void                play();
+    virtual void                stop();     
+    
+    virtual bool                isFrameNew();
+    virtual unsigned char *     getPixels() {return NULL;};
+    virtual ofPixelsRef         getPixelsRef();
+    virtual ofTexture *         getTexture();
+    virtual ofShader *          getShader();
+    virtual float               getWidth();
+    virtual float               getHeight();
+    
+    virtual bool                isPaused();
+    virtual bool                isLoaded();
+    virtual bool                isPlaying();
+    
+    virtual bool                setPixelFormat(ofPixelFormat pixelFormat) {return false;};
+    virtual ofPixelFormat       getPixelFormat();
+    virtual string              getMoviePath();
+    virtual bool				getHapAvailable();
+	
+    //should implement!
+    virtual float               getPosition();
+    virtual float               getSpeed();
+    virtual float               getDuration();
+	
+    /*
+    virtual bool                getIsMovieDone();
+    */
+    virtual void                setPaused(bool pause);
+    virtual void                setPosition(float pct);
+    virtual void                setVolume(float volume); // 0..1
+    virtual void                setLoopState(ofLoopType state);
+    virtual void                setSpeed(float speed);
+    virtual void                setFrame(int frame);  // frame 0 = first frame...
+    virtual int                 getCurrentFrame();
+    virtual int                 getTotalNumFrames();
+    virtual ofLoopType          getLoopState();
+    /*
+    virtual void                firstFrame();
+    virtual void                nextFrame();
+    virtual void                previousFrame();
+    */
+    //
+    virtual void                draw(float x, float y);
+    virtual void                draw(float x, float y, float width, float height);
+
 protected:
-    void        updateTexture();
-    ofShader    shader;
-    bool        shaderLoaded;
+    void *          _movie;
+private:
+    void *          _gWorld;
+    unsigned char * _buffer;
+    ofShader        _shader;
+    ofTexture       _texture;
+    bool            _shaderLoaded;
+    bool            _playing;
+    float           _speed;
+    bool            _paused;
+    ofLoopType      _loopState;
+    bool            _wantsUpdate;
+	string			_moviePath;
+	bool			_hapAvailable;
+    int             _totalNumFrames;
+    int             _lastKnownFrameNumber;
+    int             _lastKnownFrameTime;
 };
 
 #endif /* defined(__ofxHapPlayer__) */

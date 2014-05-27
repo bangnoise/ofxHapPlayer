@@ -1,24 +1,24 @@
 ofxHapPlayer
 ============
 
-A Hap player for OpenFrameworks 0.7.4 on MacOS X.
+A Hap player for OpenFrameworks on MacOS X and Windows.
 
 Hap is a codec for fast video playback and is available for free [here](https://github.com/Vidvox/hap-qt-codec) - it is required for accelerated playback using this addon.
 
 Usage
 -----
 
-ofxHapPlayer inherits from ofQTKitPlayer.
-
     #import "ofxHapPlayer.h"
 
-Use ````OF_QTKIT_DECODE_TEXTURE_ONLY```` to instigate accelerated playback:
+ofxHapPlayer inherits from ofBaseVideoPlayer
 
-    player.loadMovie("movies/MyMovieName.mov", OF_QTKIT_DECODE_TEXTURE_ONLY);
+    player.loadMovie("movies/MyMovieName.mov");
 
 When you want to draw:
 
 	player.draw(20, 20);
+
+Note that there is no direct access to pixels and calls to getPixels() will return NULL.
 
 Advanced Usage
 --------------
