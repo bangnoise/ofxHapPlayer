@@ -5,6 +5,8 @@ A Hap player for OpenFrameworks on MacOS X and Windows.
 
 Hap is a codec for fast video playback and is available for free [here](https://github.com/Vidvox/hap-qt-codec) - it is required for accelerated playback using this addon.
 
+The [master](https://github.com/bangnoise/ofxHapPlayer/tree/master) branch of this repo aims to keep up to date with OpenFrameworks releases. An [of_head](https://github.com/bangnoise/ofxHapPlayer/tree/of_head) branch aims to keep up to date with development work on OpenFrameworks' master branch.
+
 Usage
 -----
 
