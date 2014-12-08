@@ -170,7 +170,7 @@ ofxHapPlayer::~ofxHapPlayer()
 #endif
 }
 
-bool ofxHapPlayer::loadMovie(string name)
+bool ofxHapPlayer::load(string name)
 {
     OSStatus result = noErr;
 	_moviePath = name;
@@ -418,7 +418,30 @@ bool ofxHapPlayer::loadMovie(string name)
     */
     SetGWorld(previousGWorld, previousGDH);
     DisposeGWorld(tempGWorld);
-    
+
+    /*
+    Count the total number of frames
+    */
+    if (result == noErr)
+    {
+        TimeValue searched = 0;
+        _totalNumFrames = 0;
+        OSType mediaType = VideoMediaType;
+
+        while (searched != -1)
+        {
+            GetMovieNextInterestingTime((Movie)_movie,
+                                        nextTimeMediaSample,
+                                        1,
+                                        &mediaType,
+                                        searched,
+                                        ofxHapPlayerFloatToFixed(1.0),
+                                        &searched,
+                                        NULL);
+            _totalNumFrames++;
+        }
+    }
+
     if (result == noErr)
     {
         /*
@@ -620,11 +643,6 @@ bool ofxHapPlayer::isFrameNew() const
     return _wantsUpdate;
 }
 
-bool ofxHapPlayer::isFrameNew()
-{
-    return static_cast<const ofxHapPlayer *>(this)->isFrameNew();
-}
-
 float ofxHapPlayer::getWidth() const
 {
     if (_gWorld && _movie)
@@ -633,11 +651,6 @@ float ofxHapPlayer::getWidth() const
         return (*pmap)->bounds.right;
     }
     return 0.0;
-}
-
-float ofxHapPlayer::getWidth()
-{
-    return static_cast<const ofxHapPlayer *>(this)->getWidth();
 }
 
 float ofxHapPlayer::getHeight() const
@@ -650,19 +663,9 @@ float ofxHapPlayer::getHeight() const
     return 0.0;
 }
 
-float ofxHapPlayer::getHeight()
-{
-    return static_cast<const ofxHapPlayer *>(this)->getHeight();
-}
-
 bool ofxHapPlayer::isPaused() const
 {
     return _paused;
-}
-
-bool ofxHapPlayer::isPaused()
-{
-    return static_cast<const ofxHapPlayer *>(this)->isPaused();
 }
 
 bool ofxHapPlayer::isLoaded() const
@@ -671,40 +674,26 @@ bool ofxHapPlayer::isLoaded() const
     else return false;
 }
 
-bool ofxHapPlayer::isLoaded()
-{
-    return static_cast<const ofxHapPlayer *>(this)->isLoaded();
-}
-
 bool ofxHapPlayer::isPlaying() const
 {
     return _playing;
 }
 
-bool ofxHapPlayer::isPlaying()
+ofPixels& ofxHapPlayer::getPixels()
 {
-    return static_cast<const ofxHapPlayer *>(this)->isPlaying();
+    static ofPixels none;
+    return none;
 }
 
-ofPixelsRef ofxHapPlayer::getPixelsRef()
+const ofPixels& ofxHapPlayer::getPixels() const
 {
-    static ofPixels ref;
-    return ref;
-}
-
-const ofPixels& ofxHapPlayer::getPixelsRef() const
-{
-    return static_cast<const ofxHapPlayer *>(this)->getPixelsRef();
+    static ofPixels none;
+    return none;
 }
 
 ofPixelFormat ofxHapPlayer::getPixelFormat() const
 {
     return OF_PIXELS_BGRA;
-}
-
-ofPixelFormat ofxHapPlayer::getPixelFormat()
-{
-    return static_cast<const ofxHapPlayer *>(this)->getPixelFormat();
 }
 
 void ofxHapPlayer::setLoopState(ofLoopType state)
@@ -743,19 +732,9 @@ ofLoopType ofxHapPlayer::getLoopState() const
     return _loopState;
 }
 
-ofLoopType ofxHapPlayer::getLoopState()
-{
-    return static_cast<const ofxHapPlayer *>(this)->getLoopState();
-}
-
 float ofxHapPlayer::getSpeed() const
 {
     return _speed;
-}
-
-float ofxHapPlayer::getSpeed()
-{
-    return static_cast<const ofxHapPlayer *>(this)->getSpeed();
 }
 
 void ofxHapPlayer::setSpeed(float speed)
@@ -778,11 +757,6 @@ float ofxHapPlayer::getDuration() const
     return 0.0;
 }
 
-float ofxHapPlayer::getDuration()
-{
-    return static_cast<const ofxHapPlayer *>(this)->getDuration();
-}
-
 float ofxHapPlayer::getPosition() const
 {
     if (_movie)
@@ -794,11 +768,6 @@ float ofxHapPlayer::getPosition() const
         }
     }
     return 0.0;
-}
-
-float ofxHapPlayer::getPosition()
-{
-    return static_cast<const ofxHapPlayer *>(this)->getPosition();
 }
 
 void ofxHapPlayer::setPosition(float pct)
@@ -897,11 +866,6 @@ int ofxHapPlayer::getCurrentFrame() const
     return frameNumber;
 }
 
-int ofxHapPlayer::getCurrentFrame()
-{
-    return static_cast<const ofxHapPlayer *>(this)->getCurrentFrame();
-}
-
 int ofxHapPlayer::getTotalNumFrames() const
 {
     int frameCount = 0;
@@ -924,24 +888,6 @@ int ofxHapPlayer::getTotalNumFrames() const
                                             NULL);
                 frameCount++;
             }
-        }
-        else
-        {
-            frameCount = _totalNumFrames;
-        }
-    }
-    return frameCount;
-}
-
-int ofxHapPlayer::getTotalNumFrames()
-{
-    int frameCount = 0;
-    if (_movie)
-    {
-        if (_totalNumFrames == -1)
-        {
-            frameCount = static_cast<const ofxHapPlayer *>(this)->getTotalNumFrames();
-            _totalNumFrames = frameCount;
         }
         else
         {
