@@ -783,6 +783,15 @@ float ofxHapPlayer::getDuration()
     return static_cast<const ofxHapPlayer *>(this)->getDuration();
 }
 
+bool ofxHapPlayer::getIsMovieDone()
+{
+    if (_movie)
+    {
+        return IsMovieDone(static_cast<Movie>(_movie));
+    }
+    return false;
+}
+
 float ofxHapPlayer::getPosition() const
 {
     if (_movie)

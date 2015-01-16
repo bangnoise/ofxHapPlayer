@@ -67,17 +67,14 @@ public:
     virtual string              getMoviePath() const;
     virtual bool				getHapAvailable() const;
 	
-    //should implement!
     virtual float               getPosition() const;
     virtual float               getPosition();
     virtual float               getSpeed() const;
     virtual float               getSpeed();
     virtual float               getDuration() const;
     virtual float               getDuration();
-	
-    /*
     virtual bool                getIsMovieDone();
-    */
+
     virtual void                setPaused(bool pause);
     virtual void                setPosition(float pct);
     virtual void                setVolume(float volume); // 0..1
