@@ -40,6 +40,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #if defined(TARGET_WIN32)
 #include <QTML.h>
 #include <Movies.h>
+#include <FixMath.h>
 #define ofxHapPlayerFloatToFixed(x) X2Fix(x)
 #elif defined(TARGET_OSX)
 #include <QuickTime/QuickTime.h>
@@ -755,6 +756,15 @@ float ofxHapPlayer::getDuration() const
         return (float)duration / (float)timescale;
     }
     return 0.0;
+}
+
+bool ofxHapPlayer::getIsMovieDone() const
+{
+    if (_movie)
+    {
+        return IsMovieDone(static_cast<Movie>(_movie));
+    }
+    return false;
 }
 
 float ofxHapPlayer::getPosition() const

@@ -64,10 +64,8 @@ public:
     virtual float               getPosition() const;
     virtual float               getSpeed() const;
     virtual float               getDuration() const;
-	
-    /*
-    virtual bool                getIsMovieDone();
-    */
+    virtual bool                getIsMovieDone() const;
+
     virtual void                setPaused(bool pause);
     virtual void                setPosition(float pct);
     virtual void                setVolume(float volume); // 0..1
