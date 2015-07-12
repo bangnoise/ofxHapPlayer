@@ -385,7 +385,7 @@ bool ofxHapPlayer::load(string name)
         texData.width = renderRect.right;
         texData.height = renderRect.bottom;
         texData.textureTarget = GL_TEXTURE_2D;
-        texData.glTypeInternal = internalFormat;
+        texData.glInternalFormat = internalFormat;
 #if (OF_VERSION_MAJOR == 0) && (OF_VERSION_MINOR < 8)
         texData.glType = GL_BGRA;
         texData.pixelType = GL_UNSIGNED_INT_8_8_8_8_REV;
