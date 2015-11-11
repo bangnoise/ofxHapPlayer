@@ -35,7 +35,7 @@ void testApp::setup(){
     ofBackground(220, 220, 220);
     
     // Load a movie file
-    player.loadMovie("movies/SampleHap.mov");
+    player.load("movies/SampleHap.mov");
     
     // Start playback
     player.play();
@@ -107,5 +107,5 @@ void testApp::gotMessage(ofMessage msg){
 //--------------------------------------------------------------
 void testApp::dragEvent(ofDragInfo dragInfo){ 
 	vector< string > fileList = dragInfo.files;
-    player.loadMovie(fileList[0]);
+    player.load(fileList[0]);
 }

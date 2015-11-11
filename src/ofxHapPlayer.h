@@ -35,7 +35,7 @@ public:
     ofxHapPlayer();
     virtual ~ofxHapPlayer();
     
-    virtual bool                loadMovie(string name);
+    virtual bool                load(string name);
     virtual void                close();
     virtual void                update();
     
@@ -43,37 +43,27 @@ public:
     virtual void                stop();     
     
     virtual bool                isFrameNew() const;
-    virtual bool                isFrameNew();
-    virtual unsigned char *     getPixels() {return NULL;};
-    virtual ofPixelsRef         getPixelsRef();
-    virtual const ofPixels&     getPixelsRef() const;
+    virtual ofPixels&           getPixels();
+    virtual const ofPixels&     getPixels() const;
+
     virtual ofTexture *         getTexture();
     virtual ofShader *          getShader();
     virtual float               getWidth() const;
-    virtual float               getWidth();
     virtual float               getHeight() const;
-    virtual float               getHeight();
     
     virtual bool                isPaused() const;
-    virtual bool                isPaused();
     virtual bool                isLoaded() const;
-    virtual bool                isLoaded();
     virtual bool                isPlaying() const;
-    virtual bool                isPlaying();
     
     virtual bool                setPixelFormat(ofPixelFormat pixelFormat) {return false;};
     virtual ofPixelFormat       getPixelFormat() const;
-    virtual ofPixelFormat       getPixelFormat();
     virtual string              getMoviePath() const;
     virtual bool				getHapAvailable() const;
 	
     virtual float               getPosition() const;
-    virtual float               getPosition();
     virtual float               getSpeed() const;
-    virtual float               getSpeed();
     virtual float               getDuration() const;
-    virtual float               getDuration();
-    virtual bool                getIsMovieDone();
+    virtual bool                getIsMovieDone() const;
 
     virtual void                setPaused(bool pause);
     virtual void                setPosition(float pct);
@@ -82,11 +72,8 @@ public:
     virtual void                setSpeed(float speed);
     virtual void                setFrame(int frame);  // frame 0 = first frame...
     virtual int                 getCurrentFrame() const;
-    virtual int                 getCurrentFrame();
     virtual int                 getTotalNumFrames() const;
-    virtual int                 getTotalNumFrames();
     virtual ofLoopType          getLoopState() const;
-    virtual ofLoopType          getLoopState();
     /*
     virtual void                firstFrame();
     virtual void                nextFrame();
