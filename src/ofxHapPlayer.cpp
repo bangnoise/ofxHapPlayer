@@ -767,15 +767,6 @@ bool ofxHapPlayer::getIsMovieDone() const
     return false;
 }
 
-bool ofxHapPlayer::getIsMovieDone()
-{
-    if (_movie)
-    {
-        return IsMovieDone(static_cast<Movie>(_movie));
-    }
-    return false;
-}
-
 float ofxHapPlayer::getPosition() const
 {
     if (_movie)
