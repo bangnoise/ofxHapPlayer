@@ -141,6 +141,9 @@ ofxHapPlayer::ofxHapPlayer() : _movie(NULL), _buffer(NULL), _gWorld(NULL), _shad
     it should NOT be balanced by calls to ExitMovies()
     */
     EnterMovies();
+
+	_paused = false;
+
 }
 
 ofxHapPlayer::~ofxHapPlayer()
@@ -662,7 +665,7 @@ bool ofxHapPlayer::isPaused() const
 
 bool ofxHapPlayer::isPaused()
 {
-    return static_cast<const ofxHapPlayer *>(this)->isPaused();
+	return _paused;
 }
 
 bool ofxHapPlayer::isLoaded() const
