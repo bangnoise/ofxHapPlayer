@@ -1,18 +1,18 @@
 /*
- testApp.h
- ofxHapPlayerExample
- 
- Copyright (c) 2013, Tom Butterworth. All rights reserved.
+ AudioResampler.h
+ ofxHapPlayer
+
+ Copyright (c) 2016, Tom Butterworth. All rights reserved.
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions are met:
- 
+
  * Redistributions of source code must retain the above copyright
  notice, this list of conditions and the following disclaimer.
- 
+
  * Redistributions in binary form must reproduce the above copyright
  notice, this list of conditions and the following disclaimer in the
  documentation and/or other materials provided with the distribution.
- 
+
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,33 +25,36 @@
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#pragma once
+#ifndef AudioResampler_h
+#define AudioResampler_h
 
-#include "ofMain.h"
-#include "ofxHapPlayer.h"
+#include <cstdint>
 
-class ofApp : public ofBaseApp{
-	public:
-		void setup();
-		void update();
-		void draw();
-		
-        void keyPressed(int key);
-        void keyReleased(int key);
-        void mouseMoved(int x, int y );
-        void mouseDragged(int x, int y, int button);
-        void mousePressed(int x, int y, int button);
-        void mouseReleased(int x, int y, int button);
-        void mouseEntered(int x, int y);
-        void mouseExited(int x, int y);
-        void windowResized(int w, int h);
-        void dragEvent(ofDragInfo dragInfo);
-        void gotMessage(ofMessage msg);
+typedef struct SwrContext SwrContext;
+typedef struct AVFrame AVFrame;
+typedef struct AVCodecParameters AVCodecParameters;
 
-        void load(std::string movie);
-        ofRectangle getBarRectangle() const;
-        ofxHapPlayer player;
-        uint64_t lastMovement;
-        bool wasPaused;
-        bool drawBar;
-};
+namespace ofxHap {
+    class AudioResampler {
+    public:
+        AudioResampler(const AVCodecParameters* params, int outrate);
+        ~AudioResampler();
+        float getVolume() const;
+        void setVolume(float v); // harmless to call repeatedly with same value
+        float getRate() const;
+        void setRate(float r); // harmless to call repeatedly with same value
+        // returns an AVERROR or 0 on success
+        int resample(const AVFrame *src, int offset, int srcLength, float *dst, int dstLength, int& outSamplesWritten, int& outSamplesRead);
+    private:
+        float       _volume;
+        float       _rate;
+        SwrContext *_resampler;
+        bool        _reconfigure;
+        uint64_t    _layout;
+        int         _sampleRateIn;
+        int         _sampleRateOut;
+        int         _format;
+    };
+}
+
+#endif /* AudioResampler_h */
