@@ -1,9 +1,11 @@
 ofxHapPlayer
 ============
 
-A Hap player for OpenFrameworks on MacOS X and Windows (the Windows version currently works with OpenFrameworks 0.8 only).
+A Hap player for OpenFrameworks on MacOS X, Windows and Linux.
 
-Hap is a codec for fast video playback and is available for free [here](https://github.com/Vidvox/hap-qt-codec) - it is required for accelerated playback using this addon.
+THIS BRANCH IS A WORK IN PROGRESS
+
+Hap is a codec for fast video playback. You can learn more about Hap, and find codecs for encoding, at the [main Hap project](https://github.com/Vidvox/hap).
 
 This repo has branches for major OF versions. Use the branch which matches the version of OF you are using. The [master](https://github.com/bangnoise/ofxHapPlayer/tree/master) branch matches the current OF release. An [of_head](https://github.com/bangnoise/ofxHapPlayer/tree/of_head) branch aims to keep up to date with development work on OpenFrameworks' master branch.
 
@@ -51,4 +53,4 @@ Note that if you access the texture directly for a Hap Q movie, you will need to
 Credits and License
 -------------------
 
-ofxHapPlayer was written by [Tom Butterworth](http://kriss.cx/tom), April 2013, supported by [Igloo Vision](http://www.igloovision.com/) and James Sheridan. It is released under a [FreeBSD License](http://github.com/bangnoise/ofxHapPlayer/blob/master/LICENSE).
+ofxHapPlayer was written by [Tom Butterworth](http://kriss.cx/tom), initially in April 2013, supported by [Igloo Vision](http://www.igloovision.com/) and James Sheridan. Since then it has been supported by [Vidvox](http://vidvox.net/). It is released under a [FreeBSD License](http://github.com/bangnoise/ofxHapPlayer/blob/master/LICENSE).
