@@ -30,6 +30,7 @@
 
 #include <cstdint>
 #include <list>
+#include <cstddef>
 
 namespace ofxHap {
     class TimeRangeSet {

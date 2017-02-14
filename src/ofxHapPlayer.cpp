@@ -41,6 +41,7 @@ extern "C" {
 
 // This amount will be bufferred before and after the playhead
 #define kofxHapPlayerBufferUSec INT64_C(250000)
+#define kofxHapPlayerUSecPerSec 1000000L
 
 const string ofxHapPlayerVertexShader = "void main(void)\
                                         {\
@@ -123,6 +124,8 @@ bool ofxHapPlayer::load(string name)
     Apply our current state to the movie
     */
     if (_playing) play();
+
+    return true;
 }
 
 void ofxHapPlayer::foundMovie(int64_t duration)
@@ -200,7 +203,9 @@ void ofxHapPlayer::endMovie()
 void ofxHapPlayer::error(int averror)
 {
     std::lock_guard<std::mutex> guard(_lock);
-    _error = av_err2str(averror);
+    char err[AV_ERROR_MAX_STRING_SIZE];
+    av_strerror(averror, err, AV_ERROR_MAX_STRING_SIZE);
+    _error = err;
     ofLogError("ofxHapPlayer", _error);
 }
 
@@ -230,7 +235,7 @@ static void DoHapDecode(HapDecodeWorkFunction function, void *p, unsigned int co
         function(p, i);
     });
 #else
-    int i;
+    unsigned int i;
     for (i = 0; i < count; i++) {
         // TODO: MT
         function(p, i);
@@ -313,7 +318,7 @@ void ofxHapPlayer::read(const ofxHap::TimeRangeSet& wanted, bool seek)
     for (auto range : wanted)
     {
         int64_t lastRead = _demuxer->getLastReadTime();
-        if (lastRead != AV_NOPTS_VALUE && range.start > lastRead && range.start - lastRead < USEC_PER_SEC / 4)
+        if (lastRead != AV_NOPTS_VALUE && range.start > lastRead && range.start - lastRead < kofxHapPlayerUSecPerSec / 4)
         {
 
 //            std::cout << "read " <<
