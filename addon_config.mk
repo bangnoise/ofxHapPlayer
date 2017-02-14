@@ -84,3 +84,6 @@ linux64:
 	ADDON_INCLUDES_EXCLUDE += libs/snappy
 	ADDON_INCLUDES_EXCLUDE += libs/snappy/%
 	ADDON_LDFLAGS = -lsnappy
+
+osx:
+	ADDON_LDFLAGS = -rpath @loader_path/../../../../../../../addons/ofxHapPlayer/libs

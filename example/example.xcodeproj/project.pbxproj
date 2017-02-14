@@ -880,8 +880,10 @@
 						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libswresample.2.3.100.dylib</string>
 						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libswresample.2.3.100.dylib</string>
 						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libswresample.2.3.100.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/snappy/libs/osx/libsnappy.1.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/snappy/libs/osx/libsnappy.1.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/snappy/lib/osx/libsnappy.1.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/snappy/lib/osx/libsnappy.1.dylib</string>
+						<string>-rpath</string>
+						<string>@loader_path/../../../../../../../addons/ofxHapPlayer/libs</string>
 					</array>
 					<key>HEADER_SEARCH_PATHS</key>
 					<array>
@@ -893,7 +895,6 @@
 						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/include/libswresample</string>
 						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib</string>
 						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/license</string>
 						<string>../../../addons/ofxHapPlayer/libs/hap</string>
 						<string>../../../addons/ofxHapPlayer/libs/hap/src</string>
 						<string>../../../addons/ofxHapPlayer/libs/ofxHap</string>
@@ -902,8 +903,8 @@
 						<string>../../../addons/ofxHapPlayer/libs/ofxHap/src</string>
 						<string>../../../addons/ofxHapPlayer/libs/snappy</string>
 						<string>../../../addons/ofxHapPlayer/libs/snappy/include</string>
-						<string>../../../addons/ofxHapPlayer/libs/snappy/libs</string>
-						<string>../../../addons/ofxHapPlayer/libs/snappy/libs/osx</string>
+						<string>../../../addons/ofxHapPlayer/libs/snappy/lib</string>
+						<string>../../../addons/ofxHapPlayer/libs/snappy/lib/osx</string>
 						<string>../../../addons/ofxHapPlayer/libs/snappy/license</string>
 						<string>../../../addons/ofxHapPlayer/src</string>
 					</array>
@@ -975,8 +976,10 @@
 						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libswresample.2.3.100.dylib</string>
 						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libswresample.2.3.100.dylib</string>
 						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libswresample.2.3.100.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/snappy/libs/osx/libsnappy.1.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/snappy/libs/osx/libsnappy.1.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/snappy/lib/osx/libsnappy.1.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/snappy/lib/osx/libsnappy.1.dylib</string>
+						<string>-rpath</string>
+						<string>@loader_path/../../../../../../../addons/ofxHapPlayer/libs</string>
 					</array>
 					<key>HEADER_SEARCH_PATHS</key>
 					<array>
@@ -988,7 +991,6 @@
 						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/include/libswresample</string>
 						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib</string>
 						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/license</string>
 						<string>../../../addons/ofxHapPlayer/libs/hap</string>
 						<string>../../../addons/ofxHapPlayer/libs/hap/src</string>
 						<string>../../../addons/ofxHapPlayer/libs/ofxHap</string>
@@ -997,8 +999,8 @@
 						<string>../../../addons/ofxHapPlayer/libs/ofxHap/src</string>
 						<string>../../../addons/ofxHapPlayer/libs/snappy</string>
 						<string>../../../addons/ofxHapPlayer/libs/snappy/include</string>
-						<string>../../../addons/ofxHapPlayer/libs/snappy/libs</string>
-						<string>../../../addons/ofxHapPlayer/libs/snappy/libs/osx</string>
+						<string>../../../addons/ofxHapPlayer/libs/snappy/lib</string>
+						<string>../../../addons/ofxHapPlayer/libs/snappy/lib/osx</string>
 						<string>../../../addons/ofxHapPlayer/libs/snappy/license</string>
 						<string>../../../addons/ofxHapPlayer/src</string>
 					</array>
@@ -1163,8 +1165,10 @@
 						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libswresample.2.3.100.dylib</string>
 						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libswresample.2.3.100.dylib</string>
 						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libswresample.2.3.100.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/snappy/libs/osx/libsnappy.1.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/snappy/libs/osx/libsnappy.1.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/snappy/lib/osx/libsnappy.1.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/snappy/lib/osx/libsnappy.1.dylib</string>
+						<string>-rpath</string>
+						<string>@loader_path/../../../../../../../addons/ofxHapPlayer/libs</string>
 					</array>
 					<key>HEADER_SEARCH_PATHS</key>
 					<array>
@@ -1176,7 +1180,6 @@
 						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/include/libswresample</string>
 						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib</string>
 						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/license</string>
 						<string>../../../addons/ofxHapPlayer/libs/hap</string>
 						<string>../../../addons/ofxHapPlayer/libs/hap/src</string>
 						<string>../../../addons/ofxHapPlayer/libs/ofxHap</string>
@@ -1185,8 +1188,8 @@
 						<string>../../../addons/ofxHapPlayer/libs/ofxHap/src</string>
 						<string>../../../addons/ofxHapPlayer/libs/snappy</string>
 						<string>../../../addons/ofxHapPlayer/libs/snappy/include</string>
-						<string>../../../addons/ofxHapPlayer/libs/snappy/libs</string>
-						<string>../../../addons/ofxHapPlayer/libs/snappy/libs/osx</string>
+						<string>../../../addons/ofxHapPlayer/libs/snappy/lib</string>
+						<string>../../../addons/ofxHapPlayer/libs/snappy/lib/osx</string>
 						<string>../../../addons/ofxHapPlayer/libs/snappy/license</string>
 						<string>../../../addons/ofxHapPlayer/src</string>
 					</array>
@@ -1248,8 +1251,10 @@
 						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libswresample.2.3.100.dylib</string>
 						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libswresample.2.3.100.dylib</string>
 						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libswresample.2.3.100.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/snappy/libs/osx/libsnappy.1.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/snappy/libs/osx/libsnappy.1.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/snappy/lib/osx/libsnappy.1.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/snappy/lib/osx/libsnappy.1.dylib</string>
+						<string>-rpath</string>
+						<string>@loader_path/../../../../../../../addons/ofxHapPlayer/libs</string>
 					</array>
 					<key>HEADER_SEARCH_PATHS</key>
 					<array>
@@ -1261,7 +1266,6 @@
 						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/include/libswresample</string>
 						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib</string>
 						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/license</string>
 						<string>../../../addons/ofxHapPlayer/libs/hap</string>
 						<string>../../../addons/ofxHapPlayer/libs/hap/src</string>
 						<string>../../../addons/ofxHapPlayer/libs/ofxHap</string>
@@ -1270,8 +1274,8 @@
 						<string>../../../addons/ofxHapPlayer/libs/ofxHap/src</string>
 						<string>../../../addons/ofxHapPlayer/libs/snappy</string>
 						<string>../../../addons/ofxHapPlayer/libs/snappy/include</string>
-						<string>../../../addons/ofxHapPlayer/libs/snappy/libs</string>
-						<string>../../../addons/ofxHapPlayer/libs/snappy/libs/osx</string>
+						<string>../../../addons/ofxHapPlayer/libs/snappy/lib</string>
+						<string>../../../addons/ofxHapPlayer/libs/snappy/lib/osx</string>
 						<string>../../../addons/ofxHapPlayer/libs/snappy/license</string>
 						<string>../../../addons/ofxHapPlayer/src</string>
 					</array>
