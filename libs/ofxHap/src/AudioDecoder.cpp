@@ -53,7 +53,7 @@ ofxHap::AudioDecoder::AudioDecoder(const AudioParameters& params, int& result)
     if (result >= 0)
     {
 #if OFX_HAP_HAS_CODECPAR
-        result = avcodec_parameters_to_context(_codec_ctx, params);
+        result = avcodec_parameters_to_context(_codec_ctx, params.parameters);
 #else
         // TODO: do we need to avcodec_copy_context() from the demuxer's context?
 #endif

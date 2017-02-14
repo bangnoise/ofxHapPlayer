@@ -140,7 +140,6 @@ void ofxHapPlayer::foundStream(AVStream *stream)
     std::lock_guard<std::mutex> guard(_lock);
 #if OFX_HAP_HAS_CODECPAR
     AVCodecParameters *params = stream->codecpar;
-    ofxHap::AudioParameters p(params);
     if (params->codec_type == AVMEDIA_TYPE_VIDEO && params->codec_id == AV_CODEC_ID_HAP)
     {
         _videoStream = stream;
@@ -157,24 +156,25 @@ void ofxHapPlayer::foundStream(AVStream *stream)
             _audioOut.stop();
         }
 
-        _audioThread = std::make_shared<ofxHap::AudioThread>(p, _audioOut.getBestRate(params->sample_rate), _buffer, *this, stream->start_time, stream->duration);
+        _audioThread = std::make_shared<ofxHap::AudioThread>(ofxHap::AudioParameters(params), _audioOut.getBestRate(params->sample_rate), _buffer, *this, stream->start_time, stream->duration);
         _audioThread->setVolume(_volume);
         _audioThread->sync(_clock);
     }
 #else
     AVCodecContext *codec = stream->codec;
-    ofxHap::AudioParameters p;
-    p.channels = codec->channels;
-    p.sample_rate = codec->sample_rate;
-    p.codec_id = codec->codec_id;
-    p.format = codec->sample_fmt;
-    p.channel_layout = codec->channel_layout;
     if (codec->codec_type == AVMEDIA_TYPE_VIDEO && codec->codec_id == AV_CODEC_ID_HAP)
     {
         _videoStream = stream;
     }
     else if (codec->codec_type == AVMEDIA_TYPE_AUDIO)
     {
+        ofxHap::AudioParameters p;
+        p.channels = codec->channels;
+        p.sample_rate = codec->sample_rate;
+        p.codec_id = codec->codec_id;
+        p.format = codec->sample_fmt;
+        p.channel_layout = codec->channel_layout;
+
         // TODO: we almost don't need to store this, only to identify packet index
         _audioStream = stream;
         _buffer = std::make_shared<ofxHap::RingBuffer>(codec->channels, codec->sample_rate / 8);

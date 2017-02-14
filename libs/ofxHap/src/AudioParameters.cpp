@@ -29,6 +29,10 @@
 
 #if OFX_HAP_HAS_CODECPAR
 
+extern "C" {
+#include <libavformat/avformat.h>
+}
+
 ofxHap::AudioParameters::AudioParameters(AVCodecParameters* p)
 : parameters(avcodec_parameters_alloc())
 {

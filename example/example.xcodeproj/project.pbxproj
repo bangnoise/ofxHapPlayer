@@ -204,11 +204,34 @@
 				<key>sourceTree</key>
 				<string>SOURCE_ROOT</string>
 			</dict>
+			<key>25F76A53846BBC81A84C5519</key>
+			<dict>
+				<key>fileRef</key>
+				<string>C0C7A497249DBD2F8DE862C9</string>
+				<key>isa</key>
+				<string>PBXBuildFile</string>
+			</dict>
+			<key>C0C7A497249DBD2F8DE862C9</key>
+			<dict>
+				<key>explicitFileType</key>
+				<string>sourcecode.cpp.cpp</string>
+				<key>fileEncoding</key>
+				<string>30</string>
+				<key>isa</key>
+				<string>PBXFileReference</string>
+				<key>name</key>
+				<string>AudioParameters.cpp</string>
+				<key>path</key>
+				<string>../../../addons/ofxHapPlayer/libs/ofxHap/src/AudioParameters.cpp</string>
+				<key>sourceTree</key>
+				<string>SOURCE_ROOT</string>
+			</dict>
 			<key>2EC5155BBB4AFAE8E1B719E7</key>
 			<dict>
 				<key>children</key>
 				<array>
 					<string>E190CC61090BCFFC54D69770</string>
+					<string>C0C7A497249DBD2F8DE862C9</string>
 					<string>5F2DF17E9FEFBA2715A7A317</string>
 					<string>1700621FD10DE4D4F9697B24</string>
 					<string>238B65DDD4862C9A94A29AB4</string>
@@ -321,6 +344,21 @@
 				<key>sourceTree</key>
 				<string>SOURCE_ROOT</string>
 			</dict>
+			<key>C8ACC5ADB42FB88EC0A6BA43</key>
+			<dict>
+				<key>explicitFileType</key>
+				<string>sourcecode.c.h</string>
+				<key>fileEncoding</key>
+				<string>30</string>
+				<key>isa</key>
+				<string>PBXFileReference</string>
+				<key>name</key>
+				<string>Common.h</string>
+				<key>path</key>
+				<string>../../../addons/ofxHapPlayer/libs/ofxHap/include/ofxHap/Common.h</string>
+				<key>sourceTree</key>
+				<string>SOURCE_ROOT</string>
+			</dict>
 			<key>5168D41D3FD219BF54E02804</key>
 			<dict>
 				<key>explicitFileType</key>
@@ -366,14 +404,31 @@
 				<key>sourceTree</key>
 				<string>SOURCE_ROOT</string>
 			</dict>
+			<key>9FA6754E55758AF846AF0E83</key>
+			<dict>
+				<key>explicitFileType</key>
+				<string>sourcecode.c.h</string>
+				<key>fileEncoding</key>
+				<string>30</string>
+				<key>isa</key>
+				<string>PBXFileReference</string>
+				<key>name</key>
+				<string>AudioParameters.h</string>
+				<key>path</key>
+				<string>../../../addons/ofxHapPlayer/libs/ofxHap/include/ofxHap/AudioParameters.h</string>
+				<key>sourceTree</key>
+				<string>SOURCE_ROOT</string>
+			</dict>
 			<key>7C5E4E98933A05F194AE813A</key>
 			<dict>
 				<key>children</key>
 				<array>
 					<string>01ACF32DD2BE3FB5BC5DFA8A</string>
+					<string>9FA6754E55758AF846AF0E83</string>
 					<string>77AC83A7566E052535EFA339</string>
 					<string>AC1ED9E2EADE684C6250AB38</string>
 					<string>5168D41D3FD219BF54E02804</string>
+					<string>C8ACC5ADB42FB88EC0A6BA43</string>
 					<string>C7E31A41D29A71BC7651883D</string>
 					<string>2CB998AF03E1DC191394C214</string>
 					<string>44A7B4A73286DB60EC1938DC</string>
@@ -1005,6 +1060,7 @@
 					<string>9DECE28DE972DD39553DD35C</string>
 					<string>D2589C81FE555C37DFA9890C</string>
 					<string>9A375B432B98EE95A23FD001</string>
+					<string>25F76A53846BBC81A84C5519</string>
 					<string>4B9BF6D1580B334023C9FA9F</string>
 					<string>4774F36141444127CFF18422</string>
 					<string>8B40DD2B41C58FF6B6907B86</string>
