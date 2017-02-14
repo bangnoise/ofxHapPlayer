@@ -22,6 +22,8 @@ For example, if you want to use the addon with OpenFrameworks 0.8.x:
 Linux Requirements
 ------------------
 
+This step is only necessary on Linux. On macOS and Windows, the required libraries are bundled with the addon.
+
 On Linux, ofxHapPlayer uses system libraries. For Ubuntu, the following packages are required:
 
 libsnappy-dev, libswresample-dev, libavcodec-dev, libavformat-dev
@@ -29,7 +31,6 @@ libsnappy-dev, libswresample-dev, libavcodec-dev, libavformat-dev
     sudo apt-get install libsnappy-dev libswresample-dev libavcodec-dev libavformat-dev
 
 Pull-requests with instructions for other distributions are welcomed.
-On Windows and macOS, the needed libraries are bundled with the addon.
 
 
 Usage
