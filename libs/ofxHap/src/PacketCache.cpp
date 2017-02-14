@@ -30,6 +30,7 @@ extern "C" {
 #include <libavformat/avformat.h>
 }
 #include "TimeRangeSet.h"
+#include "Common.h"
 
 ofxHap::PacketCache::PacketCache()
 {
@@ -46,8 +47,15 @@ void ofxHap::PacketCache::store(AVPacket *p)
     std::lock_guard<std::mutex> guard(_lock);
     if (_active.find(p->pts) == _active.end())
     {
-        AVPacket *packet = av_packet_alloc();
+#if OFX_HAP_HAS_PACKET_ALLOC
+        AVPacket *packet = av_packet_clone(p);
+#else
+        AVPacket *packet = static_cast<AVPacket *>(av_malloc(sizeof(AVPacket)));
+        av_init_packet(packet);
+        packet->data = nullptr;
+        packet->size = 0;
         av_packet_ref(packet, p);
+#endif
         _active.insert(std::map<int64_t, AVPacket *>::value_type(packet->pts, packet));
     }
     _condition.notify_one();
@@ -65,7 +73,12 @@ void ofxHap::PacketCache::cache()
         else
         {
             AVPacket *p = pair.second;
+#if OFX_HAP_HAS_PACKET_ALLOC
             av_packet_free(&p);
+#else
+            av_packet_unref(p);
+            av_freep(&p);
+#endif
         }
     }
     _active.clear();
@@ -142,7 +155,12 @@ void ofxHap::PacketCache::limit(std::map<uint64_t, AVPacket *> &map, const ofxHa
         }
         if (!keep)
         {
+#if OFX_HAP_HAS_PACKET_ALLOC
             av_packet_free(&p);
+#else
+            av_packet_unref(p);
+            av_freep(&p);
+#endif
             itr = map.erase(itr);
         }
         else
@@ -156,7 +174,13 @@ void ofxHap::PacketCache::clear(std::map<uint64_t, AVPacket *> &map)
 {
     for (auto& pair : map)
     {
+#if OFX_HAP_HAS_PACKET_ALLOC
         av_packet_free(&pair.second);
+#else
+        av_packet_unref(pair.second);
+        av_freep(&pair.second);
+#endif
+
     }
     map.clear();
 }

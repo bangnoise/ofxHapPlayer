@@ -507,13 +507,33 @@ ofxHap::AudioThread::Action::Action()
 { }
 
 ofxHap::AudioThread::Action::Action(AVPacket *p)
-: kind(Kind::Send), packet(p ? av_packet_clone(p) : p)
-{ }
+: kind(Kind::Send),
+#if OFX_HAP_HAS_PACKET_ALLOC
+packet(p ? av_packet_clone(p) : p)
+#else
+packet(static_cast<AVPacket *>(av_malloc(sizeof(AVPacket))))
+#endif
+{
+#if !OFX_HAP_HAS_PACKET_ALLOC
+    if (p)
+    {
+        av_init_packet(packet);
+        packet->data = nullptr;
+        packet->size = 0;
+        av_packet_ref(packet, p);
+    }
+#endif
+}
 
 ofxHap::AudioThread::Action::~Action()
 {
     if (packet)
     {
+#if OFX_HAP_HAS_PACKET_ALLOC
         av_packet_free(&packet);
+#else
+        av_packet_unref(packet);
+        av_freep(&packet);
+#endif
     }
 }
