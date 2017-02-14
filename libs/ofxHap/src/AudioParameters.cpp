@@ -1,8 +1,8 @@
 /*
- AudioResampler.h
+ AudioParameters.cpp
  ofxHapPlayer
 
- Copyright (c) 2016, Tom Butterworth. All rights reserved.
+ Copyright (c) 2017, Tom Butterworth. All rights reserved.
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions are met:
 
@@ -25,36 +25,33 @@
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef AudioResampler_h
-#define AudioResampler_h
+ #include "AudioParameters.h"
 
-#include <cstdint>
-#include "AudioParameters.h"
+#if OFX_HAP_HAS_CODECPAR
 
-typedef struct SwrContext SwrContext;
-typedef struct AVFrame AVFrame;
-
-namespace ofxHap {
-    class AudioResampler {
-    public:
-        AudioResampler(const AudioParameters& params, int outrate);
-        ~AudioResampler();
-        float getVolume() const;
-        void setVolume(float v); // harmless to call repeatedly with same value
-        float getRate() const;
-        void setRate(float r); // harmless to call repeatedly with same value
-        // returns an AVERROR or 0 on success
-        int resample(const AVFrame *src, int offset, int srcLength, float *dst, int dstLength, int& outSamplesWritten, int& outSamplesRead);
-    private:
-        float       _volume;
-        float       _rate;
-        SwrContext *_resampler;
-        bool        _reconfigure;
-        uint64_t    _layout;
-        int         _sampleRateIn;
-        int         _sampleRateOut;
-        int         _format;
-    };
+ofxHap::AudioParameters::AudioParameters(AVCodecParameters* p)
+: parameters(avcodec_parameters_alloc())
+{
+	avcodec_parameters_copy(parameters, p);
 }
 
-#endif /* AudioResampler_h */
+ofxHap::AudioParameters::~AudioParameters()
+{
+	avcodec_parameters_free(&parameters);
+}
+
+ofxHap::AudioParameters::AudioParameters(const AudioParameters& o)
+: parameters(avcodec_parameters_alloc())
+{
+	avcodec_parameters_copy(parameters, o.parameters);
+}
+
+ofxHap::AudioParameters& ofxHap::AudioParameters::operator=(const AudioParameters& o)
+{
+	AVCodecParameters *p = avcodec_parameters_alloc();
+	avcodec_parameters_copy(p, parameters);
+	avcodec_parameters_free(&parameters);
+	parameters = p;
+}
+
+#endif

@@ -7,6 +7,10 @@ THIS BRANCH IS A WORK IN PROGRESS
 
 Hap is a codec for fast video playback. You can learn more about Hap, and find codecs for encoding, at the [main Hap project](https://github.com/Vidvox/hap).
 
+
+Installation
+------------
+
 This repo has branches for major OF versions. Use the branch which matches the version of OF you are using. The [master](https://github.com/bangnoise/ofxHapPlayer/tree/master) branch matches the current OF release. An [of_head](https://github.com/bangnoise/ofxHapPlayer/tree/of_head) branch aims to keep up to date with development work on OpenFrameworks' master branch.
 
 For example, if you want to use the addon with OpenFrameworks 0.8.x:
@@ -14,8 +18,24 @@ For example, if you want to use the addon with OpenFrameworks 0.8.x:
     $ cd addons/ofxHapPlayer
     $ git checkout OpenFrameworks-0.8
 
+
+Linux Requirements
+------------------
+
+On Linux, ofxHapPlayer uses system libraries. For Ubuntu, the following packages are required:
+
+libsnappy-dev, libswresample-dev, libavcodec-dev, libavformat-dev
+
+    sudo apt-get install libsnappy-dev libswresample-dev libavcodec-dev libavformat-dev
+
+Pull-requests with instructions for other distributions are welcomed.
+On Windows and macOS, the needed libraries are bundled with the addon.
+
+
 Usage
 -----
+
+Use the OF Project Generator to generate build files for your project, selecting ofxHapPlayer as an addon.
 
     #import "ofxHapPlayer.h"
 

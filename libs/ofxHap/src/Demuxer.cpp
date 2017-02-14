@@ -26,6 +26,7 @@
  */
 
 #include "Demuxer.h"
+#include "Common.h"
 extern "C" {
 #include <libavformat/avformat.h>
 }
@@ -70,7 +71,11 @@ void ofxHap::Demuxer::threadMain(const std::string movie, PacketReceiver& receiv
         {
             receiver.foundMovie(fmt_ctx->duration);
             for (int i = 0; i < fmt_ctx->nb_streams; i++) {
+#if OFX_HAP_HAS_CODECPAR
                 if (fmt_ctx->streams[i]->codecpar->codec_id == AV_CODEC_ID_HAP && videoStreamIndex == -1)
+#else
+                if (fmt_ctx->streams[i]->codec->codec_id == AV_CODEC_ID_HAP && videoStreamIndex == -1)
+#endif
                 {
                     videoStreamIndex = i;
                 }

@@ -32,6 +32,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
  */
 #include "ofxHapPlayer.h"
+#include <ofxHap/Common.h>
 extern "C" {
 #include <libavformat/avformat.h>
 #include <libavutil/time.h>
@@ -137,7 +138,9 @@ void ofxHapPlayer::foundMovie(int64_t duration)
 void ofxHapPlayer::foundStream(AVStream *stream)
 {
     std::lock_guard<std::mutex> guard(_lock);
+#if OFX_HAP_HAS_CODECPAR
     AVCodecParameters *params = stream->codecpar;
+    ofxHap::AudioParameters p(params);
     if (params->codec_type == AVMEDIA_TYPE_VIDEO && params->codec_id == AV_CODEC_ID_HAP)
     {
         _videoStream = stream;
@@ -154,10 +157,39 @@ void ofxHapPlayer::foundStream(AVStream *stream)
             _audioOut.stop();
         }
 
-        _audioThread = std::make_shared<ofxHap::AudioThread>(params, _audioOut.getBestRate(params->sample_rate), _buffer, *this, stream->start_time, stream->duration);
+        _audioThread = std::make_shared<ofxHap::AudioThread>(p, _audioOut.getBestRate(params->sample_rate), _buffer, *this, stream->start_time, stream->duration);
         _audioThread->setVolume(_volume);
         _audioThread->sync(_clock);
     }
+#else
+    AVCodecContext *codec = stream->codec;
+    ofxHap::AudioParameters p;
+    p.channels = codec->channels;
+    p.sample_rate = codec->sample_rate;
+    p.codec_id = codec->codec_id;
+    p.format = codec->sample_fmt;
+    p.channel_layout = codec->channel_layout;
+    if (codec->codec_type == AVMEDIA_TYPE_VIDEO && codec->codec_id == AV_CODEC_ID_HAP)
+    {
+        _videoStream = stream;
+    }
+    else if (codec->codec_type == AVMEDIA_TYPE_AUDIO)
+    {
+        // TODO: we almost don't need to store this, only to identify packet index
+        _audioStream = stream;
+        _buffer = std::make_shared<ofxHap::RingBuffer>(codec->channels, codec->sample_rate / 8);
+
+        _audioOut.start(codec->channels, codec->sample_rate, _buffer);
+        if (_clock.getPaused())
+        {
+            _audioOut.stop();
+        }
+
+        _audioThread = std::make_shared<ofxHap::AudioThread>(p, _audioOut.getBestRate(codec->sample_rate), _buffer, *this, stream->start_time, stream->duration);
+        _audioThread->setVolume(_volume);
+        _audioThread->sync(_clock);
+    }
+#endif
 }
 
 void ofxHapPlayer::foundAllStreams()
@@ -436,13 +468,21 @@ void ofxHapPlayer::update()
                 {
                     unsigned int textureFormat;
                     hapResult = HapGetFrameTextureFormat(packet.data, packet.size, 0, &textureFormat);
+#if OFX_HAP_HAS_CODECPAR
                     if (hapResult == HapResult_No_Error && !FrameMatchesStream(textureFormat, _videoStream->codecpar->codec_tag))
+#else
+                    if (hapResult == HapResult_No_Error && !FrameMatchesStream(textureFormat, _videoStream->codec->codec_tag))
+#endif
                     {
                         hapResult = HapResult_Bad_Frame;
                     }
                     if (hapResult == HapResult_No_Error)
                     {
+#if OFX_HAP_HAS_CODECPAR
                         size_t length = roundUpToMultipleOf4(_videoStream->codecpar->width) * roundUpToMultipleOf4(_videoStream->codecpar->height);
+#else
+                        size_t length = roundUpToMultipleOf4(_videoStream->codec->width) * roundUpToMultipleOf4(_videoStream->codec->height);
+#endif
                         if (textureFormat == HapTextureFormat_RGB_DXT1)
                         {
                             length /= 2;
@@ -492,7 +532,11 @@ bool ofxHapPlayer::getHapAvailable() const
     std::lock_guard<std::mutex> guard(_lock);
     if (_videoStream)
     {
+#if OFX_HAP_HAS_CODECPAR
         switch (_videoStream->codecpar->codec_tag) {
+#else
+        switch (_videoStream->codec->codec_tag) {
+#endif
             case MKTAG('H', 'a', 'p', '1'):
             case MKTAG('H', 'a', 'p', '5'):
             case MKTAG('H', 'a', 'p', 'Y'):
@@ -511,7 +555,11 @@ ofTexture* ofxHapPlayer::getTexture()
     if (_wantsUpload && _videoStream)
     {
         GLenum internalFormat;
+#if OFX_HAP_HAS_CODECPAR
         switch (_videoStream->codecpar->codec_tag) {
+#else
+        switch (_videoStream->codec->codec_tag) {
+#endif
             case MKTAG('H', 'a', 'p', '1'):
                 internalFormat = GL_COMPRESSED_RGB_S3TC_DXT1_EXT;
                 break;
@@ -533,8 +581,13 @@ ofTexture* ofxHapPlayer::getTexture()
              Create our texture for DXT upload
              */
             ofTextureData texData;
+#if OFX_HAP_HAS_CODECPAR
             texData.width = _videoStream->codecpar->width;
             texData.height = _videoStream->codecpar->height;
+#else
+            texData.width = _videoStream->codec->width;
+            texData.height = _videoStream->codec->height;
+#endif
             texData.textureTarget = GL_TEXTURE_2D;
             texData.glInternalFormat = internalFormat;
             _texture.allocate(texData, GL_BGRA, GL_UNSIGNED_INT_8_8_8_8_REV);
@@ -564,8 +617,13 @@ ofTexture* ofxHapPlayer::getTexture()
             0,
             0,
             0,
+#if OFX_HAP_HAS_CODECPAR
             _videoStream->codecpar->width,
             _videoStream->codecpar->height,
+#else
+            _videoStream->codec->width,
+            _videoStream->codec->height,
+#endif
             internalFormat,
             _decodedFrame.buffer.size(),
             _decodedFrame.buffer.data());
@@ -580,7 +638,11 @@ ofTexture* ofxHapPlayer::getTexture()
 ofShader *ofxHapPlayer::getShader()
 {
     std::lock_guard<std::mutex> guard(_lock);
+#if OFX_HAP_HAS_CODECPAR
     if (_videoStream && _videoStream->codecpar->codec_tag == MKTAG('H', 'a', 'p', 'Y'))
+#else
+    if (_videoStream && _videoStream->codec->codec_tag == MKTAG('H', 'a', 'p', 'Y'))
+#endif
     {
         if (_shader.isLoaded() == false)
         {
@@ -681,7 +743,11 @@ float ofxHapPlayer::getWidth() const
     std::lock_guard<std::mutex> guard(_lock);
     if (_videoStream)
     {
+#if OFX_HAP_HAS_CODECPAR
         return _videoStream->codecpar->width;
+#else
+        return _videoStream->codec->width;
+#endif
     }
     else
     {
@@ -694,7 +760,11 @@ float ofxHapPlayer::getHeight() const
     std::lock_guard<std::mutex> guard(_lock);
     if (_videoStream)
     {
+#if OFX_HAP_HAS_CODECPAR
         return _videoStream->codecpar->height;
+#else
+        return _videoStream->codec->height;
+#endif
     }
     else
     {

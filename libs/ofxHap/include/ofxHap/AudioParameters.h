@@ -1,8 +1,8 @@
 /*
- AudioResampler.h
+ AudioParameters.h
  ofxHapPlayer
 
- Copyright (c) 2016, Tom Butterworth. All rights reserved.
+ Copyright (c) 2017, Tom Butterworth. All rights reserved.
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions are met:
 
@@ -25,36 +25,36 @@
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef AudioResampler_h
-#define AudioResampler_h
+#ifndef AudioParameters_h
+#define AudioParameters_h
 
 #include <cstdint>
-#include "AudioParameters.h"
+#include "Common.h"
 
-typedef struct SwrContext SwrContext;
-typedef struct AVFrame AVFrame;
+#if OFX_HAP_HAS_CODECPAR
+typedef struct AVCodecParameters AVCodecParameters;
+#endif
 
 namespace ofxHap {
-    class AudioResampler {
-    public:
-        AudioResampler(const AudioParameters& params, int outrate);
-        ~AudioResampler();
-        float getVolume() const;
-        void setVolume(float v); // harmless to call repeatedly with same value
-        float getRate() const;
-        void setRate(float r); // harmless to call repeatedly with same value
-        // returns an AVERROR or 0 on success
-        int resample(const AVFrame *src, int offset, int srcLength, float *dst, int dstLength, int& outSamplesWritten, int& outSamplesRead);
-    private:
-        float       _volume;
-        float       _rate;
-        SwrContext *_resampler;
-        bool        _reconfigure;
-        uint64_t    _layout;
-        int         _sampleRateIn;
-        int         _sampleRateOut;
-        int         _format;
-    };
+
+class AudioParameters
+{
+public:
+#if OFX_HAP_HAS_CODECPAR
+	AudioParameters(AVCodecParameters *p);
+	AudioParameters(const AudioParameters& o);
+	AudioParameters& operator=(const AudioParameters& o);
+	~AudioParameters();
+	AVCodecParameters* parameters;
+#else
+	int channels;
+	int sample_rate;
+	int codec_id;
+	int format;
+	uint64_t channel_layout;
+#endif
+};
+
 }
 
-#endif /* AudioResampler_h */
+#endif

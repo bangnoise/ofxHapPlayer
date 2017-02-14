@@ -33,9 +33,13 @@ extern "C" {
 #include <algorithm>
 #include <cmath>
 
-ofxHap::AudioResampler::AudioResampler(const AVCodecParameters* params, int outRate)
-: _volume(1.0), _rate(1.0), _resampler(nullptr), _reconfigure(true), _layout(params->channel_layout),
-    _sampleRateIn(params->sample_rate), _sampleRateOut(outRate), _format(params->format)
+ofxHap::AudioResampler::AudioResampler(const AudioParameters& params, int outRate)
+: _volume(1.0), _rate(1.0), _resampler(nullptr), _reconfigure(true),
+#if OFX_HAP_HAS_CODECPAR
+_layout(params.parameters->channel_layout), _sampleRateIn(params.parameters->sample_rate), _sampleRateOut(outRate), _format(params.parameters->format)
+#else
+_layout(params.channel_layout), _sampleRateIn(params.sample_rate), _sampleRateOut(outRate), _format(params.format)
+#endif
 {
 
 }

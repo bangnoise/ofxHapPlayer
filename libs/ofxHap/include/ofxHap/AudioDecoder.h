@@ -29,16 +29,16 @@
 #ifndef AudioDecoder_h
 #define AudioDecoder_h
 #include <vector>
+#include "AudioParameters.h"
 
 typedef struct AVCodecContext AVCodecContext;
-typedef struct AVCodecParameters AVCodecParameters;
 typedef struct AVPacket AVPacket;
 typedef struct AVFrame AVFrame;
 
 namespace ofxHap {
     class AudioDecoder {
     public:
-        AudioDecoder(const AVCodecParameters *params, int& result);
+        AudioDecoder(const AudioParameters& params, int& result);
         ~AudioDecoder();
         int send(AVPacket *packet);
         int receive(AVFrame *frame);

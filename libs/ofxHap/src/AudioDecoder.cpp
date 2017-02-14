@@ -32,7 +32,7 @@ extern "C" {
 #include <libavutil/time.h>
 }
 
-ofxHap::AudioDecoder::AudioDecoder(const AVCodecParameters *params, int& result)
+ofxHap::AudioDecoder::AudioDecoder(const AudioParameters& params, int& result)
 : _codec_ctx(nullptr)
 {
     result = 0;
@@ -41,14 +41,22 @@ ofxHap::AudioDecoder::AudioDecoder(const AVCodecParameters *params, int& result)
     {
         result = AVERROR(ENOMEM);
     }
-    AVCodec *decoder = avcodec_find_decoder(params->codec_id);
+#if OFX_HAP_HAS_CODECPAR
+    AVCodec *decoder = avcodec_find_decoder(params.parameters->codec_id);
+#else
+    AVCodec *decoder = avcodec_find_decoder(static_cast<AVCodecID>(params.codec_id));
+#endif
     if (!decoder && result >= 0)
     {
         result = AVERROR_DECODER_NOT_FOUND;
     }
     if (result >= 0)
     {
+#if OFX_HAP_HAS_CODECPAR
         result = avcodec_parameters_to_context(_codec_ctx, params);
+#else
+        // TODO: do we need to avcodec_copy_context() from the demuxer's context?
+#endif
         if (result >= 0)
         {
             AVDictionary *opts = NULL;
@@ -72,12 +80,21 @@ ofxHap::AudioDecoder::~AudioDecoder()
 
 int ofxHap::AudioDecoder::send(AVPacket *packet)
 {
+#if OFX_HAP_HAS_CODECPAR
     return avcodec_send_packet(_codec_ctx, packet);
+#else
+    // TODO: 
+#endif
 }
 
 int ofxHap::AudioDecoder::receive(AVFrame *frame)
 {
+#if OFX_HAP_HAS_CODECPAR
     int result = avcodec_receive_frame(_codec_ctx, frame);
+#else
+    // TODO: 
+    int result = AVERROR_PATCHWELCOME;
+#endif
     return result;
 }
 

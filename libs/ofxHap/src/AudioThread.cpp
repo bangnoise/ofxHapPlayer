@@ -36,20 +36,14 @@ extern "C" {
 #include "AudioDecoder.h"
 #include "AudioResampler.h"
 
-AVCodecParameters *ofxHap::AudioThread::copyParameters(AVCodecParameters *src)
-{
-    AVCodecParameters *parameters = avcodec_parameters_alloc();
-    avcodec_parameters_copy(parameters, src);
-    return parameters;
-}
 
-ofxHap::AudioThread::AudioThread(AVCodecParameters *params,
+ofxHap::AudioThread::AudioThread(const AudioParameters& params ,
                                  int outRate,
                                  std::shared_ptr<ofxHap::RingBuffer> buffer,
                                  ErrorReceiving& receiver,
                                  int64_t start,
                                  int64_t duration)
-: _receiver(receiver), _buffer(buffer), _thread(&ofxHap::AudioThread::threadMain, this, copyParameters(params), outRate, buffer, start, duration),
+: _receiver(receiver), _buffer(buffer), _thread(&ofxHap::AudioThread::threadMain, this, params, outRate, buffer, start, duration),
   _finish(false), _sync(false)
 {
 
@@ -65,7 +59,7 @@ ofxHap::AudioThread::~AudioThread()
     _thread.join();
 }
 
-void ofxHap::AudioThread::threadMain(AVCodecParameters *params, int outRate, std::shared_ptr<ofxHap::RingBuffer> buffer, int64_t streamStart, int64_t streamDuration)
+void ofxHap::AudioThread::threadMain(AudioParameters params, int outRate, std::shared_ptr<ofxHap::RingBuffer> buffer, int64_t streamStart, int64_t streamDuration)
 {
     if (streamDuration == 0)
     {
@@ -84,8 +78,15 @@ void ofxHap::AudioThread::threadMain(AVCodecParameters *params, int outRate, std
 
     if (result >= 0)
     {
+#if OFX_HAP_HAS_CODECPAR
+        int sampleRate = params.parameters->sample_rate;
+        int channels = params.parameters->channels;
+#else
+        int sampleRate = params.sample_rate;
+        int channels = params.channels;
+#endif
         AudioResampler resampler(params, outRate);
-        int64_t maxDelayScaled = av_rescale_q(buffer->getSamplesPerChannel(), AV_TIME_BASE_Q, {1, params->sample_rate});
+        int64_t maxDelayScaled = av_rescale_q(buffer->getSamplesPerChannel(), AV_TIME_BASE_Q, {1, sampleRate});
         bool finish = false;
         bool flush = false;
         std::queue<Action> queue;
@@ -93,7 +94,7 @@ void ofxHap::AudioThread::threadMain(AVCodecParameters *params, int outRate, std
         AVFrame *reversed = nullptr;
         Clock clock;
 
-        Playhead playhead(clock, params->sample_rate, outRate, buffer->getSamplesPerChannel(), streamStart, streamDuration);
+        Playhead playhead(clock, sampleRate, outRate, buffer->getSamplesPerChannel(), streamStart, streamDuration);
 
         while (!finish) {
 
@@ -165,17 +166,17 @@ void ofxHap::AudioThread::threadMain(AVCodecParameters *params, int outRate, std
 
                         playhead.start(now, start, lengthIn, forwards);
 
-                        int lengthOut = av_rescale_q(lengthIn, {1, params->sample_rate}, {1, static_cast<int>(outRate / clock.getRate())});
+                        int lengthOut = av_rescale_q(lengthIn, {1, sampleRate}, {1, static_cast<int>(outRate / clock.getRate())});
                         if (lengthOut > count[i])
                         {
                             lengthOut = count[i];
                             // Only queue (roughly) as many samples as we need to fill lengthOut, to avoid choking the resampler
-                            lengthIn = av_rescale_q_rnd(lengthOut, {1, static_cast<int>(outRate / clock.getRate())}, {1, params->sample_rate}, AV_ROUND_UP);
+                            lengthIn = av_rescale_q_rnd(lengthOut, {1, static_cast<int>(outRate / clock.getRate())}, {1, sampleRate}, AV_ROUND_UP);
                         }
 
                         if (start < streamStart || start > streamStart + streamDuration)
                         {
-                            av_samples_set_silence((uint8_t **)&dst[i], 0, lengthOut, params->channels, AV_SAMPLE_FMT_FLT);
+                            av_samples_set_silence((uint8_t **)&dst[i], 0, lengthOut, channels, AV_SAMPLE_FMT_FLT);
                         }
                         else
                         {
@@ -237,7 +238,7 @@ void ofxHap::AudioThread::threadMain(AVCodecParameters *params, int outRate, std
                         if (lengthOut > 0)
                         {
                             count[i] -= lengthOut;
-                            dst[i] += lengthOut * params->channels;
+                            dst[i] += lengthOut * channels;
                             filled += lengthOut;
                         }
                         if (lengthIn > 0)
@@ -315,7 +316,6 @@ void ofxHap::AudioThread::threadMain(AVCodecParameters *params, int outRate, std
             av_frame_free(&reversed);
         }
     }
-    avcodec_parameters_free(&params);
 }
 
 void ofxHap::AudioThread::send(AVPacket *p)

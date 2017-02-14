@@ -32,18 +32,19 @@
 #include <condition_variable>
 #include <queue>
 #include <map>
+#include "AudioParameters.h"
 #include "RingBuffer.h"
 #include "ErrorReceiving.h"
 #include "Clock.h"
 
-typedef struct AVCodecParameters AVCodecParameters;
 typedef struct AVPacket AVPacket;
 typedef struct AVFrame AVFrame;
 
 namespace ofxHap {
     class AudioThread {
     public:
-        AudioThread(AVCodecParameters *params, int outRate, std::shared_ptr<ofxHap::RingBuffer> buffer, ErrorReceiving& receiver, int64_t start, int64_t duration);
+
+        AudioThread(const AudioParameters& params, int outRate, std::shared_ptr<ofxHap::RingBuffer> buffer, ErrorReceiving& receiver, int64_t start, int64_t duration);
         ~AudioThread();
         AudioThread(AudioThread const &) = delete;
         void        operator=(AudioThread const &x) = delete;
@@ -82,8 +83,7 @@ namespace ofxHap {
             Kind kind;
             AVPacket *packet;
         };
-        static AVCodecParameters            *copyParameters(AVCodecParameters *params);
-        void                                threadMain(AVCodecParameters *params, int ourRate, std::shared_ptr<ofxHap::RingBuffer> buffer, int64_t start, int64_t duration);
+        void                                threadMain(AudioParameters params, int ourRate, std::shared_ptr<ofxHap::RingBuffer> buffer, int64_t start, int64_t duration);
         static int                          reverse(AVFrame *dst, const AVFrame *src);
         ErrorReceiving                      &_receiver;
         std::shared_ptr<ofxHap::RingBuffer> _buffer;
