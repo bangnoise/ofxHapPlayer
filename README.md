@@ -30,6 +30,8 @@ libsnappy-dev, libswresample-dev, libavcodec-dev, libavformat-dev
 
     sudo apt-get install libsnappy-dev libswresample-dev libavcodec-dev libavformat-dev
 
+Note that the Raspberry Pi does not support the compressed texture formats used by Hap, so you can't use this addon on a Raspberry Pi.
+
 Pull-requests with instructions for other distributions are welcomed.
 
 
