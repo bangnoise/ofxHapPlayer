@@ -427,7 +427,10 @@ void ofxHap::AudioThread::Playhead::start(int64_t now, int64_t &startSample, int
 
     if (_prevTime == AV_NOPTS_VALUE || (now - _prevTime) > av_rescale_q(_bufferSamples, {1, _samplerateOut}, AV_TIME_BASE_Q))
     {
-        std::cout << "reset / prev:" << _prevTime << " now:" << now << " elapsed:" << (now - _prevTime) << std::endl;
+        if (_prevTime != AV_NOPTS_VALUE)
+        {
+            std::cout << "reset / prev:" << _prevTime << " now:" << now << " elapsed:" << (now - _prevTime) << std::endl;
+        }
         startTime = now;
     }
     else

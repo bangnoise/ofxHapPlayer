@@ -1073,15 +1073,24 @@ void ofxHapPlayer::AudioOutput::audioOut(ofSoundBuffer& buffer)
 
     _buffer->readEnd(filled);
 
+    static bool logged = false;
     if (filled < wanted)
     {
-        std::cout << "silence (" << wanted - filled << " samples)" << std::endl;
+        if (logged == false)
+        {
+            std::cout << "silence" << std::endl;
+            logged = true;
+        }
         float *out = &buffer.getBuffer()[filled * buffer.getNumChannels()];
         av_samples_set_silence((uint8_t **)&out,
                                0,
                                wanted - filled,
                                buffer.getNumChannels(),
                                AV_SAMPLE_FMT_FLT);
+    }
+    else
+    {
+        logged = false;
     }
 }
 
