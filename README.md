@@ -1,9 +1,14 @@
 ofxHapPlayer
 ============
 
-A Hap player for OpenFrameworks on MacOS X, Windows and Linux.
+A Hap player for OpenFrameworks on macOS, Windows and Linux.
 
 THIS BRANCH IS A WORK IN PROGRESS
+
+ - [x] macOS with Xcode
+ - [x] Ubuntu with make
+ - [ ] Ubuntu with QtCreator
+ - [ ] Windows with Visual Studio
 
 Hap is a codec for fast video playback. You can learn more about Hap, and find codecs for encoding, at the [main Hap project](https://github.com/Vidvox/hap).
 
@@ -11,7 +16,7 @@ Hap is a codec for fast video playback. You can learn more about Hap, and find c
 Installation
 ------------
 
-This repo has branches for major OF versions. Use the branch which matches the version of OF you are using. The [master](https://github.com/bangnoise/ofxHapPlayer/tree/master) branch matches the current OF release. An [of_head](https://github.com/bangnoise/ofxHapPlayer/tree/of_head) branch aims to keep up to date with development work on OpenFrameworks' master branch.
+This repo has branches for major OF versions. Use the branch which matches the version of OF you are using. The [master](https://github.com/bangnoise/ofxHapPlayer/tree/master) branch matches the current OF release.
 
 For example, if you want to use the addon with OpenFrameworks 0.8.x:
 
