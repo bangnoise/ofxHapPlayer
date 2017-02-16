@@ -165,7 +165,7 @@ int ofxHap::AudioDecoder::send(AVPacket *packet)
 int ofxHap::AudioDecoder::receive(AVFrame *frame)
 {
 #if OFX_HAP_HAS_CODECPAR
-    int result = avcodec_receive_frame(_codec_ctx, frame);
+    return avcodec_receive_frame(_codec_ctx, frame);
 #else
 
     av_frame_unref(frame);
