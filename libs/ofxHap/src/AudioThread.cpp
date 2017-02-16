@@ -82,8 +82,8 @@ void ofxHap::AudioThread::threadMain(AudioParameters params, int outRate, std::s
         int sampleRate = params.parameters->sample_rate;
         int channels = params.parameters->channels;
 #else
-        int sampleRate = params.sample_rate;
-        int channels = params.channels;
+        int sampleRate = params.context->sample_rate;
+        int channels = params.context->channels;
 #endif
         AudioResampler resampler(params, outRate);
         int64_t maxDelayScaled = av_rescale_q(buffer->getSamplesPerChannel(), AV_TIME_BASE_Q, {1, sampleRate});
@@ -109,7 +109,8 @@ void ofxHap::AudioThread::threadMain(AudioParameters params, int outRate, std::s
                         result = decoder.receive(frame);
                         if (result >= 0)
                         {
-                            auto r = cache.insert(std::map<int64_t, AVFrame *>::value_type(frame->pts, frame));
+                            int64_t ts = av_frame_get_best_effort_timestamp(frame);
+                            auto r = cache.insert(std::map<int64_t, AVFrame *>::value_type(ts, frame));
                             if (r.second == false)
                             {
                                 // TODO: could we be refusing to add one with more samples than another?
@@ -181,11 +182,12 @@ void ofxHap::AudioThread::threadMain(AudioParameters params, int outRate, std::s
                         else
                         {
                             AVFrame *frame = nullptr;
-
+                            int64_t pts;
                             for (const auto pair : cache) {
-                                if (pair.first <= start && pair.second->pts + pair.second->nb_samples > start)
+                                if (pair.first <= start && pair.first + pair.second->nb_samples > start)
                                 {
                                     frame = pair.second;
+                                    pts = pair.first;
                                     break;
                                 }
                             }
@@ -195,15 +197,15 @@ void ofxHap::AudioThread::threadMain(AudioParameters params, int outRate, std::s
                                 if (forwards)
                                 {
                                     // Fill forwards
-                                    lengthIn = std::min(lengthIn, static_cast<int>(frame->nb_samples - (start - frame->pts)));
+                                    lengthIn = std::min(lengthIn, static_cast<int>(frame->nb_samples - (start - pts)));
 
                                     // AAAAND so we'll need to know about discontinuities and flush the resampler
-                                    result = resampler.resample(frame, start - frame->pts, lengthIn, dst[i], count[i], lengthOut, lengthIn);
+                                    result = resampler.resample(frame, start - pts, lengthIn, dst[i], count[i], lengthOut, lengthIn);
                                 }
                                 else
                                 {
                                     // Fill backwards
-                                    lengthIn = std::min(lengthIn, static_cast<int>(start - frame->pts) + 1);
+                                    lengthIn = std::min(lengthIn, static_cast<int>(start - pts) + 1);
                                     if (reversed == nullptr)
                                     {
                                         reversed = av_frame_alloc();
@@ -212,7 +214,9 @@ void ofxHap::AudioThread::threadMain(AudioParameters params, int outRate, std::s
                                             result = AVERROR(ENOMEM);
                                         }
                                     }
-                                    if (result >= 0 && reversed->pts != frame->pts)
+
+                                    int rpts = av_frame_get_best_effort_timestamp(reversed);
+                                    if (result >= 0 && rpts != pts)
                                     {
                                         result = reverse(reversed, frame);
                                     }
@@ -223,7 +227,7 @@ void ofxHap::AudioThread::threadMain(AudioParameters params, int outRate, std::s
                                     // check that
                                     if (result >= 0)
                                     {
-                                        int offset = reversed->pts + reversed->nb_samples - 1 - start;
+                                        int offset = rpts + reversed->nb_samples - 1 - start;
                                         result = resampler.resample(reversed, offset, lengthIn, dst[i], count[i], lengthOut, lengthIn);
                                     }
                                 }

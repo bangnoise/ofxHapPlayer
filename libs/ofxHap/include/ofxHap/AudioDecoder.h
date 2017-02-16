@@ -28,7 +28,6 @@
 
 #ifndef AudioDecoder_h
 #define AudioDecoder_h
-#include <vector>
 #include "AudioParameters.h"
 
 typedef struct AVCodecContext AVCodecContext;
@@ -45,6 +44,11 @@ namespace ofxHap {
         void flush();
     private:
         AVCodecContext *_codec_ctx;
+#if !OFX_HAP_HAS_CODECPAR
+        int decode(AVPacket *packet);
+        AVPacket *_packet;
+        AVFrame *_frame;
+#endif
     };
 }
 

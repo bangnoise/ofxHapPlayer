@@ -38,7 +38,7 @@ ofxHap::AudioResampler::AudioResampler(const AudioParameters& params, int outRat
 #if OFX_HAP_HAS_CODECPAR
 _layout(params.parameters->channel_layout), _sampleRateIn(params.parameters->sample_rate), _sampleRateOut(outRate), _format(params.parameters->format)
 #else
-_layout(params.channel_layout), _sampleRateIn(params.sample_rate), _sampleRateOut(outRate), _format(params.format)
+_layout(params.context->channel_layout), _sampleRateIn(params.context->sample_rate), _sampleRateOut(outRate), _format(params.context->sample_fmt)
 #endif
 {
 

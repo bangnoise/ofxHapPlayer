@@ -33,6 +33,8 @@
 
 #if OFX_HAP_HAS_CODECPAR
 typedef struct AVCodecParameters AVCodecParameters;
+#else
+typedef struct AVCodecContext AVCodecContext;
 #endif
 
 namespace ofxHap {
@@ -42,17 +44,14 @@ class AudioParameters
 public:
 #if OFX_HAP_HAS_CODECPAR
 	AudioParameters(AVCodecParameters *p);
-	AudioParameters(const AudioParameters& o);
-	AudioParameters& operator=(const AudioParameters& o);
-	~AudioParameters();
 	AVCodecParameters* parameters;
 #else
-	int channels;
-	int sample_rate;
-	int codec_id;
-	int format;
-	uint64_t channel_layout;
+	AudioParameters(AVCodecContext *c);
+	AVCodecContext *context;
 #endif
+	~AudioParameters();
+	AudioParameters(const AudioParameters& o);
+	AudioParameters& operator=(const AudioParameters& o);
 };
 
 }

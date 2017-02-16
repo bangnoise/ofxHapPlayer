@@ -34,6 +34,14 @@ extern "C" {
 
 ofxHap::AudioDecoder::AudioDecoder(const AudioParameters& params, int& result)
 : _codec_ctx(nullptr)
+#if !OFX_HAP_HAS_CODECPAR
+#if OFX_HAP_HAS_PACKET_ALLOC
+, _packet(av_packet_alloc()),
+#else
+, _packet(static_cast<AVPacket *>(av_malloc(sizeof(AVPacket)))),
+#endif
+  _frame(av_frame_alloc())
+#endif
 {
     result = 0;
     _codec_ctx = avcodec_alloc_context3(nullptr);
@@ -44,7 +52,12 @@ ofxHap::AudioDecoder::AudioDecoder(const AudioParameters& params, int& result)
 #if OFX_HAP_HAS_CODECPAR
     AVCodec *decoder = avcodec_find_decoder(params.parameters->codec_id);
 #else
-    AVCodec *decoder = avcodec_find_decoder(static_cast<AVCodecID>(params.codec_id));
+#if !OFX_HAP_HAS_PACKET_ALLOC
+    av_init_packet(_packet);
+#endif
+    _packet->data = nullptr;
+    _packet->size = 0;
+    AVCodec *decoder = avcodec_find_decoder(static_cast<AVCodecID>(params.context->codec_id));
 #endif
     if (!decoder && result >= 0)
     {
@@ -55,7 +68,7 @@ ofxHap::AudioDecoder::AudioDecoder(const AudioParameters& params, int& result)
 #if OFX_HAP_HAS_CODECPAR
         result = avcodec_parameters_to_context(_codec_ctx, params.parameters);
 #else
-        // TODO: do we need to avcodec_copy_context() from the demuxer's context?
+        result = avcodec_copy_context(_codec_ctx, params.context);
 #endif
         if (result >= 0)
         {
@@ -76,14 +89,76 @@ ofxHap::AudioDecoder::~AudioDecoder()
     {
         avcodec_free_context(&_codec_ctx);
     }
+#if !OFX_HAP_HAS_CODECPAR
+#if OFX_HAP_HAS_PACKET_ALLOC
+    av_packet_free(&_packet);
+#else
+    av_packet_unref(_packet);
+    av_freep(&_packet);
+#endif
+    av_frame_free(&_frame);
+#endif
 }
+
+#if !OFX_HAP_HAS_CODECPAR
+int ofxHap::AudioDecoder::decode(AVPacket *packet)
+{
+    if (!packet)
+    {
+        packet = _packet;
+    }
+
+    int got;
+    int result = avcodec_decode_audio4(_codec_ctx, _frame, &got, packet);
+
+    if (result == AVERROR(EAGAIN))
+    {
+        result = packet->size;
+    }
+    if (result < 0)
+    {
+        return result;
+    }
+
+    if (result >= packet->size)
+    {
+        av_packet_unref(_packet);
+    }
+    else
+    {
+        if (packet != _packet)
+        {
+            av_packet_unref(_packet);
+            int reffed = av_packet_ref(_packet, packet);
+            if (reffed < 0)
+            {
+                return reffed;
+            }
+        }
+
+        _packet->data += result;
+        _packet->size -= result;
+        _packet->pts = AV_NOPTS_VALUE;
+        _packet->dts = AV_NOPTS_VALUE;
+    }
+
+    return 0;
+}
+#endif
 
 int ofxHap::AudioDecoder::send(AVPacket *packet)
 {
 #if OFX_HAP_HAS_CODECPAR
     return avcodec_send_packet(_codec_ctx, packet);
 #else
-    // TODO: 
+    if (_packet->size > 0 || _frame->data[0])
+    {
+        return AVERROR(EAGAIN);
+    }
+    else
+    {
+        return decode(packet);
+    }
 #endif
 }
 
@@ -92,10 +167,37 @@ int ofxHap::AudioDecoder::receive(AVFrame *frame)
 #if OFX_HAP_HAS_CODECPAR
     int result = avcodec_receive_frame(_codec_ctx, frame);
 #else
-    // TODO: 
-    int result = AVERROR_PATCHWELCOME;
+
+    av_frame_unref(frame);
+
+    if (!_frame->data[0])
+    {
+        if (_packet->size == 0)
+        {
+            return AVERROR(EAGAIN);
+        }
+
+        do
+        {
+            int result = decode(_packet);
+            if (result < 0)
+            {
+                av_packet_unref(_packet);
+                return result;
+            }
+        } while (!_frame->data[0] && _packet->size > 0);
+    }
+
+    if (!_frame->data[0])
+    {
+        // TODO: what about EOF? should we check for previous EOF return
+        // then return that after
+        return AVERROR(EAGAIN);
+    }
+
+    av_frame_move_ref(frame, _frame);
+    return 0;
 #endif
-    return result;
 }
 
 void ofxHap::AudioDecoder::flush()

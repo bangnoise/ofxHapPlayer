@@ -25,13 +25,13 @@
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
- #include "AudioParameters.h"
-
-#if OFX_HAP_HAS_CODECPAR
+#include "AudioParameters.h"
 
 extern "C" {
 #include <libavformat/avformat.h>
 }
+
+#if OFX_HAP_HAS_CODECPAR
 
 ofxHap::AudioParameters::AudioParameters(AVCodecParameters* p)
 : parameters(avcodec_parameters_alloc())
@@ -56,6 +56,33 @@ ofxHap::AudioParameters& ofxHap::AudioParameters::operator=(const AudioParameter
 	avcodec_parameters_copy(p, parameters);
 	avcodec_parameters_free(&parameters);
 	parameters = p;
+}
+
+#else
+
+ofxHap::AudioParameters::AudioParameters(AVCodecContext* c)
+: context(avcodec_alloc_context3(avcodec_find_decoder(c->codec_id)))
+{
+	avcodec_copy_context(context, c);
+}
+
+ofxHap::AudioParameters::~AudioParameters()
+{
+	avcodec_free_context(&context);
+}
+
+ofxHap::AudioParameters::AudioParameters(const AudioParameters& o)
+: context(avcodec_alloc_context3(avcodec_find_decoder(o.context->codec_id)))
+{
+	avcodec_copy_context(context, o.context);
+}
+
+ofxHap::AudioParameters& ofxHap::AudioParameters::operator=(const AudioParameters& o)
+{
+	AVCodecContext *c = avcodec_alloc_context3(avcodec_find_decoder(o.context->codec_id));
+	avcodec_copy_context(c, o.context);
+	avcodec_free_context(&context);
+	context = c;
 }
 
 #endif

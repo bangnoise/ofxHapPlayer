@@ -168,12 +168,7 @@ void ofxHapPlayer::foundStream(AVStream *stream)
     }
     else if (codec->codec_type == AVMEDIA_TYPE_AUDIO)
     {
-        ofxHap::AudioParameters p;
-        p.channels = codec->channels;
-        p.sample_rate = codec->sample_rate;
-        p.codec_id = codec->codec_id;
-        p.format = codec->sample_fmt;
-        p.channel_layout = codec->channel_layout;
+        ofxHap::AudioParameters p(codec);
 
         // TODO: we almost don't need to store this, only to identify packet index
         _audioStream = stream;
