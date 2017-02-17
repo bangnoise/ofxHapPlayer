@@ -41,7 +41,11 @@ class ofxHapPlayer : public ofBaseVideoPlayer, public ofxHap::PacketReceiver {
 public:
     ofxHapPlayer();
     virtual ~ofxHapPlayer();
-    
+
+    // TODO: allow these
+    ofxHapPlayer(ofxHapPlayer const &) = delete;
+    void operator=(ofxHapPlayer const &x) = delete;
+
     virtual bool                load(std::string name);
     virtual void                close();
     virtual void                update();
