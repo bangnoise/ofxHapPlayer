@@ -219,6 +219,7 @@ void ofxHap::AudioThread::threadMain(AudioParameters params, int outRate, std::s
                                     if (result >= 0 && rpts != pts)
                                     {
                                         result = reverse(reversed, frame);
+                                        rpts = av_frame_get_best_effort_timestamp(reversed);
                                     }
 
                                     // maybe resampler knows pts, detects non-contiguous blocks, resets itself
