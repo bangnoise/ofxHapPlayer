@@ -46,15 +46,13 @@ namespace ofxHap {
         void    setPausedAt(bool paused, int64_t t);
         bool    getPaused() const;
         int     getDirectionAt(int64_t t) const;
-        int     getDirection() const; // -1, 1
         float   getRate() const;
-        void    setRate(float r);
+        void    setRateAt(float r, int64_t t);
         int64_t period;
         Mode    mode;
     private:
         int64_t _start;
         int64_t _time;
-        int64_t _wall; // TODO: could not use wall and store direction once in setTimeAt() and use it to restore palindromic etc state
         bool    _paused;
         float   _rate;
     };

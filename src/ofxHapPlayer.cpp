@@ -384,7 +384,7 @@ void ofxHapPlayer::update()
 
     ofxHap::TimeRangeSet wanted, cache;
 
-    if (_clock.getDirection() > 0)
+    if (_clock.getDirectionAt(_frameTime) > 0)
     {
         wanted.add(pts, kofxHapPlayerBufferUSec);
     }
@@ -854,7 +854,7 @@ float ofxHapPlayer::getSpeed() const
 void ofxHapPlayer::setSpeed(float speed)
 {
     std::lock_guard<std::mutex> guard(_lock);
-    _clock.setRate(speed);
+    _clock.setRateAt(speed, _frameTime);
     if (_audioThread)
     {
         _audioThread->sync(_clock);
@@ -896,7 +896,7 @@ void ofxHapPlayer::setPosition(float pct)
     // TODO: Clock doesn't work if on the reverse phase of a palindrome (skips to forward phase)
     std::lock_guard<std::mutex> guard(_lock);
     int64_t time = std::min(std::max(static_cast<int64_t>(pct * _clock.period), INT64_C(0)), _clock.period);
-    _clock.syncAt(time, av_gettime_relative());
+    _clock.syncAt(time, _frameTime);
     if (_audioThread)
     {
         _audioThread->sync(_clock);

@@ -41,9 +41,8 @@ ofxHap::Clock::Clock() : period(0), mode(Mode::Loop), _rate(1.0), _start(0), _ti
 
 void ofxHap::Clock::syncAt(int64_t pos, int64_t t)
 {
-    _start = t - (pos / _rate);
+    _start = t - static_cast<int64_t>(pos / _rate);
     _time = pos;
-    _wall = t;
 }
 
 int64_t ofxHap::Clock::getTime() const
@@ -98,7 +97,6 @@ int64_t ofxHap::Clock::getTimeAt(int64_t t) const
 
 int64_t ofxHap::Clock::setTimeAt(int64_t t)
 {
-    _wall = t;
     return _time = getTimeAt(t);
 }
 
@@ -121,11 +119,6 @@ void ofxHap::Clock::setPausedAt(bool p, int64_t t)
 bool ofxHap::Clock::getPaused() const
 {
     return _paused;
-}
-
-int ofxHap::Clock::getDirection() const
-{
-    return getDirectionAt(_wall);
 }
 
 int ofxHap::Clock::getDirectionAt(int64_t t) const
@@ -171,8 +164,8 @@ float ofxHap::Clock::getRate() const
     return _rate;
 }
 
-void ofxHap::Clock::setRate(float r)
+void ofxHap::Clock::setRateAt(float r, int64_t t)
 {
     _rate = r;
-    syncAt(_time, _wall);
+    syncAt(_time, t);
 }
