@@ -26,6 +26,7 @@
  */
 
 #include "RingBuffer.h"
+#include <algorithm>
 
 ofxHap::RingBuffer::RingBuffer(int channels, int samplesPerChannel)
 :   _readStart(0), _writeStart(0),

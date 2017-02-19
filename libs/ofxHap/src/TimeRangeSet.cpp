@@ -26,6 +26,7 @@
  */
 
 #include "TimeRangeSet.h"
+#include <algorithm>
 
 int64_t ofxHap::TimeRangeSet::earliest() const
 {
@@ -95,7 +96,7 @@ void ofxHap::TimeRangeSet::remove(const ofxHap::TimeRangeSet::TimeRange &range)
 {
     if (range.length)
     {
-        for (auto itr = _ranges.begin(); itr != _ranges.end(); ++itr) {
+        for (auto itr = _ranges.begin(); itr != _ranges.end();) {
             if (itr->intersects(range))
             {
                 if (itr->latest() > range.latest())
@@ -113,10 +114,18 @@ void ofxHap::TimeRangeSet::remove(const ofxHap::TimeRangeSet::TimeRange &range)
                 {
                     itr = _ranges.erase(itr);
                 }
+                else
+                {
+                    ++itr;
+                }
             }
             else if (itr->latest() > range.start)
             {
                 return;
+            }
+            else
+            {
+                ++itr;
             }
         }
     }

@@ -56,6 +56,7 @@ ofxHap::AudioParameters& ofxHap::AudioParameters::operator=(const AudioParameter
 	avcodec_parameters_copy(p, parameters);
 	avcodec_parameters_free(&parameters);
 	parameters = p;
+    return *this;
 }
 
 #else
@@ -83,6 +84,7 @@ ofxHap::AudioParameters& ofxHap::AudioParameters::operator=(const AudioParameter
 	avcodec_copy_context(c, o.context);
 	avcodec_free_context(&context);
 	context = c;
+    return *this;
 }
 
 #endif
