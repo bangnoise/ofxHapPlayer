@@ -403,8 +403,8 @@ void ofxHapPlayer::update()
     ofxHap::TimeRangeSet vcache;
     for (auto& range : cache)
     {
-        ofxHap::TimeRangeSet::TimeRange vrange(av_rescale_q(range.start, AV_TIME_BASE_Q, _videoStream->time_base),
-                                               av_rescale_q(range.length, AV_TIME_BASE_Q, _videoStream->time_base));
+        ofxHap::TimeRangeSet::TimeRange vrange(av_rescale_q(range.start, { 1, AV_TIME_BASE }, _videoStream->time_base),
+                                               av_rescale_q(range.length, { 1, AV_TIME_BASE }, _videoStream->time_base));
         vcache.add(vrange);
     }
 
@@ -434,7 +434,7 @@ void ofxHapPlayer::update()
     // ...then seek and read the remainder
     read(wanted, true);
 
-    int64_t vidPosition = av_rescale_q(pts, AV_TIME_BASE_Q, _videoStream->time_base);
+    int64_t vidPosition = av_rescale_q(pts, { 1, AV_TIME_BASE }, _videoStream->time_base);
     if (pts == _clock.period)
     {
         vidPosition--;

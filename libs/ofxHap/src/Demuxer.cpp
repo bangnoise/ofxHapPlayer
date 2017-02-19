@@ -155,12 +155,12 @@ void ofxHap::Demuxer::threadMain(const std::string movie, PacketReceiver& receiv
                                     if (packet.stream_index == videoStreamIndex)
                                     {
                                         lastReadVideo = av_rescale_q(packet.pts + packet.duration - 1,
-                                                                     fmt_ctx->streams[videoStreamIndex]->time_base, AV_TIME_BASE_Q);
+                                                                     fmt_ctx->streams[videoStreamIndex]->time_base, { 1, AV_TIME_BASE });
                                     }
                                     else if (packet.stream_index == audioStreamIndex)
                                     {
                                         lastReadAudio = av_rescale_q(packet.pts + packet.duration - 1,
-                                                                     fmt_ctx->streams[audioStreamIndex]->time_base, AV_TIME_BASE_Q);
+                                                                     fmt_ctx->streams[audioStreamIndex]->time_base, { 1, AV_TIME_BASE });
                                     }
                                 }
                                 else if (result == AVERROR_EOF)

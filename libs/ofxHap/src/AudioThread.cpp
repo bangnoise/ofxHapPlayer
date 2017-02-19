@@ -86,7 +86,7 @@ void ofxHap::AudioThread::threadMain(AudioParameters params, int outRate, std::s
         int channels = params.context->channels;
 #endif
         AudioResampler resampler(params, outRate);
-        int64_t maxDelayScaled = av_rescale_q(buffer->getSamplesPerChannel(), AV_TIME_BASE_Q, {1, sampleRate});
+        int64_t maxDelayScaled = av_rescale_q(buffer->getSamplesPerChannel(), { 1, AV_TIME_BASE }, { 1, sampleRate });
         bool finish = false;
         bool flush = false;
         std::queue<Action> queue;
@@ -248,7 +248,7 @@ void ofxHap::AudioThread::threadMain(AudioParameters params, int outRate, std::s
                         }
                         if (lengthIn > 0)
                         {
-                            now = av_add_stable(AV_TIME_BASE_Q, now, {1, outRate}, lengthOut);
+                            now = av_add_stable({1, AV_TIME_BASE}, now, {1, outRate}, lengthOut);
                             playhead.advance(now, forwards ? start + lengthIn: start - lengthIn);
                         }
 
@@ -426,7 +426,7 @@ void ofxHap::AudioThread::Playhead::start(int64_t now, int64_t &startSample, int
     
     int64_t startTime;
 
-    if (_prevTime == AV_NOPTS_VALUE || (now - _prevTime) > av_rescale_q(_bufferSamples, {1, _samplerateOut}, AV_TIME_BASE_Q))
+    if (_prevTime == AV_NOPTS_VALUE || (now - _prevTime) > av_rescale_q(_bufferSamples, {1, _samplerateOut}, {1, AV_TIME_BASE}))
     {
         if (_prevTime != AV_NOPTS_VALUE)
         {
@@ -446,13 +446,13 @@ void ofxHap::AudioThread::Playhead::start(int64_t now, int64_t &startSample, int
     else
         forwards = true;
 
-    startSample = av_rescale_q_rnd(movieStart, AV_TIME_BASE_Q, {1, _samplerateIn}, AV_ROUND_DOWN);
+    startSample = av_rescale_q_rnd(movieStart, {1, AV_TIME_BASE}, {1, _samplerateIn}, AV_ROUND_DOWN);
     if (_prevSample != AV_NOPTS_VALUE && std::abs(_prevSample - startSample) < _bufferSamples)
     {
         if (forwards)
         {
             startSample = _prevSample + 1;
-            if (startSample > _start + _duration && startSample > av_rescale_q_rnd(_clock.period, AV_TIME_BASE_Q, {1, _samplerateIn}, AV_ROUND_DOWN))
+            if (startSample > _start + _duration && startSample > av_rescale_q_rnd(_clock.period, {1, AV_TIME_BASE}, {1, _samplerateIn}, AV_ROUND_DOWN))
             {
                 startSample = 0;
             }
@@ -462,7 +462,7 @@ void ofxHap::AudioThread::Playhead::start(int64_t now, int64_t &startSample, int
             startSample = _prevSample - 1;
             if (startSample < 0)
             {
-                startSample = av_rescale_q_rnd(_clock.period, AV_TIME_BASE_Q, {1, _samplerateIn}, AV_ROUND_DOWN);
+                startSample = av_rescale_q_rnd(_clock.period, {1, AV_TIME_BASE}, {1, _samplerateIn}, AV_ROUND_DOWN);
             }
         }
     }
@@ -492,7 +492,7 @@ void ofxHap::AudioThread::Playhead::start(int64_t now, int64_t &startSample, int
             }
             else
             {
-                length = av_rescale_q(_clock.period, AV_TIME_BASE_Q, {1, _samplerateIn}) - startSample;
+                length = av_rescale_q(_clock.period, {1, AV_TIME_BASE}, {1, _samplerateIn}) - startSample;
             }
         }
     }
