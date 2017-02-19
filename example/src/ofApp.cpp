@@ -151,14 +151,8 @@ void ofApp::mouseMoved(int x, int y){
 //--------------------------------------------------------------
 void ofApp::mouseDragged(int x, int y, int button){
     float position = static_cast<float>(x - BarInset) / getBarRectangle().width;
-    if (position > 1.0)
-    {
-        player.setPosition(position);
-    }
-    else
-    {
-        player.setPosition(position);
-    }
+    position = std::max(0.0f, std::min(position, 1.0f));
+    player.setPosition(position);
     lastMovement = ofGetSystemTime();
 }
 
