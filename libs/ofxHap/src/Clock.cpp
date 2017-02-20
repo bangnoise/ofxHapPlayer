@@ -73,7 +73,7 @@ int64_t ofxHap::Clock::getTimeAt(int64_t t) const
             }
             else
             {
-                period + t;
+                return period + t;
             }
         }
         else

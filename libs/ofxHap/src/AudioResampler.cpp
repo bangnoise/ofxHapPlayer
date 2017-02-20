@@ -32,6 +32,7 @@ extern "C" {
 }
 #include <algorithm>
 #include <cmath>
+#include <vector>
 
 ofxHap::AudioResampler::AudioResampler(const AudioParameters& params, int outRate)
 : _volume(1.0), _rate(1.0), _resampler(nullptr), _reconfigure(true),
@@ -99,16 +100,16 @@ int ofxHap::AudioResampler::resample(const AVFrame *frame, int offset, int srcLe
                                         nullptr);
 
         int channels = av_get_channel_layout_nb_channels(_layout);
-        double matrix[channels][channels];
+        std::vector<double> matrix(channels * channels);
         for (int i = 0; i < channels; i++) {
             for (int j = 0; j < channels; j++) {
                 if (j == i)
-                    matrix[i][j] = _volume;
+                    matrix[i*channels+j] = _volume;
                 else
-                    matrix[i][j] = 0.0;
+                    matrix[i*channels+j] = 0.0;
             }
         }
-        int result = swr_set_matrix(_resampler, (const double *)matrix, channels);
+        int result = swr_set_matrix(_resampler, matrix.data(), channels);
 
         if (result >= 0)
         {
@@ -121,7 +122,7 @@ int ofxHap::AudioResampler::resample(const AVFrame *frame, int offset, int srcLe
         _reconfigure = false;
     }
 
-    const uint8_t *src[frame->channels];
+    std::vector<const uint8_t *> src(frame->channels);
     if (av_sample_fmt_is_planar(static_cast<AVSampleFormat>(frame->format)))
     {
         for (int i = 0; i < frame->channels; i++) {
@@ -136,7 +137,7 @@ int ofxHap::AudioResampler::resample(const AVFrame *frame, int offset, int srcLe
     int result = swr_convert(_resampler,
                              (uint8_t **)&dst,
                              dstLength,
-                             src,
+                             src.data(),
                              srcLength);
     if (result < 0)
     {
