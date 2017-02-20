@@ -52,7 +52,7 @@ int64_t ofxHap::Clock::getTime() const
 
 int64_t ofxHap::Clock::getTimeAt(int64_t t) const
 {
-    t = (t - _start) * _rate;
+    t = static_cast<int64_t>((t - _start) * _rate);
 
     if (_paused)
     {

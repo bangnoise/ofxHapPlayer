@@ -167,12 +167,12 @@ void ofxHap::AudioThread::threadMain(AudioParameters params, int outRate, std::s
 
                         playhead.start(now, start, lengthIn, forwards);
 
-                        int lengthOut = av_rescale_q(lengthIn, {1, sampleRate}, {1, static_cast<int>(outRate / clock.getRate())});
+                        int lengthOut = static_cast<int>(av_rescale_q(lengthIn, {1, sampleRate}, {1, static_cast<int>(outRate / clock.getRate())}));
                         if (lengthOut > count[i])
                         {
                             lengthOut = count[i];
                             // Only queue (roughly) as many samples as we need to fill lengthOut, to avoid choking the resampler
-                            lengthIn = av_rescale_q_rnd(lengthOut, {1, static_cast<int>(outRate / clock.getRate())}, {1, sampleRate}, AV_ROUND_UP);
+                            lengthIn = static_cast<int>(av_rescale_q_rnd(lengthOut, {1, static_cast<int>(outRate / clock.getRate())}, {1, sampleRate}, AV_ROUND_UP));
                         }
 
                         if (start < streamStart || start > streamStart + streamDuration)
@@ -200,7 +200,7 @@ void ofxHap::AudioThread::threadMain(AudioParameters params, int outRate, std::s
                                     lengthIn = std::min(lengthIn, static_cast<int>(frame->nb_samples - (start - pts)));
 
                                     // AAAAND so we'll need to know about discontinuities and flush the resampler
-                                    result = resampler.resample(frame, start - pts, lengthIn, dst[i], count[i], lengthOut, lengthIn);
+                                    result = resampler.resample(frame, static_cast<int>(start - pts), lengthIn, dst[i], count[i], lengthOut, lengthIn);
                                 }
                                 else
                                 {
@@ -215,7 +215,7 @@ void ofxHap::AudioThread::threadMain(AudioParameters params, int outRate, std::s
                                         }
                                     }
 
-                                    int rpts = av_frame_get_best_effort_timestamp(reversed);
+                                    int64_t rpts = av_frame_get_best_effort_timestamp(reversed);
                                     if (result >= 0 && rpts != pts)
                                     {
                                         result = reverse(reversed, frame);
@@ -228,7 +228,7 @@ void ofxHap::AudioThread::threadMain(AudioParameters params, int outRate, std::s
                                     // check that
                                     if (result >= 0)
                                     {
-                                        int offset = rpts + reversed->nb_samples - 1 - start;
+                                        int offset = static_cast<int>(rpts + reversed->nb_samples - 1 - start);
                                         result = resampler.resample(reversed, offset, lengthIn, dst[i], count[i], lengthOut, lengthIn);
                                     }
                                 }
@@ -477,22 +477,22 @@ void ofxHap::AudioThread::Playhead::start(int64_t now, int64_t &startSample, int
         {
             if (startSample < _start)
             {
-                length = _start - startSample;
+                length = static_cast<int>(_start - startSample);
             }
             else
             {
-                length = startSample - (_start + _duration);
+                length = static_cast<int>(startSample - (_start + _duration));
             }
         }
         else
         {
             if (startSample < _start)
             {
-                length = _start - startSample;
+                length = static_cast<int>(_start - startSample);
             }
             else
             {
-                length = av_rescale_q(_clock.period, {1, AV_TIME_BASE}, {1, _samplerateIn}) - startSample;
+                length = static_cast<int>(av_rescale_q(_clock.period, {1, AV_TIME_BASE}, {1, _samplerateIn}) - startSample);
             }
         }
     }
@@ -501,11 +501,11 @@ void ofxHap::AudioThread::Playhead::start(int64_t now, int64_t &startSample, int
         // Within the track's time-range
         if (!forwards)
         {
-            length = startSample - _start;
+            length = static_cast<int>(startSample - _start);
         }
         else
         {
-            length = (_start + _duration) - startSample;
+            length = static_cast<int>((_start + _duration) - startSample);
         }
     }
 }

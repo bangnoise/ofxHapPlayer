@@ -92,7 +92,7 @@ int ofxHap::AudioResampler::resample(const AVFrame *frame, int offset, int srcLe
         _resampler = swr_alloc_set_opts(nullptr,
                                         _layout,
                                         AV_SAMPLE_FMT_FLT,
-                                        _sampleRateOut / _rate,
+                                        static_cast<int>(_sampleRateOut / _rate),
                                         _layout,
                                         static_cast<AVSampleFormat>(_format),
                                         _sampleRateIn,

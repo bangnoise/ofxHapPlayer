@@ -493,7 +493,7 @@ void ofxHapPlayer::update()
                                               DoHapDecode,
                                               NULL,
                                               _decodedFrame.buffer.data(),
-                                              _decodedFrame.buffer.size(),
+                                              static_cast<unsigned long>(_decodedFrame.buffer.size()),
                                               &bytesUsed,
                                               &textureFormat);
                     }
@@ -620,7 +620,7 @@ ofTexture* ofxHapPlayer::getTexture()
             _videoStream->codec->height,
 #endif
             internalFormat,
-            _decodedFrame.buffer.size(),
+            static_cast<GLsizei>(_decodedFrame.buffer.size()),
             _decodedFrame.buffer.data());
 
         glPopClientAttrib();
@@ -1046,7 +1046,7 @@ void ofxHapPlayer::AudioOutput::close()
 
 void ofxHapPlayer::AudioOutput::audioOut(ofSoundBuffer& buffer)
 {
-    int wanted = buffer.getNumFrames();
+    int wanted = static_cast<int>(buffer.getNumFrames());
     int filled = 0;
 
     const float *first, *second;
@@ -1085,7 +1085,7 @@ void ofxHapPlayer::AudioOutput::audioOut(ofSoundBuffer& buffer)
         av_samples_set_silence((uint8_t **)&out,
                                0,
                                wanted - filled,
-                               buffer.getNumChannels(),
+                               static_cast<int>(buffer.getNumChannels()),
                                AV_SAMPLE_FMT_FLT);
     }
     else

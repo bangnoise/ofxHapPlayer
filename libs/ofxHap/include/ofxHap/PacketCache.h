@@ -49,18 +49,18 @@ namespace ofxHap {
         // Move the active set to the cache
         void cache();
         // Fetch
-        bool fetch(uint64_t pts, AVPacket *p, std::chrono::microseconds timeout) const;
+        bool fetch(int64_t pts, AVPacket *p, std::chrono::microseconds timeout) const;
         // discards all outwith range from cache, and all from
         // before range from active
         void limit(const TimeRangeSet& range);
         // clears active set and cached
         void clear();
     private:
-        static bool fetch(const std::map<uint64_t, AVPacket *>& map, uint64_t pts, AVPacket *p);
-        static void limit(std::map<uint64_t, AVPacket *>& map, const TimeRangeSet& range, bool active);
-        static void clear(std::map<uint64_t, AVPacket *>& map);
-        std::map<uint64_t, AVPacket *>  _active;
-        std::map<uint64_t, AVPacket *>  _cache;
+        static bool fetch(const std::map<int64_t, AVPacket *>& map, int64_t pts, AVPacket *p);
+        static void limit(std::map<int64_t, AVPacket *>& map, const TimeRangeSet& range, bool active);
+        static void clear(std::map<int64_t, AVPacket *>& map);
+        std::map<int64_t, AVPacket *>  _active;
+        std::map<int64_t, AVPacket *>  _cache;
         mutable std::mutex              _lock;
         mutable std::condition_variable _condition;
     };

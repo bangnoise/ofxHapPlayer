@@ -84,7 +84,7 @@ void ofxHap::PacketCache::cache()
     _active.clear();
 }
 
-bool ofxHap::PacketCache::fetch(uint64_t pts, AVPacket *p, std::chrono::microseconds timeout) const
+bool ofxHap::PacketCache::fetch(int64_t pts, AVPacket *p, std::chrono::microseconds timeout) const
 {
     std::unique_lock<std::mutex> locker(_lock);
     std::chrono::time_point<std::chrono::steady_clock> now = std::chrono::steady_clock::now();
@@ -119,7 +119,7 @@ void ofxHap::PacketCache::clear()
     clear(_active);
 }
 
-bool ofxHap::PacketCache::fetch(const std::map<uint64_t, AVPacket *> &map, uint64_t pts, AVPacket *p)
+bool ofxHap::PacketCache::fetch(const std::map<int64_t, AVPacket *> &map, int64_t pts, AVPacket *p)
 {
     for (const auto& pair : map)
     {
@@ -132,7 +132,7 @@ bool ofxHap::PacketCache::fetch(const std::map<uint64_t, AVPacket *> &map, uint6
     return false;
 }
 
-void ofxHap::PacketCache::limit(std::map<uint64_t, AVPacket *> &map, const ofxHap::TimeRangeSet &ranges, bool active)
+void ofxHap::PacketCache::limit(std::map<int64_t, AVPacket *> &map, const ofxHap::TimeRangeSet &ranges, bool active)
 {
     for (auto itr = map.cbegin(); itr != map.cend();) {
         AVPacket *p = itr->second;
@@ -170,7 +170,7 @@ void ofxHap::PacketCache::limit(std::map<uint64_t, AVPacket *> &map, const ofxHa
     }
 }
 
-void ofxHap::PacketCache::clear(std::map<uint64_t, AVPacket *> &map)
+void ofxHap::PacketCache::clear(std::map<int64_t, AVPacket *> &map)
 {
     for (auto& pair : map)
     {

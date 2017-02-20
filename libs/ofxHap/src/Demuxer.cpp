@@ -70,7 +70,7 @@ void ofxHap::Demuxer::threadMain(const std::string movie, PacketReceiver& receiv
         if (result == 0)
         {
             receiver.foundMovie(fmt_ctx->duration);
-            for (int i = 0; i < fmt_ctx->nb_streams; i++) {
+            for (unsigned int i = 0; i < fmt_ctx->nb_streams; i++) {
 #if OFX_HAP_HAS_CODECPAR
                 if (fmt_ctx->streams[i]->codecpar->codec_id == AV_CODEC_ID_HAP && videoStreamIndex == -1)
 #else
