@@ -324,6 +324,7 @@ void ofxHapPlayer::limit(ofxHap::TimeRangeSet &set) const
     }
 }
 
+/*
 static void describeTRS(const ofxHap::TimeRangeSet& set)
 {
     std::cout << "TimeRangeSet " << &set << " ";
@@ -339,6 +340,7 @@ static void describeTRS(const ofxHap::TimeRangeSet& set)
     }
     std::cout << std::endl;
 }
+*/
 
 void ofxHapPlayer::read(const ofxHap::TimeRangeSet& wanted, bool seek)
 {
@@ -989,14 +991,14 @@ ofxHapPlayer::AudioOutput::~AudioOutput()
 
 }
 
-int ofxHapPlayer::AudioOutput::getBestRate(int r) const
+unsigned int ofxHapPlayer::AudioOutput::getBestRate(unsigned int r) const
 {
     auto devices = _soundStream.getDeviceList();
     for (const auto& device : devices) {
         if (device.isDefaultOutput)
         {
             auto rates = device.sampleRates;
-            int bestRate = 0;
+            unsigned int bestRate = 0;
             for (auto rate : rates) {
                 if (rate == r)
                 {

@@ -34,7 +34,7 @@ namespace ofxHap {
     }
 }
 
-ofxHap::Clock::Clock() : period(0), mode(Mode::Loop), _rate(1.0), _start(0), _time(-1), _paused(false)
+ofxHap::Clock::Clock() : period(0), mode(Mode::Loop), _start(0), _time(-1), _paused(false), _rate(1.0)
 {
 
 }

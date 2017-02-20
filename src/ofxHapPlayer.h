@@ -122,7 +122,7 @@ private:
         void start();
         void stop();
         void close();
-        int  getBestRate(int rate) const;
+        unsigned int  getBestRate(unsigned int rate) const;
     private:
         virtual void    audioOut(ofSoundBuffer& buffer) override;
         std::shared_ptr<ofxHap::RingBuffer> _buffer;

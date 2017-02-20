@@ -120,7 +120,6 @@ void ofxHap::Demuxer::threadMain(const std::string movie, PacketReceiver& receiv
             std::queue<Action> actions;
             int64_t lastReadVideo = AV_NOPTS_VALUE;
             int64_t lastReadAudio = AV_NOPTS_VALUE;
-            bool cancel = false;
 
             AVPacket packet;
             av_init_packet(&packet);
