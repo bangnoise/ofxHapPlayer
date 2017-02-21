@@ -41,6 +41,8 @@ void ofApp::setup(){
     load("movies/SampleHap.mov");
     
     player.setLoopState(OF_LOOP_NORMAL);
+
+    inScrub = false;
 }
 
 //--------------------------------------------------------------
@@ -150,19 +152,23 @@ void ofApp::mouseMoved(int x, int y){
 
 //--------------------------------------------------------------
 void ofApp::mouseDragged(int x, int y, int button){
-    float position = static_cast<float>(x - BarInset) / getBarRectangle().width;
-    position = std::max(0.0f, std::min(position, 1.0f));
-    player.setPosition(position);
-    lastMovement = ofGetSystemTime();
+    if (inScrub)
+    {
+        float position = static_cast<float>(x - BarInset) / getBarRectangle().width;
+        position = std::max(0.0f, std::min(position, 1.0f));
+        player.setPosition(position);
+        lastMovement = ofGetSystemTime();
+    }
 }
 
 //--------------------------------------------------------------
 void ofApp::mousePressed(int x, int y, int button){
-    wasPaused = player.isPaused();
-    player.setPaused(true);
     ofRectangle bar = getBarRectangle();
     if (bar.inside(x, y))
     {
+        inScrub = true;
+        wasPaused = player.isPaused();
+        player.setPaused(true);
         mouseDragged(x, y, button);
     }
     lastMovement = ofGetSystemTime();
@@ -170,7 +176,11 @@ void ofApp::mousePressed(int x, int y, int button){
 
 //--------------------------------------------------------------
 void ofApp::mouseReleased(int x, int y, int button){
-    player.setPaused(wasPaused);
+    if (inScrub)
+    {
+        inScrub = false;
+        player.setPaused(wasPaused);
+    }
 }
 
 //--------------------------------------------------------------
