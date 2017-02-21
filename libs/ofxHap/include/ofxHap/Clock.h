@@ -48,6 +48,7 @@ namespace ofxHap {
         int     getDirectionAt(int64_t t) const;
         float   getRate() const;
         void    setRateAt(float r, int64_t t);
+        bool    getDone() const;
         int64_t period;
         Mode    mode;
     private:

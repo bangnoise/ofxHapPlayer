@@ -70,13 +70,9 @@ const string ofxHapPlayerFragmentShader = "uniform sampler2D cocgsy_src;\
                                           }";
 
 // TODO:
-// 1. Thread safety here
 // 1.a What about AudioThread when paused? stopped?
-// push to github here and then:
 // 2. Fix sound_sync_test_hap.mov frequent audio position reset
-// 3. Windows
-// 4. Linux
-// 5. Pause in palindrome(low priority)
+// 3. Pause in palindrome(low priority)
 
 /*
 Utility to round up to a multiple of 4 for DXT dimensions
@@ -89,9 +85,10 @@ static int roundUpToMultipleOf4( int n )
 }
 
 ofxHapPlayer::ofxHapPlayer() :
-    _loaded(false), _hadFirstVideoFrame(false), _playing(false),
+    _loaded(false), _videoStream(nullptr), _audioStreamIndex(-1), _frameTime(av_gettime_relative()), _playing(false),
     _wantsUpload(false),
-    _demuxer(), _buffer(nullptr), _audioThread(nullptr), _audioOut(), _volume(1.0), _timeout(30000)
+    _demuxer(), _buffer(nullptr), _audioThread(nullptr), _audioOut(), _volume(1.0), _timeout(30000),
+    _positionOnLoad(0.0)
 {
     ofAddListener(ofEvents().update, this, &ofxHapPlayer::update);
 }
@@ -107,7 +104,6 @@ ofxHapPlayer::~ofxHapPlayer()
 
 bool ofxHapPlayer::load(string name)
 {
-    //    std::lock_guard<std::mutex> guard(_lock);
 	_moviePath = name;
 	
     /*
@@ -127,6 +123,8 @@ bool ofxHapPlayer::load(string name)
     }
 
     _demuxer = std::make_shared<ofxHap::Demuxer>(name, *this);
+
+    _positionOnLoad = 0.0;
 
     /*
     Apply our current state to the movie
@@ -154,7 +152,7 @@ void ofxHapPlayer::foundStream(AVStream *stream)
     else if (params->codec_type == AVMEDIA_TYPE_AUDIO)
     {
         // We will output silence until we have samples to play
-        _audioStream = stream;
+        _audioStreamIndex = stream->index;
         _buffer = std::make_shared<ofxHap::RingBuffer>(params->channels, params->sample_rate / 8);
 
         _audioOut.start(params->channels, params->sample_rate, _buffer);
@@ -177,8 +175,7 @@ void ofxHapPlayer::foundStream(AVStream *stream)
     {
         ofxHap::AudioParameters p(codec);
 
-        // TODO: we almost don't need to store this, only to identify packet index
-        _audioStream = stream;
+        _audioStreamIndex = stream->index;
         _buffer = std::make_shared<ofxHap::RingBuffer>(codec->channels, codec->sample_rate / 8);
 
         _audioOut.start(codec->channels, codec->sample_rate, _buffer);
@@ -198,6 +195,7 @@ void ofxHapPlayer::foundAllStreams()
 {
     std::lock_guard<std::mutex> guard(_lock);
     _loaded = true;
+    setPositionLoaded(_positionOnLoad);
 }
 
 void ofxHapPlayer::readPacket(AVPacket *packet)
@@ -207,7 +205,7 @@ void ofxHapPlayer::readPacket(AVPacket *packet)
     {
         _videoPackets.store(packet);
     }
-    else if (_audioStream && packet->stream_index == _audioStream->index)
+    else if (_audioThread && packet->stream_index == _audioStreamIndex)
     {
         _audioThread->send(packet);
     }
@@ -253,8 +251,8 @@ void ofxHapPlayer::close()
     _videoPackets.clear();
     _clock.period = 0;
     _wantsUpload = false;
-    _hadFirstVideoFrame = false;
-    _videoStream = _audioStream = nullptr;
+    _videoStream = nullptr;
+    _audioStreamIndex = -1;
     _shader.unload();
     _texture.clear();
     _decodedFrame.clear();
@@ -273,8 +271,8 @@ static void HapDecodeWrapper(void *p, size_t i)
     struct HapWork *work = static_cast<struct HapWork *>(p);
     work->function(work->p, i);
 }
-
 #endif
+
 static void DoHapDecode(HapDecodeWorkFunction function, void *p, unsigned int count, void *info)
 {
 #if defined(TARGET_OSX)
@@ -396,7 +394,7 @@ void ofxHapPlayer::update(ofEventArgs & args)
 {
     std::lock_guard<std::mutex> guard(_lock);
     // Calculate our current position for video and audio (if present)
-    if (!_playing || !_videoStream)
+    if (!_playing || !_videoStream || !_loaded)
     {
         // TODO: or something - what about stream end in play-once?
         return;
@@ -523,10 +521,6 @@ void ofxHapPlayer::update(ofEventArgs & args)
                 }
                 if (hapResult == HapResult_No_Error)
                 {
-                    if (_hadFirstVideoFrame == false)
-                    {
-                        _hadFirstVideoFrame = true; // TODO: mightn't need this
-                    }
                     _decodedFrame.pts = packet.pts;
                     _decodedFrame.duration = packet.duration;
                     _wantsUpload = true;
@@ -708,17 +702,17 @@ void ofxHapPlayer::play()
 {
     std::lock_guard<std::mutex> guard(_lock);
     _playing = true;
-    // TODO: yes? or time with delivery of first audio or video frame
-    _clock.syncAt(0, av_gettime_relative());
-    if (_audioThread)
+    if (_clock.getDone())
     {
-        _audioThread->sync(_clock);
+        _clock.syncAt(0, _frameTime);
+        if (_audioThread)
+        {
+            _audioThread->sync(_clock);
+        }
     }
-    //    if (_codec_ctx)
+    if (_clock.getPaused())
     {
-        // TODO: load() starts the stream
-        // so we need to postpone that call to here the first time, then call start() the following times
-        //        _soundStream.start();
+        setPaused(false, true);
     }
 }
 
@@ -733,6 +727,12 @@ void ofxHapPlayer::stop()
 void ofxHapPlayer::setPaused(bool pause)
 {
     std::lock_guard<std::mutex> guard(_lock);
+    setPaused(pause, true);
+}
+
+void ofxHapPlayer::setPaused(bool pause, bool locked)
+{
+    assert(locked);
     if (_clock.getPaused() != pause)
     {
         _clock.setPausedAt(pause, _frameTime);
@@ -827,7 +827,22 @@ const ofPixels& ofxHapPlayer::getPixels() const
 
 ofPixelFormat ofxHapPlayer::getPixelFormat() const
 {
-    return OF_PIXELS_BGRA; // TODO: could indicate alpha-ness
+    std::lock_guard<std::mutex> guard(_lock);
+    if (_videoStream)
+    {
+#if OFX_HAP_HAS_CODECPAR
+        switch (_videoStream->codecpar->codec_tag) {
+#else
+        switch (_videoStream->codec->codec_tag) {
+#endif
+            case MKTAG('H', 'a', 'p', '5'):
+                return OF_PIXELS_RGBA;
+            default:
+                return OF_PIXELS_RGB;
+
+        }
+    }
+    return OF_PIXELS_UNKNOWN;
 }
 
 void ofxHapPlayer::setLoopState(ofLoopType state)
@@ -893,12 +908,7 @@ float ofxHapPlayer::getDuration() const
 bool ofxHapPlayer::getIsMovieDone() const
 {
     std::lock_guard<std::mutex> guard(_lock);
-    if (_clock.mode == ofxHap::Clock::Mode::Once &&
-        _clock.getTime() == _clock.period)
-    {
-        return true;
-    }
-    return false;
+    return _clock.getDone();
 }
 
 float ofxHapPlayer::getPosition() const
@@ -918,22 +928,23 @@ void ofxHapPlayer::setPosition(float pct)
 {
     // TODO: Clock doesn't work if on the reverse phase of a palindrome (skips to forward phase)
     std::lock_guard<std::mutex> guard(_lock);
+    if (_loaded)
+    {
+        setPositionLoaded(pct);
+    }
+    else
+    {
+        _positionOnLoad = pct;
+    }
+}
+
+void ofxHapPlayer::setPositionLoaded(float pct)
+{
     int64_t time = std::min(std::max(static_cast<int64_t>(pct * _clock.period), INT64_C(0)), _clock.period);
     _clock.syncAt(time, _frameTime);
     if (_audioThread)
     {
         _audioThread->sync(_clock);
-    }
-    if (_demuxer != nullptr)
-    {
-        if (_playing)
-        {
-            //_playStartTime = av_gettime_relative();
-        }
-
-        // TODO: think about behaviour for setPosition(), play() sequence (should we play from 0 or setPosition() position?)
-        // TODO: getPTS() will return the wrong time until next call to updatePTS() but we don't want to change the "now" time
-        // so we may have to only store the "now' time in updatePTS()  and getPTS() uses that for a calculation
     }
 }
 
@@ -987,7 +998,7 @@ int ofxHapPlayer::getTotalNumFrames() const
 
 void ofxHapPlayer::updatePTS()
 {
-    _frameTime = av_gettime_relative(); // TODO: _frameTime duplicates _clock._wall?
+    _frameTime = av_gettime_relative();
     _clock.setTimeAt(_frameTime);
     assert(_clock.getTime() <= _clock.period || _clock.period == 0);
 }

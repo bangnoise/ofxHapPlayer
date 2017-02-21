@@ -68,6 +68,10 @@ public:
     std::string                 getError() const;
     
     virtual bool                setPixelFormat(ofPixelFormat pixelFormat) {return false;};
+
+    /*
+    Returns OF_PIXELS_RGBA, OF_PIXELS_RGB or OF_PIXELS_UNKNOWN
+    */
     virtual ofPixelFormat       getPixelFormat() const;
     virtual string              getMoviePath() const;
     virtual bool				getHapAvailable() const; // TODO: delete (and mvar)?
@@ -102,7 +106,7 @@ public:
      */
     int                         getTimeout() const;
     void                        setTimeout(int microseconds);
-protected:
+private:
     virtual void    foundMovie(int64_t duration);
     virtual void    foundStream(AVStream *stream);
     virtual void    foundAllStreams();
@@ -110,7 +114,8 @@ protected:
     virtual void    discontinuity();
     virtual void    endMovie();
     virtual void    error(int averror);
-private:
+    void            setPaused(bool pause, bool locked);
+    void            setPositionLoaded(float pct);
     void            update(ofEventArgs& args);
     void            updatePTS();
     void            limit(ofxHap::TimeRangeSet& set) const;
@@ -143,11 +148,10 @@ private:
     bool                _loaded;
     std::string         _error;
     AVStream            *_videoStream;
-    AVStream            *_audioStream;
+    int                 _audioStreamIndex;
     DecodedFrame        _decodedFrame;
     ofxHap::Clock       _clock;
     uint64_t            _frameTime;
-    bool                _hadFirstVideoFrame;
     ofShader            _shader;
     ofTexture           _texture;
     bool                _playing;
@@ -161,6 +165,7 @@ private:
     AudioOutput         _audioOut;
     float               _volume;
     int                 _timeout;
+    float               _positionOnLoad;
 };
 
 #endif /* defined(__ofxHapPlayer__) */

@@ -169,3 +169,8 @@ void ofxHap::Clock::setRateAt(float r, int64_t t)
     _rate = r;
     syncAt(_time, t);
 }
+
+bool ofxHap::Clock::getDone() const
+{
+    return (mode == Mode::Once && getTime() == period) ? true : false;
+}
