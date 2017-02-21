@@ -63,15 +63,6 @@
 		<Filter Include="addons\ofxHapPlayer\libs">
 			<UniqueIdentifier>{0B971793-EF6D-AFDC-9CC8-D438}</UniqueIdentifier>
 		</Filter>
-		<Filter Include="addons\ofxHapPlayer\libs\ffmpeg">
-			<UniqueIdentifier>{AE8122FC-CDD3-49FD-1BD0-9A09}</UniqueIdentifier>
-		</Filter>
-		<Filter Include="addons\ofxHapPlayer\libs\ffmpeg\include">
-			<UniqueIdentifier>{295BE532-F54C-6D22-741F-2D3A}</UniqueIdentifier>
-		</Filter>
-		<Filter Include="addons\ofxHapPlayer\libs\ffmpeg\include\libswresample">
-			<UniqueIdentifier>{C94787C7-B54D-79CA-4EDC-EA46}</UniqueIdentifier>
-		</Filter>
 		<Filter Include="addons\ofxHapPlayer\libs\hap">
 			<UniqueIdentifier>{9657ED59-9D5A-DDF5-E840-7BB3}</UniqueIdentifier>
 		</Filter>
@@ -106,12 +97,6 @@
 		</ClInclude>
 		<ClInclude Include="..\..\..\addons\ofxHapPlayer\src\ofxHapPlayer.h">
 			<Filter>addons\ofxHapPlayer\src</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxHapPlayer\libs\ffmpeg\include\libswresample\swresample.h">
-			<Filter>addons\ofxHapPlayer\libs\ffmpeg\include\libswresample</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxHapPlayer\libs\ffmpeg\include\libswresample\version.h">
-			<Filter>addons\ofxHapPlayer\libs\ffmpeg\include\libswresample</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\..\addons\ofxHapPlayer\libs\hap\src\hap.h">
 			<Filter>addons\ofxHapPlayer\libs\hap\src</Filter>

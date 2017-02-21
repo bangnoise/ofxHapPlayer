@@ -98,8 +98,10 @@ osx:
 	ADDON_INCLUDES_EXCLUDE = libs/ffmpeg/include/libavformat
 	ADDON_INCLUDES_EXCLUDE += libs/ffmpeg/include/libavutil
 	ADDON_INCLUDES_EXCLUDE += libs/ffmpeg/include/libavcodec
+	ADDON_INCLUDES_EXCLUDE += libs/ffmpeg/include/libswresample
 
 vs:
 	ADDON_INCLUDES_EXCLUDE = libs/ffmpeg/include/libavformat
 	ADDON_INCLUDES_EXCLUDE += libs/ffmpeg/include/libavutil
 	ADDON_INCLUDES_EXCLUDE += libs/ffmpeg/include/libavcodec
+	ADDON_INCLUDES_EXCLUDE += libs/ffmpeg/include/libswresample
