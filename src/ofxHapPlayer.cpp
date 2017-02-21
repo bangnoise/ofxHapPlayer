@@ -39,6 +39,9 @@ extern "C" {
 #include <libswresample/swresample.h>
 #include <hap.h>
 }
+#if defined(TARGET_WIN32)
+#include <ppl.h>
+#endif
 
 // This amount will be bufferred before and after the playhead
 #define kofxHapPlayerBufferUSec INT64_C(250000)
@@ -257,8 +260,12 @@ void ofxHapPlayer::close()
 
 static void DoHapDecode(HapDecodeWorkFunction function, void *p, unsigned int count, void *info)
 {
-#ifdef __APPLE__
+#if defined(TARGET_OSX)
     dispatch_apply(count, dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^(size_t i) {
+        function(p, i);
+    });
+#elif defined(TARGET_WIN32)
+    concurrency::parallel_for(0U, count, [&](unsigned int i) {
         function(p, i);
     });
 #else
