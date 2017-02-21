@@ -526,6 +526,21 @@
 				<key>sourceTree</key>
 				<string>&lt;group&gt;</string>
 			</dict>
+			<key>79FD7615976472BC2D2C3851</key>
+			<dict>
+				<key>children</key>
+				<array>
+					<string>E09D8B6334004E7315770DB3</string>
+					<string>6BA06186AF1C74A7B5F517D6</string>
+					<string>7A2C5E0AF06168013381D973</string>
+				</array>
+				<key>isa</key>
+				<string>PBXGroup</string>
+				<key>name</key>
+				<string>libs</string>
+				<key>sourceTree</key>
+				<string>&lt;group&gt;</string>
+			</dict>
 			<key>D2589C81FE555C37DFA9890C</key>
 			<dict>
 				<key>fileRef</key>
@@ -545,92 +560,6 @@
 				<string>hap.c</string>
 				<key>path</key>
 				<string>../../../addons/ofxHapPlayer/libs/hap/src/hap.c</string>
-				<key>sourceTree</key>
-				<string>SOURCE_ROOT</string>
-			</dict>
-			<key>FB9F47685F7E0B3273C0D607</key>
-			<dict>
-				<key>explicitFileType</key>
-				<string>sourcecode.c.h</string>
-				<key>fileEncoding</key>
-				<string>30</string>
-				<key>isa</key>
-				<string>PBXFileReference</string>
-				<key>name</key>
-				<string>version.h</string>
-				<key>path</key>
-				<string>../../../addons/ofxHapPlayer/libs/ffmpeg/include/libswresample/version.h</string>
-				<key>sourceTree</key>
-				<string>SOURCE_ROOT</string>
-			</dict>
-			<key>744B1963835AF5822E18F213</key>
-			<dict>
-				<key>children</key>
-				<array>
-					<string>945357084E7ABDC214C52B8E</string>
-					<string>FB9F47685F7E0B3273C0D607</string>
-				</array>
-				<key>isa</key>
-				<string>PBXGroup</string>
-				<key>name</key>
-				<string>libswresample</string>
-				<key>sourceTree</key>
-				<string>&lt;group&gt;</string>
-			</dict>
-			<key>A7957D933EFEE61DD7BF28AA</key>
-			<dict>
-				<key>children</key>
-				<array>
-					<string>744B1963835AF5822E18F213</string>
-				</array>
-				<key>isa</key>
-				<string>PBXGroup</string>
-				<key>name</key>
-				<string>include</string>
-				<key>sourceTree</key>
-				<string>&lt;group&gt;</string>
-			</dict>
-			<key>762EAA6CA6507916C1401579</key>
-			<dict>
-				<key>children</key>
-				<array>
-					<string>A7957D933EFEE61DD7BF28AA</string>
-				</array>
-				<key>isa</key>
-				<string>PBXGroup</string>
-				<key>name</key>
-				<string>ffmpeg</string>
-				<key>sourceTree</key>
-				<string>&lt;group&gt;</string>
-			</dict>
-			<key>79FD7615976472BC2D2C3851</key>
-			<dict>
-				<key>children</key>
-				<array>
-					<string>762EAA6CA6507916C1401579</string>
-					<string>E09D8B6334004E7315770DB3</string>
-					<string>6BA06186AF1C74A7B5F517D6</string>
-					<string>7A2C5E0AF06168013381D973</string>
-				</array>
-				<key>isa</key>
-				<string>PBXGroup</string>
-				<key>name</key>
-				<string>libs</string>
-				<key>sourceTree</key>
-				<string>&lt;group&gt;</string>
-			</dict>
-			<key>945357084E7ABDC214C52B8E</key>
-			<dict>
-				<key>explicitFileType</key>
-				<string>sourcecode.c.h</string>
-				<key>fileEncoding</key>
-				<string>30</string>
-				<key>isa</key>
-				<string>PBXFileReference</string>
-				<key>name</key>
-				<string>swresample.h</string>
-				<key>path</key>
-				<string>../../../addons/ofxHapPlayer/libs/ffmpeg/include/libswresample/swresample.h</string>
 				<key>sourceTree</key>
 				<string>SOURCE_ROOT</string>
 			</dict>
@@ -892,7 +821,6 @@
 						<string>../../../addons/ofxHapPlayer/libs</string>
 						<string>../../../addons/ofxHapPlayer/libs/ffmpeg</string>
 						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/include</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/include/libswresample</string>
 						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib</string>
 						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx</string>
 						<string>../../../addons/ofxHapPlayer/libs/hap</string>
@@ -988,7 +916,6 @@
 						<string>../../../addons/ofxHapPlayer/libs</string>
 						<string>../../../addons/ofxHapPlayer/libs/ffmpeg</string>
 						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/include</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/include/libswresample</string>
 						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib</string>
 						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx</string>
 						<string>../../../addons/ofxHapPlayer/libs/hap</string>
@@ -1177,7 +1104,6 @@
 						<string>../../../addons/ofxHapPlayer/libs</string>
 						<string>../../../addons/ofxHapPlayer/libs/ffmpeg</string>
 						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/include</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/include/libswresample</string>
 						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib</string>
 						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx</string>
 						<string>../../../addons/ofxHapPlayer/libs/hap</string>
@@ -1263,7 +1189,6 @@
 						<string>../../../addons/ofxHapPlayer/libs</string>
 						<string>../../../addons/ofxHapPlayer/libs/ffmpeg</string>
 						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/include</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/include/libswresample</string>
 						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib</string>
 						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx</string>
 						<string>../../../addons/ofxHapPlayer/libs/hap</string>
