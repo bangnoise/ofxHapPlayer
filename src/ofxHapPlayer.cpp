@@ -41,6 +41,8 @@ extern "C" {
 }
 #if defined(TARGET_WIN32)
 #include <ppl.h>
+#elif defined(TARGET_LINUX)
+#include <dispatch/dispatch.h>
 #endif
 
 // This amount will be bufferred before and after the playhead
@@ -258,6 +260,19 @@ void ofxHapPlayer::close()
     _error.clear();
 }
 
+#if defined(TARGET_LINUX)
+struct HapWork {
+    void *p;
+    HapDecodeWorkFunction function;
+};
+
+static void HapDecodeWrapper(void *p, size_t i)
+{
+    struct HapWork *work = static_cast<struct HapWork *>(p);
+    work->function(work->p, i);
+}
+
+#endif
 static void DoHapDecode(HapDecodeWorkFunction function, void *p, unsigned int count, void *info)
 {
 #if defined(TARGET_OSX)
@@ -269,11 +284,8 @@ static void DoHapDecode(HapDecodeWorkFunction function, void *p, unsigned int co
         function(p, i);
     });
 #else
-    unsigned int i;
-    for (i = 0; i < count; i++) {
-        // TODO: MT
-        function(p, i);
-    }
+    struct HapWork work = {p, function};
+    dispatch_apply_f(count, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), &work, HapDecodeWrapper);
 #endif
 }
 

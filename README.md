@@ -31,9 +31,9 @@ This step is only necessary on Linux. On macOS and Windows, the required librari
 
 On Linux, ofxHapPlayer uses system libraries. For Ubuntu, the following packages are required:
 
-libsnappy-dev, libswresample-dev, libavcodec-dev, libavformat-dev
+libsnappy-dev, libswresample-dev, libavcodec-dev, libavformat-dev, libdispatch-dev
 
-    sudo apt-get install libsnappy-dev libswresample-dev libavcodec-dev libavformat-dev
+    sudo apt-get install libsnappy-dev libswresample-dev libavcodec-dev libavformat-dev libdispatch-dev
 
 Note that the Raspberry Pi does not support the compressed texture formats used by Hap, so you can't use this addon on a Raspberry Pi.
 

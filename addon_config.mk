@@ -63,6 +63,7 @@ common:
 	# when parsing the file system looking for sources exclude this for all or
 	# a specific platform
 	ADDON_SOURCES_EXCLUDE = libs/ffmpeg/%
+	ADDON_SOURCES_EXCLUDE += libs/snappy/%
 	
 	# when parsing the file system looking for include paths exclude this for all or
 	# a specific platform
@@ -75,11 +76,12 @@ linux64:
 	ADDON_PKG_CONFIG_LIBRARIES += libavutil
 	ADDON_PKG_CONFIG_LIBRARIES += libswresample
 	ADDON_LIBS_EXCLUDE = libs/ffmpeg
+	ADDON_LIBS_EXCLUDE += libs/snappy
 	ADDON_INCLUDES_EXCLUDE = libs/ffmpeg
 	ADDON_INCLUDES_EXCLUDE += libs/ffmpeg/%
 	ADDON_INCLUDES_EXCLUDE += libs/snappy
 	ADDON_INCLUDES_EXCLUDE += libs/snappy/%
-	ADDON_LDFLAGS = -lsnappy
+	ADDON_LDFLAGS = -lsnappy -ldispatch
 
 linux:
 	ADDON_PKG_CONFIG_LIBRARIES = libavformat
@@ -87,11 +89,12 @@ linux:
 	ADDON_PKG_CONFIG_LIBRARIES += libavutil
 	ADDON_PKG_CONFIG_LIBRARIES += libswresample
 	ADDON_LIBS_EXCLUDE = libs/ffmpeg
+	ADDON_LIBS_EXCLUDE += libs/snappy
 	ADDON_INCLUDES_EXCLUDE = libs/ffmpeg
 	ADDON_INCLUDES_EXCLUDE += libs/ffmpeg/%
 	ADDON_INCLUDES_EXCLUDE += libs/snappy
 	ADDON_INCLUDES_EXCLUDE += libs/snappy/%
-	ADDON_LDFLAGS = -lsnappy
+	ADDON_LDFLAGS = -lsnappy -ldispatch
 
 osx:
 	ADDON_LDFLAGS = -rpath @loader_path/../../../../../../../addons/ofxHapPlayer/libs
