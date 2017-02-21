@@ -7,7 +7,7 @@ THIS BRANCH IS A WORK IN PROGRESS
 
  - [x] macOS with Xcode
  - [x] Ubuntu with make
- - [ ] Ubuntu with QtCreator
+ - [x] Ubuntu with QtCreator
  - [x] Windows with Visual Studio
 
 Hap is a codec for fast video playback. You can learn more about Hap, and find codecs for encoding, at the [main Hap project](https://github.com/Vidvox/hap).
