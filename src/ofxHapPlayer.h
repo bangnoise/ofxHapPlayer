@@ -48,7 +48,7 @@ public:
 
     virtual bool                load(std::string name);
     virtual void                close();
-    virtual void                update();
+    virtual void                update() {};
     
     virtual void                play();
     virtual void                stop();     
@@ -111,6 +111,7 @@ protected:
     virtual void    endMovie();
     virtual void    error(int averror);
 private:
+    void            update(ofEventArgs& args);
     void            updatePTS();
     void            limit(ofxHap::TimeRangeSet& set) const;
     void            read(const ofxHap::TimeRangeSet& range, bool seek);

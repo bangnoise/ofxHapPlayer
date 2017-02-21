@@ -93,6 +93,7 @@ ofxHapPlayer::ofxHapPlayer() :
     _wantsUpload(false),
     _demuxer(), _buffer(nullptr), _audioThread(nullptr), _audioOut(), _volume(1.0), _timeout(30000)
 {
+    ofAddListener(ofEvents().update, this, &ofxHapPlayer::update);
 }
 
 ofxHapPlayer::~ofxHapPlayer()
@@ -101,6 +102,7 @@ ofxHapPlayer::~ofxHapPlayer()
     Close any loaded movie
     */
     close();
+    ofRemoveListener(ofEvents().update, this, &ofxHapPlayer::update);
 }
 
 bool ofxHapPlayer::load(string name)
@@ -390,7 +392,7 @@ void ofxHapPlayer::read(const ofxHap::TimeRangeSet& wanted, bool seek)
     }
 }
 
-void ofxHapPlayer::update()
+void ofxHapPlayer::update(ofEventArgs & args)
 {
     std::lock_guard<std::mutex> guard(_lock);
     // Calculate our current position for video and audio (if present)

@@ -47,8 +47,6 @@ void ofApp::setup(){
 
 //--------------------------------------------------------------
 void ofApp::update(){
-    // Signal the player to update
-    player.update();
     // Show or hide the cursor and position bar
     if (ofGetSystemTime() - lastMovement < 3000)
     {
