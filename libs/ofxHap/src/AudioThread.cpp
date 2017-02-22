@@ -32,6 +32,7 @@ extern "C" {
 }
 #include <map>
 #include <cstdlib>
+#include <cmath>
 #include <iostream> // TODO: NO
 #include "AudioDecoder.h"
 #include "AudioResampler.h"
@@ -167,12 +168,12 @@ void ofxHap::AudioThread::threadMain(AudioParameters params, int outRate, std::s
 
                         playhead.start(now, start, lengthIn, forwards);
 
-                        int lengthOut = static_cast<int>(av_rescale_q(lengthIn, {1, sampleRate}, {1, static_cast<int>(outRate / clock.getRate())}));
+                        int lengthOut = static_cast<int>(av_rescale_q(lengthIn, {1, sampleRate}, {1, static_cast<int>(outRate / std::fabs(clock.getRate()))}));
                         if (lengthOut > count[i])
                         {
                             lengthOut = count[i];
                             // Only queue (roughly) as many samples as we need to fill lengthOut, to avoid choking the resampler
-                            lengthIn = static_cast<int>(av_rescale_q_rnd(lengthOut, {1, static_cast<int>(outRate / clock.getRate())}, {1, sampleRate}, AV_ROUND_UP));
+                            lengthIn = static_cast<int>(av_rescale_q_rnd(lengthOut, {1, static_cast<int>(outRate / std::fabs(clock.getRate()))}, {1, sampleRate}, AV_ROUND_UP));
                         }
 
                         if (start < streamStart || start > streamStart + streamDuration)
