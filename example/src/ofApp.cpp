@@ -165,7 +165,7 @@ void ofApp::mousePressed(int x, int y, int button){
     if (bar.inside(x, y))
     {
         inScrub = true;
-        wasPaused = player.isPaused();
+        wasPaused = player.isPaused() || player.getIsMovieDone();
         player.setPaused(true);
         mouseDragged(x, y, button);
     }
