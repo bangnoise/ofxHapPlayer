@@ -291,10 +291,17 @@ void ofxHap::AudioThread::threadMain(AudioParameters params, int outRate, std::s
             {
                 std::unique_lock<std::mutex> locker(_lock);
                 // TODO: check paused and stopped behaviour
-                int64_t wake = av_rescale(_buffer->getSamplesPerChannel() / 2, outRate, AV_TIME_BASE) - (av_gettime_relative() - now);
-                if (wake > 0)
+                if (clock.getPaused() || clock.getDone())
                 {
-                    _condition.wait_for(locker, std::chrono::microseconds(wake));
+                    _condition.wait(locker);
+                }
+                else
+                {
+                    int64_t wake = av_rescale(_buffer->getSamplesPerChannel() / 2, outRate, AV_TIME_BASE) - (av_gettime_relative() - now);
+                    if (wake > 0)
+                    {
+                        _condition.wait_for(locker, std::chrono::microseconds(wake));
+                    }
                 }
 
                 queue.swap(_queue);
