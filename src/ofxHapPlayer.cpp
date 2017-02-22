@@ -33,6 +33,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #include "ofxHapPlayer.h"
 #include <ofxHap/Common.h>
+#include <ofxHap/AudioThread.h>
+#include <ofxHap/RingBuffer.h>
 extern "C" {
 #include <libavformat/avformat.h>
 #include <libavutil/time.h>
@@ -49,40 +51,90 @@ extern "C" {
 #define kofxHapPlayerBufferUSec INT64_C(250000)
 #define kofxHapPlayerUSecPerSec 1000000L
 
-const string ofxHapPlayerVertexShader = "void main(void)\
-                                        {\
-                                        gl_Position = ftransform();\
-                                        gl_TexCoord[0] = gl_MultiTexCoord0;\
-                                        }";
+namespace ofxHapPY {
+    static const string vertexShader = "void main(void)\
+    {\
+    gl_Position = ftransform();\
+    gl_TexCoord[0] = gl_MultiTexCoord0;\
+    }";
 
-const string ofxHapPlayerFragmentShader = "uniform sampler2D cocgsy_src;\
-                                          const vec4 offsets = vec4(-0.50196078431373, -0.50196078431373, 0.0, 0.0);\
-                                          void main()\
-                                          {\
-                                          vec4 CoCgSY = texture2D(cocgsy_src, gl_TexCoord[0].xy);\
-                                          CoCgSY += offsets;\
-                                          float scale = ( CoCgSY.z * ( 255.0 / 8.0 ) ) + 1.0;\
-                                          float Co = CoCgSY.x / scale;\
-                                          float Cg = CoCgSY.y / scale;\
-                                          float Y = CoCgSY.w;\
-                                          vec4 rgba = vec4(Y + Co - Cg, Y + Cg, Y - Co - Cg, 1.0);\
-                                          gl_FragColor = rgba;\
-                                          }";
+    static const string fragmentShader = "uniform sampler2D cocgsy_src;\
+    const vec4 offsets = vec4(-0.50196078431373, -0.50196078431373, 0.0, 0.0);\
+    void main()\
+    {\
+    vec4 CoCgSY = texture2D(cocgsy_src, gl_TexCoord[0].xy);\
+    CoCgSY += offsets;\
+    float scale = ( CoCgSY.z * ( 255.0 / 8.0 ) ) + 1.0;\
+    float Co = CoCgSY.x / scale;\
+    float Cg = CoCgSY.y / scale;\
+    float Y = CoCgSY.w;\
+    vec4 rgba = vec4(Y + Co - Cg, Y + Cg, Y - Co - Cg, 1.0);\
+    gl_FragColor = rgba;\
+    }";
+
+    /*
+     Utility to round up to a multiple of 4 for DXT dimensions
+     */
+    static int roundUpToMultipleOf4( int n )
+    {
+        if( 0 != ( n & 3 ) )
+            n = ( n + 3 ) & ~3;
+        return n;
+    }
+
+#if defined(TARGET_LINUX)
+    struct Work {
+        void *p;
+        HapDecodeWorkFunction function;
+    };
+    static void decodeWrapper(void *p, size_t i)
+    {
+        struct Work *w = static_cast<struct Work *>(p);
+        w->function(w->p, i);
+    }
+#endif
+
+    static void doDecode(HapDecodeWorkFunction function, void *p, unsigned int count, void *info)
+    {
+#if defined(TARGET_OSX)
+        dispatch_apply(count, dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^(size_t i) {
+            function(p, i);
+        });
+#elif defined(TARGET_WIN32)
+        concurrency::parallel_for(0U, count, [&](unsigned int i) {
+            function(p, i);
+        });
+#else
+        struct Work w = {p, function};
+        dispatch_apply_f(count, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), &w, decodeWrapper);
+#endif
+    }
+
+    static bool frameMatchesStream(unsigned int frame, uint32_t stream)
+    {
+        switch (stream) {
+            case MKTAG('H', 'a', 'p', '1'):
+                if (frame == HapTextureFormat_RGB_DXT1)
+                    return true;
+                break;
+            case MKTAG('H', 'a', 'p', '5'):
+                if (frame == HapTextureFormat_RGBA_DXT5)
+                    return true;
+                break;
+            case MKTAG('H', 'a', 'p', 'Y'):
+                if (frame == HapTextureFormat_YCoCg_DXT5)
+                    return true;
+            default:
+                break;
+        }
+        return false;
+    }
+}
 
 // TODO:
 // 1.a What about AudioThread when paused? stopped?
 // 2. Fix sound_sync_test_hap.mov frequent audio position reset
 // 3. Pause in palindrome(low priority)
-
-/*
-Utility to round up to a multiple of 4 for DXT dimensions
-*/
-static int roundUpToMultipleOf4( int n )
-{
-    if( 0 != ( n & 3 ) )
-        n = ( n + 3 ) & ~3;
-    return n;
-}
 
 ofxHapPlayer::ofxHapPlayer() :
     _loaded(false), _videoStream(nullptr), _audioStreamIndex(-1), _frameTime(av_gettime_relative()), _playing(false),
@@ -145,50 +197,42 @@ void ofxHapPlayer::foundStream(AVStream *stream)
     std::lock_guard<std::mutex> guard(_lock);
 #if OFX_HAP_HAS_CODECPAR
     AVCodecParameters *params = stream->codecpar;
-    if (params->codec_type == AVMEDIA_TYPE_VIDEO && params->codec_id == AV_CODEC_ID_HAP)
-    {
-        _videoStream = stream;
-    }
-    else if (params->codec_type == AVMEDIA_TYPE_AUDIO)
-    {
-        // We will output silence until we have samples to play
-        _audioStreamIndex = stream->index;
-        _buffer = std::make_shared<ofxHap::RingBuffer>(params->channels, params->sample_rate / 8);
-
-        _audioOut.start(params->channels, params->sample_rate, _buffer);
-        if (_clock.getPaused())
-        {
-            _audioOut.stop();
-        }
-
-        _audioThread = std::make_shared<ofxHap::AudioThread>(ofxHap::AudioParameters(params), _audioOut.getBestRate(params->sample_rate), _buffer, *this, stream->start_time, stream->duration);
-        _audioThread->setVolume(_volume);
-        _audioThread->sync(_clock);
-    }
+    AVMediaType type = params->codec_type;
+    AVCodecID codecID = params->codec_id;
 #else
     AVCodecContext *codec = stream->codec;
-    if (codec->codec_type == AVMEDIA_TYPE_VIDEO && codec->codec_id == AV_CODEC_ID_HAP)
+    AVMediaType type = codec->codec_type;
+    AVCodecID codecID = codec->codec_id;
+#endif
+    if (type == AVMEDIA_TYPE_VIDEO && codecID == AV_CODEC_ID_HAP)
     {
         _videoStream = stream;
     }
-    else if (codec->codec_type == AVMEDIA_TYPE_AUDIO)
+    else if (type == AVMEDIA_TYPE_AUDIO)
     {
-        ofxHap::AudioParameters p(codec);
-
+        // We will output silence until we have samples to play
+#if OFX_HAP_HAS_CODECPAR
+        int channels = params->channels;
+        int sampleRate = params->sample_rate;
+        ofxHap::AudioParameters parameters(params);
+#else
+        int channels = codec->channels;
+        int sampleRate = codec->sample_rate;
+        ofxHap::AudioParameters parameters(codec);
+#endif
         _audioStreamIndex = stream->index;
-        _buffer = std::make_shared<ofxHap::RingBuffer>(codec->channels, codec->sample_rate / 8);
+        _buffer = std::make_shared<ofxHap::RingBuffer>(channels, sampleRate / 8);
 
-        _audioOut.start(codec->channels, codec->sample_rate, _buffer);
+        _audioOut.start(channels, sampleRate, _buffer);
         if (_clock.getPaused())
         {
             _audioOut.stop();
         }
 
-        _audioThread = std::make_shared<ofxHap::AudioThread>(p, _audioOut.getBestRate(codec->sample_rate), _buffer, *this, stream->start_time, stream->duration);
+        _audioThread = std::make_shared<ofxHap::AudioThread>(parameters, _audioOut.getBestRate(sampleRate), _buffer, *this, stream->start_time, stream->duration);
         _audioThread->setVolume(_volume);
         _audioThread->sync(_clock);
     }
-#endif
 }
 
 void ofxHapPlayer::foundAllStreams()
@@ -258,55 +302,6 @@ void ofxHapPlayer::close()
     _decodedFrame.clear();
     _loaded = false;
     _error.clear();
-}
-
-#if defined(TARGET_LINUX)
-struct HapWork {
-    void *p;
-    HapDecodeWorkFunction function;
-};
-
-static void HapDecodeWrapper(void *p, size_t i)
-{
-    struct HapWork *work = static_cast<struct HapWork *>(p);
-    work->function(work->p, i);
-}
-#endif
-
-static void DoHapDecode(HapDecodeWorkFunction function, void *p, unsigned int count, void *info)
-{
-#if defined(TARGET_OSX)
-    dispatch_apply(count, dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^(size_t i) {
-        function(p, i);
-    });
-#elif defined(TARGET_WIN32)
-    concurrency::parallel_for(0U, count, [&](unsigned int i) {
-        function(p, i);
-    });
-#else
-    struct HapWork work = {p, function};
-    dispatch_apply_f(count, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), &work, HapDecodeWrapper);
-#endif
-}
-
-static bool FrameMatchesStream(unsigned int frame, uint32_t stream)
-{
-    switch (stream) {
-        case MKTAG('H', 'a', 'p', '1'):
-            if (frame == HapTextureFormat_RGB_DXT1)
-                return true;
-            break;
-        case MKTAG('H', 'a', 'p', '5'):
-            if (frame == HapTextureFormat_RGBA_DXT5)
-                return true;
-            break;
-        case MKTAG('H', 'a', 'p', 'Y'):
-            if (frame == HapTextureFormat_YCoCg_DXT5)
-                return true;
-        default:
-            break;
-    }
-    return false;
 }
 
 void ofxHapPlayer::limit(ofxHap::TimeRangeSet &set) const
@@ -485,9 +480,9 @@ void ofxHapPlayer::update(ofEventArgs & args)
                     unsigned int textureFormat;
                     hapResult = HapGetFrameTextureFormat(packet.data, packet.size, 0, &textureFormat);
 #if OFX_HAP_HAS_CODECPAR
-                    if (hapResult == HapResult_No_Error && !FrameMatchesStream(textureFormat, _videoStream->codecpar->codec_tag))
+                    if (hapResult == HapResult_No_Error && !ofxHapPY::frameMatchesStream(textureFormat, _videoStream->codecpar->codec_tag))
 #else
-                    if (hapResult == HapResult_No_Error && !FrameMatchesStream(textureFormat, _videoStream->codec->codec_tag))
+                    if (hapResult == HapResult_No_Error && !ofxHapPY::frameMatchesStream(textureFormat, _videoStream->codec->codec_tag))
 #endif
                     {
                         hapResult = HapResult_Bad_Frame;
@@ -495,9 +490,9 @@ void ofxHapPlayer::update(ofEventArgs & args)
                     if (hapResult == HapResult_No_Error)
                     {
 #if OFX_HAP_HAS_CODECPAR
-                        size_t length = roundUpToMultipleOf4(_videoStream->codecpar->width) * roundUpToMultipleOf4(_videoStream->codecpar->height);
+                        size_t length = ofxHapPY::roundUpToMultipleOf4(_videoStream->codecpar->width) * ofxHapPY::roundUpToMultipleOf4(_videoStream->codecpar->height);
 #else
-                        size_t length = roundUpToMultipleOf4(_videoStream->codec->width) * roundUpToMultipleOf4(_videoStream->codec->height);
+                        size_t length = ofxHapPY::roundUpToMultipleOf4(_videoStream->codec->width) * ofxHapPY::roundUpToMultipleOf4(_videoStream->codec->height);
 #endif
                         if (textureFormat == HapTextureFormat_RGB_DXT1)
                         {
@@ -511,7 +506,7 @@ void ofxHapPlayer::update(ofEventArgs & args)
                         hapResult = HapDecode(packet.data,
                                               packet.size,
                                               0,
-                                              DoHapDecode,
+                                              ofxHapPY::doDecode,
                                               NULL,
                                               _decodedFrame.buffer.data(),
                                               static_cast<unsigned long>(_decodedFrame.buffer.size()),
@@ -658,10 +653,10 @@ ofShader *ofxHapPlayer::getShader()
     {
         if (_shader.isLoaded() == false)
         {
-            bool success = _shader.setupShaderFromSource(GL_VERTEX_SHADER, ofxHapPlayerVertexShader);
+            bool success = _shader.setupShaderFromSource(GL_VERTEX_SHADER, ofxHapPY::vertexShader);
             if (success)
             {
-                success = _shader.setupShaderFromSource(GL_FRAGMENT_SHADER, ofxHapPlayerFragmentShader);
+                success = _shader.setupShaderFromSource(GL_FRAGMENT_SHADER, ofxHapPY::fragmentShader);
             }
             if (success)
             {
@@ -1129,7 +1124,7 @@ void ofxHapPlayer::AudioOutput::audioOut(ofSoundBuffer& buffer)
 }
 
 ofxHapPlayer::DecodedFrame::DecodedFrame() :
-    pts(-1), duration(-1)
+    pts(AV_NOPTS_VALUE), duration(0)
 {
 
 }

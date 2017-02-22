@@ -33,9 +33,12 @@
 #include <ofxHap/Clock.h>
 #include <ofxHap/PacketCache.h>
 #include <ofxHap/Demuxer.h>
-#include <ofxHap/RingBuffer.h>
-#include <ofxHap/AudioThread.h>
 #include <ofxHap/TimeRangeSet.h>
+
+namespace ofxHap {
+    class AudioThread;
+    class RingBuffer;
+}
 
 class ofxHapPlayer : public ofBaseVideoPlayer, public ofxHap::PacketReceiver {
 public:
