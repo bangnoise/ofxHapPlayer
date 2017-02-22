@@ -282,6 +282,10 @@ void ofxHapPlayer::error(int averror)
     char err[AV_ERROR_MAX_STRING_SIZE];
     av_strerror(averror, err, AV_ERROR_MAX_STRING_SIZE);
     _error = err;
+    if (averror == AVERROR_INVALIDDATA)
+    {
+        _error += " (may not be a Hap movie)";
+    }
     ofLogError("ofxHapPlayer", _error);
 }
 
@@ -363,21 +367,11 @@ void ofxHapPlayer::read(const ofxHap::TimeRangeSet& wanted, bool seek)
         int64_t lastRead = _demuxer->getLastReadTime();
         if (lastRead != AV_NOPTS_VALUE && range.start > lastRead && range.start - lastRead < kofxHapPlayerUSecPerSec / 4)
         {
-
-//            std::cout << "read " <<
-//            av_rescale_q(range.latest(), AV_TIME_BASE_Q, {_videoTimeBase.first, _videoTimeBase.second})
-//            << " (" << range.latest() << ")" << std::endl;
-
             _demuxer->read(range.latest());
             _active.add(lastRead + 1, range.latest() - lastRead);
         }
         else if (seek)
         {
-//            std::cout << "seek " <<
-//            av_rescale_q(range.start, AV_TIME_BASE_Q, {_videoTimeBase.first, _videoTimeBase.second})
-//            << " (" << range.start << ") " << " read " <<
-//            av_rescale_q(range.latest(), AV_TIME_BASE_Q, {_videoTimeBase.first, _videoTimeBase.second})
-//            << " (" << range.latest() << ")" << std::endl;
             _demuxer->seekTime(range.start);
             _demuxer->read(range.latest());
             _active.add(range);
@@ -388,12 +382,12 @@ void ofxHapPlayer::read(const ofxHap::TimeRangeSet& wanted, bool seek)
 void ofxHapPlayer::update(ofEventArgs & args)
 {
     std::lock_guard<std::mutex> guard(_lock);
-    // Calculate our current position for video and audio (if present)
-    if (!_playing || !_videoStream || !_loaded)
+    if (!_loaded)
     {
-        // TODO: or something - what about stream end in play-once?
         return;
     }
+
+    // Calculate our current position for video and audio (if present)
     updatePTS();
 
     int64_t pts = _clock.getTime();
@@ -424,24 +418,11 @@ void ofxHapPlayer::update(ofEventArgs & args)
         vcache.add(vrange);
     }
 
-//    std::cout << "----start----" <<
-//    av_rescale_q(pts, AV_TIME_BASE_Q, {_videoTimeBase.first, _videoTimeBase.second}) << "----" << pts << "----" << std::endl;
-
     _videoPackets.limit(vcache);
 
     _active = _active.intersection(cache);
 
     wanted.remove(_active);
-
-    //    std::cout << "direction: " << _clock.getDirection() << std::endl;
-//    std::cout << "wanted (size: " << wanted.size() << ") ";
-//    describeTRS(wanted);
-
-//    std::cout << "_videoPackets ";
-//    describeTRS(_videoPackets.times());
-
-//    std::cout << "_active ";
-//    describeTRS(_active);
 
     // Read what we can without seeking first...
     read(wanted, false);
@@ -455,13 +436,23 @@ void ofxHapPlayer::update(ofEventArgs & args)
     {
         vidPosition--;
     }
-    // Retreive the video frame if necessary
+    // Stop if we have got to the end of the movie and aren't looping
+    if (_clock.getDone() && _playing)
+    {
+        if (_audioThread)
+        {
+            _audioOut.stop();
+        }
+        _playing = false;
+    }
+    // No frame if the movie position outlies the video track length
     if (vidPosition > _videoStream->duration || (_videoStream->start_time != AV_NOPTS_VALUE && vidPosition < _videoStream->start_time))
     {
         _decodedFrame.invalidate();
     }
     else
     {
+        // Retreive the video frame if necessary
         bool inBuffer = (_decodedFrame.isValid() && _decodedFrame.pts <= vidPosition && _decodedFrame.pts + _decodedFrame.duration > vidPosition) ? true : false;
         if (!inBuffer)
         {
@@ -469,10 +460,9 @@ void ofxHapPlayer::update(ofEventArgs & args)
             av_init_packet(&packet);
             packet.data = NULL;
             packet.size = 0;
+            // Fetch a stored packet, blocking until our timeout if necessary
             if (_videoPackets.fetch(vidPosition, &packet, std::chrono::microseconds(_timeout)))
             {
-                //            std::cout << packet.pts << std::endl;
-
                 unsigned int textureCount;
                 unsigned int hapResult = HapGetFrameTextureCount(packet.data, packet.size, &textureCount);
                 if (hapResult == HapResult_No_Error && textureCount == 1) // TODO: Hap Q+A
@@ -715,8 +705,7 @@ void ofxHapPlayer::stop()
 {
     std::lock_guard<std::mutex> guard(_lock);
     _playing = false;
-    _audioOut.close();
-    _decodedFrame.clear();
+    setPaused(true, true);
 }
 
 void ofxHapPlayer::setPaused(bool pause)
@@ -730,6 +719,10 @@ void ofxHapPlayer::setPaused(bool pause, bool locked)
     assert(locked);
     if (_clock.getPaused() != pause)
     {
+        if (!pause)
+        {
+            _playing = true;
+        }
         _clock.setPausedAt(pause, _frameTime);
         if (_audioThread)
         {
