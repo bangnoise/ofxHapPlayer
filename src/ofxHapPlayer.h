@@ -94,11 +94,11 @@ public:
 /*  virtual int                 getCurrentFrame() const; // TODO: */
     virtual int                 getTotalNumFrames() const;
     virtual ofLoopType          getLoopState() const;
-    /*
+
     virtual void                firstFrame();
     virtual void                nextFrame();
     virtual void                previousFrame();
-    */
+
     //
     virtual void                draw(float x, float y);
     virtual void                draw(float x, float y, float width, float height);
@@ -118,6 +118,8 @@ private:
     virtual void    endMovie();
     virtual void    error(int averror);
     void            setPaused(bool pause, bool locked);
+    void            setVideoPTSLoaded(int64_t pts);
+    void            setPTSLoaded(int64_t pts);
     void            setPositionLoaded(float pct);
     void            update(ofEventArgs& args);
     void            updatePTS();

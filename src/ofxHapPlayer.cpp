@@ -929,11 +929,58 @@ void ofxHapPlayer::setPosition(float pct)
 
 void ofxHapPlayer::setPositionLoaded(float pct)
 {
-    int64_t time = std::min(std::max(static_cast<int64_t>(pct * _clock.period), INT64_C(0)), _clock.period);
-    _clock.syncAt(time, _frameTime);
+    int64_t time = std::max(std::min(static_cast<int64_t>(pct * _clock.period), _clock.period), INT64_C(0));
+    setPTSLoaded(time);
+}
+
+void ofxHapPlayer::setVideoPTSLoaded(int64_t pts)
+{
+    pts = std::max(std::min(av_rescale_q(pts, _videoStream->time_base, { 1, AV_TIME_BASE }), _clock.period), INT64_C(0));
+    setPTSLoaded(pts);
+}
+
+void ofxHapPlayer::setPTSLoaded(int64_t pts)
+{
+    _clock.syncAt(pts, _frameTime);
     if (_audioThread)
     {
         _audioThread->sync(_clock);
+    }
+}
+
+void ofxHapPlayer::firstFrame()
+{
+    std::lock_guard<std::mutex> guard(_lock);
+    if (_loaded)
+    {
+        int64_t time = _videoStream->start_time;
+        if (time == AV_NOPTS_VALUE)
+        {
+            time = 0;
+        }
+        setVideoPTSLoaded(time);
+    }
+    else
+    {
+        _positionOnLoad = 0.0f;
+    }
+}
+
+void ofxHapPlayer::nextFrame()
+{
+    std::lock_guard<std::mutex> guard(_lock);
+    if (_loaded && _decodedFrame.isValid())
+    {
+        setVideoPTSLoaded(_decodedFrame.pts + _decodedFrame.duration);
+    }
+}
+
+void ofxHapPlayer::previousFrame()
+{
+    std::lock_guard<std::mutex> guard(_lock);
+    if (_loaded && _decodedFrame.isValid())
+    {
+        setVideoPTSLoaded(_decodedFrame.pts - 1);
     }
 }
 
