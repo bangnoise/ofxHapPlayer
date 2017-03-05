@@ -124,7 +124,7 @@ private:
     void            update(ofEventArgs& args);
     void            updatePTS();
     void            limit(ofxHap::TimeRangeSet& set) const;
-    void            read(const ofxHap::TimeRangeSet& range, bool seek);
+    void            read(ofxHap::TimeRangeSequence& sequence);
     class AudioOutput : public ofBaseSoundOutput {
     public:
         AudioOutput();

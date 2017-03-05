@@ -1,8 +1,8 @@
 /*
- Clock.h
+ MovieTime.h
  ofxHapPlayer
 
- Copyright (c) 2016, Tom Butterworth. All rights reserved.
+ Copyright (c) 2017, Tom Butterworth. All rights reserved.
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions are met:
 
@@ -25,42 +25,18 @@
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef Clock_h
-#define Clock_h
+#ifndef MovieTime_hpp
+#define MovieTime_hpp
 
-#include <cstdint>
+#include "TimeRangeSet.h"
+#include "Clock.h"
 
 namespace ofxHap {
-    class Clock {
-    public:
-        enum class Mode {
-            Once,
-            Loop,
-            Palindrome
-        };
-        enum class Direction {
-            Forwards,
-            Backwards
-        };
-                Clock();
-        void    syncAt(int64_t pos, int64_t t);
-        int64_t getTime() const;
-        int64_t getTimeAt(int64_t t) const;
-        int64_t setTimeAt(int64_t t);
-        void    setPausedAt(bool paused, int64_t t);
-        bool    getPaused() const;
-        Direction   getDirectionAt(int64_t t) const;
-        float   getRate() const;
-        void    setRateAt(float r, int64_t t);
-        bool    getDone() const;
-        int64_t period;
-        Mode    mode;
-    private:
-        int64_t _start;
-        int64_t _time;
-        bool    _paused;
-        float   _rate;
-    };
+    namespace MovieTime {
+        TimeRangeSequence flatten(TimeRangeSequence sequence);
+        TimeRange nextRange(const Clock& clock, int64_t absolute, int64_t limit);
+        TimeRangeSequence nextRanges(const Clock& track, int64_t absolute, int64_t duration);
+    }
 }
 
-#endif /* Clock_h */
+#endif /* MovieTime_hpp */

@@ -9,47 +9,6 @@
 		<string>46</string>
 		<key>objects</key>
 		<dict>
-			<key>9AB3F4D8C09F3B9AEEA26BE3</key>
-			<dict>
-				<key>children</key>
-				<array>
-					<string>A0D66D1AFB6DF7A56EB71FCD</string>
-				</array>
-				<key>isa</key>
-				<string>PBXGroup</string>
-				<key>name</key>
-				<string>include</string>
-				<key>sourceTree</key>
-				<string>&lt;group&gt;</string>
-			</dict>
-			<key>7A2C5E0AF06168013381D973</key>
-			<dict>
-				<key>children</key>
-				<array>
-					<string>9AB3F4D8C09F3B9AEEA26BE3</string>
-				</array>
-				<key>isa</key>
-				<string>PBXGroup</string>
-				<key>name</key>
-				<string>snappy</string>
-				<key>sourceTree</key>
-				<string>&lt;group&gt;</string>
-			</dict>
-			<key>A0D66D1AFB6DF7A56EB71FCD</key>
-			<dict>
-				<key>explicitFileType</key>
-				<string>sourcecode.c.h</string>
-				<key>fileEncoding</key>
-				<string>30</string>
-				<key>isa</key>
-				<string>PBXFileReference</string>
-				<key>name</key>
-				<string>snappy-c.h</string>
-				<key>path</key>
-				<string>../../../addons/ofxHapPlayer/libs/snappy/include/snappy-c.h</string>
-				<key>sourceTree</key>
-				<string>SOURCE_ROOT</string>
-			</dict>
 			<key>AF24098F3EE61E761F184C8F</key>
 			<dict>
 				<key>fileRef</key>
@@ -113,6 +72,28 @@
 				<string>PacketCache.cpp</string>
 				<key>path</key>
 				<string>../../../addons/ofxHapPlayer/libs/ofxHap/src/PacketCache.cpp</string>
+				<key>sourceTree</key>
+				<string>SOURCE_ROOT</string>
+			</dict>
+			<key>FCE78EB42A44ECB3261E18AB</key>
+			<dict>
+				<key>fileRef</key>
+				<string>97338BB48921889487BDA51E</string>
+				<key>isa</key>
+				<string>PBXBuildFile</string>
+			</dict>
+			<key>97338BB48921889487BDA51E</key>
+			<dict>
+				<key>explicitFileType</key>
+				<string>sourcecode.cpp.cpp</string>
+				<key>fileEncoding</key>
+				<string>30</string>
+				<key>isa</key>
+				<string>PBXFileReference</string>
+				<key>name</key>
+				<string>MovieTime.cpp</string>
+				<key>path</key>
+				<string>../../../addons/ofxHapPlayer/libs/ofxHap/src/MovieTime.cpp</string>
 				<key>sourceTree</key>
 				<string>SOURCE_ROOT</string>
 			</dict>
@@ -236,6 +217,7 @@
 					<string>1700621FD10DE4D4F9697B24</string>
 					<string>238B65DDD4862C9A94A29AB4</string>
 					<string>EE008DE736F55C209519A9B1</string>
+					<string>97338BB48921889487BDA51E</string>
 					<string>2D623880D84A52CF35CA2160</string>
 					<string>9A8EC2BF48E2C3C42C379138</string>
 					<string>000270D61857A9C7C7628691</string>
@@ -311,6 +293,21 @@
 				<string>PacketCache.h</string>
 				<key>path</key>
 				<string>../../../addons/ofxHapPlayer/libs/ofxHap/include/ofxHap/PacketCache.h</string>
+				<key>sourceTree</key>
+				<string>SOURCE_ROOT</string>
+			</dict>
+			<key>4D40695920B3379E19F1A11D</key>
+			<dict>
+				<key>explicitFileType</key>
+				<string>sourcecode.c.h</string>
+				<key>fileEncoding</key>
+				<string>30</string>
+				<key>isa</key>
+				<string>PBXFileReference</string>
+				<key>name</key>
+				<string>MovieTime.h</string>
+				<key>path</key>
+				<string>../../../addons/ofxHapPlayer/libs/ofxHap/include/ofxHap/MovieTime.h</string>
 				<key>sourceTree</key>
 				<string>SOURCE_ROOT</string>
 			</dict>
@@ -431,6 +428,7 @@
 					<string>C8ACC5ADB42FB88EC0A6BA43</string>
 					<string>C7E31A41D29A71BC7651883D</string>
 					<string>2CB998AF03E1DC191394C214</string>
+					<string>4D40695920B3379E19F1A11D</string>
 					<string>44A7B4A73286DB60EC1938DC</string>
 					<string>FAE24647AFB9C4EDBDDA0EE8</string>
 					<string>A3CD349FD8C7B388CE841D0D</string>
@@ -532,7 +530,6 @@
 				<array>
 					<string>E09D8B6334004E7315770DB3</string>
 					<string>6BA06186AF1C74A7B5F517D6</string>
-					<string>7A2C5E0AF06168013381D973</string>
 				</array>
 				<key>isa</key>
 				<string>PBXGroup</string>
@@ -994,6 +991,7 @@
 					<string>4774F36141444127CFF18422</string>
 					<string>8B40DD2B41C58FF6B6907B86</string>
 					<string>6D4C0ECBC21CF195A5BDBE31</string>
+					<string>FCE78EB42A44ECB3261E18AB</string>
 					<string>2302C21FAE47D435CF095990</string>
 					<string>4EC00043E3376C87F0ECA874</string>
 					<string>AF24098F3EE61E761F184C8F</string>

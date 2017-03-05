@@ -446,10 +446,10 @@ void ofxHap::AudioThread::Playhead::start(int64_t now, int64_t &startSample, int
     {
         startTime = _prevTime + 1; // TODO: or don't ++ here but do it when we rescale to keep precision?
     }
-    int direction = _clock.getDirectionAt(startTime);
+    Clock::Direction direction = _clock.getDirectionAt(startTime);
     int64_t movieStart = _clock.getTimeAt(startTime);
 
-    if (direction < 0)
+    if (direction == Clock::Direction::Backwards)
         forwards = false;
     else
         forwards = true;

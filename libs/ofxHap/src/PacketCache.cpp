@@ -136,7 +136,7 @@ void ofxHap::PacketCache::limit(std::map<int64_t, AVPacket *> &map, const ofxHap
 {
     for (auto itr = map.cbegin(); itr != map.cend();) {
         AVPacket *p = itr->second;
-        TimeRangeSet::TimeRange current(p->pts, p->duration);
+        TimeRange current(p->pts, p->duration);
         bool keep = false;
         if (active && p->pts >= ranges.earliest())
         {

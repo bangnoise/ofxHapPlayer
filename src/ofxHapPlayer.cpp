@@ -35,6 +35,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <ofxHap/Common.h>
 #include <ofxHap/AudioThread.h>
 #include <ofxHap/RingBuffer.h>
+#include <ofxHap/MovieTime.h>
 extern "C" {
 #include <libavformat/avformat.h>
 #include <libavutil/time.h>
@@ -361,19 +362,22 @@ static void describeTRS(const ofxHap::TimeRangeSet& set)
 }
 */
 
-void ofxHapPlayer::read(const ofxHap::TimeRangeSet& wanted, bool seek)
+void ofxHapPlayer::read(ofxHap::TimeRangeSequence& sequence)
 {
-    for (auto range : wanted)
+    ofxHap::TimeRangeSequence flattened = ofxHap::MovieTime::flatten(sequence);
+    flattened.remove(_active);
+
+    for (const ofxHap::TimeRange& range : flattened)
     {
         int64_t lastRead = _demuxer->getLastReadTime();
-        if (lastRead != AV_NOPTS_VALUE && range.start > lastRead && range.start - lastRead < kofxHapPlayerUSecPerSec / 4)
+        if (lastRead != AV_NOPTS_VALUE && range.earliest() > lastRead && range.earliest() - lastRead < kofxHapPlayerUSecPerSec / 4)
         {
             _demuxer->read(range.latest());
             _active.add(lastRead + 1, range.latest() - lastRead);
         }
-        else if (seek)
+        else
         {
-            _demuxer->seekTime(range.start);
+            _demuxer->seekTime(range.earliest());
             _demuxer->read(range.latest());
             _active.add(range);
         }
@@ -393,44 +397,23 @@ void ofxHapPlayer::update(ofEventArgs & args)
 
     int64_t pts = _clock.getTime();
 
-    ofxHap::TimeRangeSet wanted, cache;
-
-    if (_clock.getDirectionAt(_frameTime) > 0)
-    {
-        wanted.add(pts, kofxHapPlayerBufferUSec);
-    }
-    else
-    {
-        wanted.add(pts - kofxHapPlayerBufferUSec, kofxHapPlayerBufferUSec);
-    }
-
-    // Keep cache either side of pts (handles wrap-around)
-    cache.add(pts - kofxHapPlayerBufferUSec, kofxHapPlayerBufferUSec);
-    cache.add(pts, kofxHapPlayerBufferUSec);
-
-    limit(wanted);
-    limit(cache);
-
+    // Sequences ahead of us (to request from the demuxer) and to keep cached
+    ofxHap::TimeRangeSequence future = ofxHap::MovieTime::nextRanges(_clock, _frameTime, std::min(_clock.period, kofxHapPlayerBufferUSec));
+    ofxHap::TimeRangeSequence cache = ofxHap::MovieTime::nextRanges(_clock, _frameTime - kofxHapPlayerBufferUSec, std::min(_clock.period, kofxHapPlayerBufferUSec * INT64_C(2)));
+    // Rescale the cache for video
     ofxHap::TimeRangeSet vcache;
     for (auto& range : cache)
     {
-        ofxHap::TimeRangeSet::TimeRange vrange(av_rescale_q(range.start, { 1, AV_TIME_BASE }, _videoStream->time_base),
-                                               av_rescale_q(range.length, { 1, AV_TIME_BASE }, _videoStream->time_base));
+        ofxHap::TimeRange vrange(av_rescale_q(range.start, { 1, AV_TIME_BASE }, _videoStream->time_base),
+                                 av_rescale_q(range.length, { 1, AV_TIME_BASE }, _videoStream->time_base));
         vcache.add(vrange);
     }
-
+    // Release any packets we no longer need
     _videoPackets.limit(vcache);
 
     _active = _active.intersection(cache);
 
-    wanted.remove(_active);
-
-    // Read what we can without seeking first...
-    read(wanted, false);
-    // ...update our wanted set...
-    wanted.remove(_active);
-    // ...then seek and read the remainder
-    read(wanted, true);
+    read(future);
 
     int64_t vidPosition = av_rescale_q(pts, { 1, AV_TIME_BASE }, _videoStream->time_base);
     if (pts == _clock.period)
@@ -935,7 +918,7 @@ void ofxHapPlayer::setPositionLoaded(float pct)
 
 void ofxHapPlayer::setVideoPTSLoaded(int64_t pts)
 {
-    pts = std::max(std::min(av_rescale_q(pts, _videoStream->time_base, { 1, AV_TIME_BASE }), _clock.period), INT64_C(0));
+    pts = std::max(std::min(av_rescale_q(pts, _videoStream->time_base, { 1, AV_TIME_BASE }), _clock.period - 1), INT64_C(0));
     setPTSLoaded(pts);
 }
 
@@ -971,7 +954,7 @@ void ofxHapPlayer::nextFrame()
     std::lock_guard<std::mutex> guard(_lock);
     if (_loaded && _decodedFrame.isValid())
     {
-        setVideoPTSLoaded(_decodedFrame.pts + _decodedFrame.duration);
+        setVideoPTSLoaded(std::min(_decodedFrame.pts + _decodedFrame.duration, _videoStream->duration - 1));
     }
 }
 

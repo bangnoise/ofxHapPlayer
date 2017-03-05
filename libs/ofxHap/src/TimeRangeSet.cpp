@@ -27,6 +27,7 @@
 
 #include "TimeRangeSet.h"
 #include <algorithm>
+#include <cstdlib>
 
 int64_t ofxHap::TimeRangeSet::earliest() const
 {
@@ -53,8 +54,9 @@ void ofxHap::TimeRangeSet::add(int64_t start, int64_t length)
     add(TimeRange(start, length));
 }
 
-void ofxHap::TimeRangeSet::add(const ofxHap::TimeRangeSet::TimeRange &range)
+void ofxHap::TimeRangeSet::add(const ofxHap::TimeRange &r)
 {
+    TimeRange range = r.abs();
     if (range.length)
     {
         for (auto itr = _ranges.begin(); itr != _ranges.end(); ++itr)
@@ -92,7 +94,7 @@ void ofxHap::TimeRangeSet::remove(int64_t start, int64_t length)
     remove(TimeRange(start, length));
 }
 
-void ofxHap::TimeRangeSet::remove(const ofxHap::TimeRangeSet::TimeRange &range)
+void ofxHap::TimeRangeSet::remove(const ofxHap::TimeRange &range)
 {
     if (range.length)
     {
@@ -103,7 +105,6 @@ void ofxHap::TimeRangeSet::remove(const ofxHap::TimeRangeSet::TimeRange &range)
                 {
                     TimeRange remainder(range.latest() + 1, itr->latest() - range.latest());
                     itr->length -= remainder.length;
-                    // TODO: could be emplace()
                     _ranges.insert(itr, remainder);
                 }
                 if (itr->start < range.start)
@@ -152,41 +153,168 @@ ofxHap::TimeRangeSet ofxHap::TimeRangeSet::intersection(const ofxHap::TimeRangeS
     return result;
 }
 
+ofxHap::TimeRangeSet ofxHap::TimeRangeSet::intersection(const TimeRangeSequence& o) const
+{
+    TimeRangeSet result;
+    for (const TimeRange& orange : o)
+    {
+        for (const TimeRange& range : _ranges)
+        {
+            result.add(range.intersection(orange));
+        }
+    }
+    return result;
+}
+
 void ofxHap::TimeRangeSet::clear()
 {
     _ranges.clear();
 }
 
-ofxHap::TimeRangeSet::TimeRange::TimeRange(int64_t s, int64_t l)
+ofxHap::TimeRange::TimeRange(int64_t s, int64_t l)
 : start(s), length(l) {}
 
-int64_t ofxHap::TimeRangeSet::TimeRange::latest() const
+ofxHap::TimeRange ofxHap::TimeRange::abs() const
 {
-    return start + length - 1;
+    return TimeRange(earliest(), std::abs(length));
 }
 
-bool ofxHap::TimeRangeSet::TimeRange::intersects(const ofxHap::TimeRangeSet::TimeRange &o) const
+int64_t ofxHap::TimeRange::earliest() const
 {
-    if (includes(o.start) || o.includes(start))
+    return length < 0 ? start + length + 1 : start;
+}
+
+int64_t ofxHap::TimeRange::latest() const
+{
+    return length < 0 ? start : start + length - 1;
+}
+
+void ofxHap::TimeRange::setEarliest(int64_t e)
+{
+    if (e > latest())
+    {
+        start = e;
+        length = 0;
+    }
+    else
+    {
+        if (length > 0)
+        {
+            length += start - e;
+            start = e;
+        }
+        else if (length < 0)
+        {
+            length = - (start - e + 1);
+        }
+    }
+}
+
+void ofxHap::TimeRange::setLatest(int64_t l)
+{
+    if (l < earliest())
+    {
+        start = l;
+        length = 0;
+    }
+    else
+    {
+        if (length > 0)
+        {
+            length = l - start + 1;
+        }
+        else
+        {
+            length -= l - start;
+            start = l;
+        }
+    }
+}
+
+bool ofxHap::TimeRange::intersects(const ofxHap::TimeRange &o) const
+{
+    if (includes(o.earliest()) || o.includes(earliest()))
     {
         return true;
     }
     return false;
 }
 
-bool ofxHap::TimeRangeSet::TimeRange::includes(int64_t t) const
+bool ofxHap::TimeRange::includes(int64_t t) const
 {
-    if (t >= start && t <= latest())
+    if (t >= earliest() && t <= latest())
     {
         return true;
     }
     return false;
 }
 
-ofxHap::TimeRangeSet::TimeRange ofxHap::TimeRangeSet::TimeRange::intersection(const ofxHap::TimeRangeSet::TimeRange &o) const
+ofxHap::TimeRange ofxHap::TimeRange::intersection(const ofxHap::TimeRange &o) const
 {
-    int64_t s = std::max(start, o.start);
+    int64_t s = std::max(earliest(), o.earliest());
     int64_t e = std::min(latest(), o.latest());
     int64_t l = std::max(INT64_C(0), 1 + e - s);
     return TimeRange(s, l);
+}
+
+void ofxHap::TimeRangeSequence::add(const ofxHap::TimeRange &range)
+{
+    _ranges.push_back(range);
+}
+
+void ofxHap::TimeRangeSequence::remove(const ofxHap::TimeRange &range)
+{
+    if (range.length)
+    {
+        for (auto itr = _ranges.begin(); itr != _ranges.end();) {
+            if (itr->intersects(range))
+            {
+                if (itr->earliest() >= range.earliest() && itr->latest() <= range.latest())
+                {
+                    // Is entirely within the range to be removed
+                    itr = _ranges.erase(itr);
+                }
+                else
+                {
+                    if (itr->earliest() >= range.earliest() && itr->latest() > range.latest())
+                    {
+                        // Starts after or at the same time and ends after the range to be removed
+                        // Move the start:
+                        itr->setEarliest(range.latest() + 1);
+                    }
+                    else if (itr->includes(range.earliest()))
+                    {
+                        // Starts before the range to be removed
+                        if (itr->latest() > range.latest())
+                        {
+                            // Ends after the range to be removed
+                            // Split
+                            TimeRange remainder(range.latest() + 1, itr->latest() - range.latest());
+                            if (itr->length < 0)
+                            {
+                                remainder.start = remainder.latest();
+                                remainder.length = -remainder.length;
+                            }
+                            _ranges.insert(itr, remainder);
+                        }
+                        // Shorten
+                        itr->setLatest(range.earliest() - 1);
+                    }
+                    ++itr;
+                }
+            }
+            else
+            {
+                ++itr;
+            }
+        }
+    }
+}
+
+void ofxHap::TimeRangeSequence::remove(const ofxHap::TimeRangeSet &set)
+{
+    for (const TimeRange& range : set)
+    {
+        remove(range);
+    }
 }

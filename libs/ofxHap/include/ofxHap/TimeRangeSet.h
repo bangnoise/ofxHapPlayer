@@ -33,18 +33,23 @@
 #include <cstddef>
 
 namespace ofxHap {
+    class TimeRange {
+    public:
+        TimeRange(int64_t start, int64_t length);
+        int64_t earliest() const;
+        int64_t latest() const;
+        void setEarliest(int64_t earliest); // Sets the start if length is +ve, or moves the end if -ve
+        void setLatest(int64_t latest);     // Moves the length if length is +ve, or moves the start if -ve 
+        bool intersects(const TimeRange& o) const;
+        bool includes(int64_t t) const;
+        TimeRange intersection(const TimeRange& o) const;
+        TimeRange abs() const;
+        int64_t start;
+        int64_t length;
+    };
+    class TimeRangeSequence;
     class TimeRangeSet {
     public:
-        class TimeRange {
-        public:
-            TimeRange(int64_t start, int64_t length);
-            int64_t latest() const;
-            bool intersects(const TimeRange& o) const;
-            bool includes(int64_t t) const;
-            TimeRange intersection(const TimeRange& o) const;
-            int64_t start;
-            int64_t length;
-        };
         int64_t earliest() const;
         int64_t latest() const;
         bool includes(int64_t t) const;
@@ -54,8 +59,27 @@ namespace ofxHap {
         void remove(const TimeRange& range);
         void remove(const TimeRangeSet& o);
         TimeRangeSet intersection(const TimeRangeSet& o) const;
+        TimeRangeSet intersection(const TimeRangeSequence& o) const;
         void clear();
         size_t size() const { // TODO: could probably delete
+            return _ranges.size();
+        }
+        std::list<TimeRange>::const_iterator begin() const {
+            return _ranges.begin();
+        }
+        std::list<TimeRange>::const_iterator end() const {
+            return _ranges.end();
+        }
+    private:
+        std::list<TimeRange> _ranges;
+    };
+
+    class TimeRangeSequence {
+    public:
+        void add(const TimeRange& range);
+        void remove(const TimeRange& range);
+        void remove(const TimeRangeSet& set);
+        size_t size() const {
             return _ranges.size();
         }
         std::list<TimeRange>::const_iterator begin() const {

@@ -87,7 +87,7 @@ int64_t ofxHap::Clock::getTimeAt(int64_t t) const
     }
     else if (mode == Mode::Palindrome && clockMod((t / period), 2) == 1)
     {
-        return period - clockMod(t, period);
+        return period - clockMod(t, period) - 1;
     }
     else
     {
@@ -121,7 +121,7 @@ bool ofxHap::Clock::getPaused() const
     return _paused;
 }
 
-int ofxHap::Clock::getDirectionAt(int64_t t) const
+ofxHap::Clock::Direction ofxHap::Clock::getDirectionAt(int64_t t) const
 {
     if (_paused)
     {
@@ -133,28 +133,28 @@ int ofxHap::Clock::getDirectionAt(int64_t t) const
     }
     if (period == 0)
     {
-        return 1;
+        return Direction::Forwards;
     }
     else if (mode == Mode::Palindrome && clockMod((t / period), 2) == 1)
     {
         if (_rate > 0)
         {
-            return -1;
+            return Direction::Backwards;
         }
         else
         {
-            return 1;
+            return Direction::Forwards;
         }
     }
     else
     {
         if (_rate > 0)
         {
-            return 1;
+            return Direction::Forwards;
         }
         else
         {
-            return -1;
+            return Direction::Backwards;
         }
     }
 }
