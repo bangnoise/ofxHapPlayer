@@ -54,21 +54,6 @@ namespace ofxHap {
         void        flush();
         void        setVolume(float v);
     private:
-        class Playhead {
-        public:
-            Playhead(Clock& movieClock, int inputRate, int outputRate, int bufferSamples, int64_t streamStart, int64_t streamDuration);
-            void start(int64_t time, int64_t& startSample, int& length, bool& forwards) const;
-            void advance(int64_t time, int64_t lastSample);
-        private:
-            Clock&  _clock;
-            int     _samplerateIn;
-            int     _samplerateOut;
-            int     _bufferSamples;
-            int64_t _start;
-            int64_t _duration;
-            int64_t _prevTime;
-            int64_t _prevSample;
-        };
         class Action {
         public:
             enum class Kind {

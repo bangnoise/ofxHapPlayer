@@ -26,6 +26,9 @@
  */
 
 #include "Clock.h"
+extern "C" {
+#include <libavutil/avutil.h>
+}
 
 namespace ofxHap {
     static int64_t clockMod(int64_t k, int64_t n)
@@ -173,4 +176,11 @@ void ofxHap::Clock::setRateAt(float r, int64_t t)
 bool ofxHap::Clock::getDone() const
 {
     return (mode == Mode::Once && getTime() == period) ? true : false;
+}
+
+void ofxHap::Clock::rescale(int old, int next)
+{
+    period = av_rescale_q(period, {1, old}, {1, next});
+    _start = av_rescale_q(_start, {1, old}, {1, next});
+    _time = av_rescale_q(_time, {1, old}, {1, next});
 }

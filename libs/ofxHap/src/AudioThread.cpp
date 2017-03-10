@@ -33,9 +33,9 @@ extern "C" {
 #include <map>
 #include <cstdlib>
 #include <cmath>
-#include <iostream> // TODO: NO
 #include "AudioDecoder.h"
 #include "AudioResampler.h"
+#include "MovieTime.h"
 
 
 ofxHap::AudioThread::AudioThread(const AudioParameters& params ,
@@ -66,6 +66,10 @@ void ofxHap::AudioThread::threadMain(AudioParameters params, int outRate, std::s
     {
         return;
     }
+    if (streamStart == AV_NOPTS_VALUE)
+    {
+        streamStart = INT64_C(0);
+    }
 
     int result = 0;
 
@@ -87,15 +91,13 @@ void ofxHap::AudioThread::threadMain(AudioParameters params, int outRate, std::s
         int channels = params.context->channels;
 #endif
         AudioResampler resampler(params, outRate);
-        int64_t maxDelayScaled = av_rescale_q(buffer->getSamplesPerChannel(), { 1, AV_TIME_BASE }, { 1, sampleRate });
         bool finish = false;
-        bool flush = false;
         std::queue<Action> queue;
         std::map<int64_t, AVFrame *> cache;
         AVFrame *reversed = nullptr;
         Clock clock;
-
-        Playhead playhead(clock, sampleRate, outRate, buffer->getSamplesPerChannel(), streamStart, streamDuration);
+        int64_t last = AV_NOPTS_VALUE;
+        TimeRange current(AV_NOPTS_VALUE, 0);
 
         while (!finish) {
 
@@ -144,8 +146,6 @@ void ofxHap::AudioThread::threadMain(AudioParameters params, int outRate, std::s
 
             int64_t now = av_gettime_relative();
 
-            clock.setTimeAt(now);
-
             if (!clock.getPaused())
             {
                 float *dst[2];
@@ -154,38 +154,62 @@ void ofxHap::AudioThread::threadMain(AudioParameters params, int outRate, std::s
 
                 _buffer->writeBegin(dst[0], count[0], dst[1], count[1]);
 
-                // TODO: HERE HERE HERE
-                // 1. skipped some at movie loop, and audible click, are we playing all the samples?
-                // 4. wake thread for future writes (time limit on condition.wait())
+                int64_t expected = av_rescale_q(now, {1, AV_TIME_BASE}, {1, sampleRate});
+                if (last == AV_NOPTS_VALUE || std::abs(last - expected) > _buffer->getSamplesPerChannel())
+                {
+                    // Drift, hopefully due to missing packets
+                    last = expected;
+                    current.start = AV_NOPTS_VALUE;
+                }
 
-                //            std::cout << "---- writeBegin" << std::endl;
                 for (int i = 0; i < 2; i++) {
                     while (count[i] > 0)
                     {
-                        int64_t start;
-                        int lengthIn;
-                        bool forwards;
+                        // Only queue (roughly) as many samples as we need to fill the buffer, to avoid choking the resampler
+                        int countInMax = av_rescale_q(count[i], {1, static_cast<int>(outRate / std::fabs(clock.getRate()))}, {1, sampleRate});
 
-                        playhead.start(now, start, lengthIn, forwards);
+                        int written = 0;
+                        int consumed = 0;
 
-                        int lengthOut = static_cast<int>(av_rescale_q(lengthIn, {1, sampleRate}, {1, static_cast<int>(outRate / std::fabs(clock.getRate()))}));
-                        if (lengthOut > count[i])
+                        if (current.start == AV_NOPTS_VALUE || current.length == 0)
                         {
-                            lengthOut = count[i];
-                            // Only queue (roughly) as many samples as we need to fill lengthOut, to avoid choking the resampler
-                            lengthIn = static_cast<int>(av_rescale_q_rnd(lengthOut, {1, static_cast<int>(outRate / std::fabs(clock.getRate()))}, {1, sampleRate}, AV_ROUND_UP));
+                            current = MovieTime::nextRange(clock, last, clock.period);
                         }
 
-                        if (start < streamStart || start > streamStart + streamDuration)
+                        if (current.start < streamStart || current.start > streamStart + streamDuration)
                         {
-                            av_samples_set_silence((uint8_t **)&dst[i], 0, lengthOut, channels, AV_SAMPLE_FMT_FLT);
+                            if (current.start < streamStart)
+                            {
+                                if (current.length < 0)
+                                {
+                                    consumed = current.start + 1;
+                                }
+                                else
+                                {
+                                    consumed = streamStart - current.start;
+                                }
+                            }
+                            else
+                            {
+                                if (current.length < 0)
+                                {
+                                    consumed = current.start - (streamStart + streamDuration);
+                                }
+                                else
+                                {
+                                    consumed = clock.period - current.start;
+                                }
+                            }
+                            consumed = std::min(consumed, static_cast<int>(std::abs(current.length)));
+                            written = av_rescale_q(consumed, {1, sampleRate}, {1, static_cast<int>(outRate / std::fabs(clock.getRate()))});
+                            av_samples_set_silence((uint8_t **)&dst[i], 0, written, channels, AV_SAMPLE_FMT_FLT);
                         }
                         else
                         {
                             AVFrame *frame = nullptr;
                             int64_t pts;
                             for (const auto pair : cache) {
-                                if (pair.first <= start && pair.first + pair.second->nb_samples > start)
+                                if (pair.first <= current.start && pair.first + pair.second->nb_samples > current.start)
                                 {
                                     frame = pair.second;
                                     pts = pair.first;
@@ -195,18 +219,21 @@ void ofxHap::AudioThread::threadMain(AudioParameters params, int outRate, std::s
 
                             if (frame)
                             {
-                                if (forwards)
+                                if (current.length > 0)
                                 {
+                                    // TODO: we could maybe request samples from resampler and only feed it if it's empty
+                                    // and then feed it the entire next chunk - then reset obv on reposition, etc
                                     // Fill forwards
-                                    lengthIn = std::min(lengthIn, static_cast<int>(frame->nb_samples - (start - pts)));
-
+                                    consumed = std::min(current.length, (frame->nb_samples - (current.start - pts)));
+                                    consumed = std::min(consumed, countInMax);
                                     // AAAAND so we'll need to know about discontinuities and flush the resampler
-                                    result = resampler.resample(frame, static_cast<int>(start - pts), lengthIn, dst[i], count[i], lengthOut, lengthIn);
+                                    result = resampler.resample(frame, static_cast<int>(current.start - pts), consumed, dst[i], count[i], written, consumed);
                                 }
                                 else
                                 {
                                     // Fill backwards
-                                    lengthIn = std::min(lengthIn, static_cast<int>(start - pts) + 1);
+                                    consumed = std::min(std::abs(current.length), (current.start - pts) + 1);
+                                    consumed = std::min(consumed, countInMax);
                                     if (reversed == nullptr)
                                     {
                                         reversed = av_frame_alloc();
@@ -229,28 +256,38 @@ void ofxHap::AudioThread::threadMain(AudioParameters params, int outRate, std::s
                                     // check that
                                     if (result >= 0)
                                     {
-                                        int offset = static_cast<int>(rpts + reversed->nb_samples - 1 - start);
-                                        result = resampler.resample(reversed, offset, lengthIn, dst[i], count[i], lengthOut, lengthIn);
+                                        int offset = static_cast<int>(rpts + reversed->nb_samples - 1 - current.start);
+                                        result = resampler.resample(reversed, offset, consumed, dst[i], count[i], written, consumed);
                                     }
                                 }
                             }
                             else
                             {
-                                lengthIn = lengthOut = 0;
+                                consumed = written = 0;
                                 break;
                             }
                         }
 
-                        if (lengthOut > 0)
+                        if (written > 0)
                         {
-                            count[i] -= lengthOut;
-                            dst[i] += lengthOut * channels;
-                            filled += lengthOut;
+                            count[i] -= written;
+                            dst[i] += written * channels;
+                            filled += written;
+                            now = av_add_stable({1, AV_TIME_BASE}, now, {1, outRate}, written);
                         }
-                        if (lengthIn > 0)
+                        if (consumed > 0)
                         {
-                            now = av_add_stable({1, AV_TIME_BASE}, now, {1, outRate}, lengthOut);
-                            playhead.advance(now, forwards ? start + lengthIn: start - lengthIn);
+                            last = av_add_stable({1, sampleRate}, last, {1, static_cast<int>(sampleRate * std::fabs(clock.getRate()))}, consumed);
+                            if (current.length > 0)
+                            {
+                                current.start += consumed;
+                                current.length -= consumed;
+                            }
+                            else
+                            {
+                                current.start -= consumed;
+                                current.length += consumed;
+                            }
                         }
 
                         if (result < 0)
@@ -260,9 +297,9 @@ void ofxHap::AudioThread::threadMain(AudioParameters params, int outRate, std::s
                         }
                         result = 0;
 
-                        if (lengthOut == 0)
+                        if (written == 0)
                         {
-                            // TODO: ?
+                            // If we couldn't write anything, bail
                             break;
                         }
                     }
@@ -275,18 +312,6 @@ void ofxHap::AudioThread::threadMain(AudioParameters params, int outRate, std::s
                 _buffer->writeEnd(filled);
             }
 
-
-
-
-                // TODO: HERE HERE HERE HERE HERE HERE
-                // 2. What is behaviour in reverse? Do we screw up decoding? For MP3? [YES]
-                // 3. We may have to write samples forwards to end of palindrome and then backwards
-
-            if (flush)
-            {
-                decoder.flush();
-            }
-
             // Only hold the lock in this { scope }
             {
                 std::unique_lock<std::mutex> locker(_lock);
@@ -297,10 +322,11 @@ void ofxHap::AudioThread::threadMain(AudioParameters params, int outRate, std::s
                 }
                 else
                 {
-                    int64_t wake = av_rescale(_buffer->getSamplesPerChannel() / 2, outRate, AV_TIME_BASE) - (av_gettime_relative() - now);
-                    if (wake > 0)
+                    int64_t next = av_gettime_relative() - av_rescale_q(_buffer->getSamplesPerChannel() / 2, {1, outRate}, {1, AV_TIME_BASE});
+                    int64_t wait = next - now;
+                    if (wait > 0)
                     {
-                        _condition.wait_for(locker, std::chrono::microseconds(wake));
+                        _condition.wait_for(locker, std::chrono::microseconds(wait));
                     }
                 }
 
@@ -311,7 +337,11 @@ void ofxHap::AudioThread::threadMain(AudioParameters params, int outRate, std::s
                 if (_sync)
                 {
                     clock = _clock;
+                    clock.rescale(AV_TIME_BASE, sampleRate);
                     resampler.setRate(_clock.getRate());
+                    // TODO: could distinguish between pause/unpause and not reset last on pause
+                    last = AV_NOPTS_VALUE;
+                    current.start = AV_NOPTS_VALUE;
                     _sync = false;
                 }
 
@@ -416,106 +446,6 @@ int ofxHap::AudioThread::reverse(AVFrame *dst, const AVFrame *src)
         }
     }
     return result;
-}
-
-ofxHap::AudioThread::Playhead::Playhead(Clock& movieClock, int rateIn, int rateOut, int bufferSamples, int64_t streamStart, int64_t streamDuration)
-: _clock(movieClock), _samplerateIn(rateIn), _samplerateOut(rateOut), _bufferSamples(bufferSamples), _start(streamStart), _duration(streamDuration),
-    _prevTime(AV_NOPTS_VALUE), _prevSample(AV_NOPTS_VALUE) { }
-
-void ofxHap::AudioThread::Playhead::advance(int64_t time, int64_t sample)
-{
-    _prevTime = time;
-    _prevSample = sample;
-}
-
-void ofxHap::AudioThread::Playhead::start(int64_t now, int64_t &startSample, int &length, bool& forwards) const
-{
-    // TODO: see av_compare_ts
-    
-    int64_t startTime;
-
-    if (_prevTime == AV_NOPTS_VALUE || (now - _prevTime) > av_rescale_q(_bufferSamples, {1, _samplerateOut}, {1, AV_TIME_BASE}))
-    {
-        if (_prevTime != AV_NOPTS_VALUE)
-        {
-            std::cout << "reset / prev:" << _prevTime << " now:" << now << " elapsed:" << (now - _prevTime) << std::endl;
-        }
-        startTime = now;
-    }
-    else
-    {
-        startTime = _prevTime + 1; // TODO: or don't ++ here but do it when we rescale to keep precision?
-    }
-    Clock::Direction direction = _clock.getDirectionAt(startTime);
-    int64_t movieStart = _clock.getTimeAt(startTime);
-
-    if (direction == Clock::Direction::Backwards)
-        forwards = false;
-    else
-        forwards = true;
-
-    startSample = av_rescale_q_rnd(movieStart, {1, AV_TIME_BASE}, {1, _samplerateIn}, AV_ROUND_DOWN);
-    if (_prevSample != AV_NOPTS_VALUE && std::abs(_prevSample - startSample) < _bufferSamples)
-    {
-        if (forwards)
-        {
-            startSample = _prevSample + 1;
-            if (startSample > _start + _duration && startSample > av_rescale_q_rnd(_clock.period, {1, AV_TIME_BASE}, {1, _samplerateIn}, AV_ROUND_DOWN))
-            {
-                startSample = 0;
-            }
-        }
-        else
-        {
-            startSample = _prevSample - 1;
-            if (startSample < 0)
-            {
-                startSample = av_rescale_q_rnd(_clock.period, {1, AV_TIME_BASE}, {1, _samplerateIn}, AV_ROUND_DOWN);
-            }
-        }
-    }
-    else
-    {
-        //        std::cout << "skipped some" << std::endl;
-    }
-    if (startSample < _start || startSample >= _start + _duration)
-    {
-        // Outwith this track's time-range
-        if (!forwards)
-        {
-            if (startSample < _start)
-            {
-                length = static_cast<int>(_start - startSample);
-            }
-            else
-            {
-                length = static_cast<int>(startSample - (_start + _duration));
-            }
-        }
-        else
-        {
-            if (startSample < _start)
-            {
-                length = static_cast<int>(_start - startSample);
-            }
-            else
-            {
-                length = static_cast<int>(av_rescale_q(_clock.period, {1, AV_TIME_BASE}, {1, _samplerateIn}) - startSample);
-            }
-        }
-    }
-    else
-    {
-        // Within the track's time-range
-        if (!forwards)
-        {
-            length = static_cast<int>(startSample - _start);
-        }
-        else
-        {
-            length = static_cast<int>((_start + _duration) - startSample);
-        }
-    }
 }
 
 ofxHap::AudioThread::Action::Action()

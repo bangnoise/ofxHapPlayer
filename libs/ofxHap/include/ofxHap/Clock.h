@@ -53,6 +53,7 @@ namespace ofxHap {
         float   getRate() const;
         void    setRateAt(float r, int64_t t);
         bool    getDone() const;
+        void    rescale(int old, int next);
         int64_t period;
         Mode    mode;
     private:
