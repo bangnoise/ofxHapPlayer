@@ -32,38 +32,58 @@ extern "C" {
 #include "TimeRangeSet.h"
 #include "Common.h"
 
-ofxHap::PacketCache::PacketCache()
-{
-
-}
-
-ofxHap::PacketCache::~PacketCache()
+template <class T, T (*Clone)(T), void (*Free)(T), ofxHap::TimeRange (*Query)(T)>
+ofxHap::Cache<T, Clone, Free, Query>::~Cache()
 {
     clear();
 }
 
-void ofxHap::PacketCache::store(AVPacket *p)
+template <class T, T (*Clone)(T), void (*Free)(T), ofxHap::TimeRange (*Query)(T)>
+void ofxHap::Cache<T, Clone, Free, Query>::store(T p)
 {
-    std::lock_guard<std::mutex> guard(_lock);
-    if (_active.find(p->pts) == _active.end())
+    TimeRange range = Query(p);
+    if (_active.find(range.start) == _active.end())
     {
-#if OFX_HAP_HAS_PACKET_ALLOC
-        AVPacket *packet = av_packet_clone(p);
-#else
-        AVPacket *packet = static_cast<AVPacket *>(av_malloc(sizeof(AVPacket)));
-        av_init_packet(packet);
-        packet->data = nullptr;
-        packet->size = 0;
-        av_packet_ref(packet, p);
-#endif
-        _active.insert(std::map<int64_t, AVPacket *>::value_type(packet->pts, packet));
+        T got = Clone(p);
+        _active.insert(std::make_pair(range.start, got));
     }
-    _condition.notify_one();
 }
 
-void ofxHap::PacketCache::cache()
+template <class T, T (*Clone)(T), void (*Free)(T), ofxHap::TimeRange (*Query)(T)>
+T ofxHap::Cache<T, Clone, Free, Query>::fetch(int64_t pts) const
 {
-    std::lock_guard<std::mutex> guard(_lock);
+    T result = fetch(_active, pts);
+    if (!result)
+    {
+        result = fetch(_cache, pts);
+    }
+    return result;
+}
+
+template <class T, T (*Clone)(T), void (*Free)(T), ofxHap::TimeRange (*Query)(T)>
+T ofxHap::Cache<T, Clone, Free, Query>::fetch(const std::map<int64_t, T> &map, int64_t pts)
+{
+    for (const auto& pair : map)
+    {
+        TimeRange range = Query(pair.second);
+        if (range.start <= pts && range.start + range.length > pts)
+        {
+            return pair.second;
+        }
+    }
+    return T();
+}
+
+template <class T, T (*Clone)(T), void (*Free)(T), ofxHap::TimeRange (*Query)(T)>
+void ofxHap::Cache<T, Clone, Free, Query>::clear()
+{
+    clear(_cache);
+    clear(_active);
+}
+
+template <class T, T (*Clone)(T), void (*Free)(T), ofxHap::TimeRange (*Query)(T)>
+void ofxHap::Cache<T, Clone, Free, Query>::cache()
+{
     for (const auto& pair : _active)
     {
         if (_cache.find(pair.first) == _cache.end())
@@ -72,78 +92,32 @@ void ofxHap::PacketCache::cache()
         }
         else
         {
-            AVPacket *p = pair.second;
-#if OFX_HAP_HAS_PACKET_ALLOC
-            av_packet_free(&p);
-#else
-            av_packet_unref(p);
-            av_freep(&p);
-#endif
+            Free(pair.second);
         }
     }
     _active.clear();
 }
 
-bool ofxHap::PacketCache::fetch(int64_t pts, AVPacket *p, std::chrono::microseconds timeout) const
+template <class T, T (*Clone)(T), void (*Free)(T), ofxHap::TimeRange (*Query)(T)>
+void ofxHap::Cache<T, Clone, Free, Query>::limit(const TimeRangeSet& ranges)
 {
-    std::unique_lock<std::mutex> locker(_lock);
-    std::chrono::time_point<std::chrono::steady_clock> now = std::chrono::steady_clock::now();
-    std::chrono::time_point<std::chrono::steady_clock> end = now + timeout;
-    bool result;
-    do {
-        result = fetch(_active, pts, p);
-        if (!result)
-        {
-            result = fetch(_cache, pts, p);
-        }
-        if (!result)
-        {
-            _condition.wait_for(locker, end - now);
-            now = std::chrono::steady_clock::now();
-        }
-    } while (result == false && now < end);
-    return result;
-}
-
-void ofxHap::PacketCache::limit(const TimeRangeSet& ranges)
-{
-    std::lock_guard<std::mutex> guard(_lock);
     limit(_cache, ranges, false);
     limit(_active, ranges, true);
 }
 
-void ofxHap::PacketCache::clear()
-{
-    std::lock_guard<std::mutex> guard(_lock);
-    clear(_cache);
-    clear(_active);
-}
-
-bool ofxHap::PacketCache::fetch(const std::map<int64_t, AVPacket *> &map, int64_t pts, AVPacket *p)
-{
-    for (const auto& pair : map)
-    {
-        if (pair.second->pts <= pts && pair.second->pts + pair.second->duration > pts)
-        {
-            av_packet_ref(p, pair.second);
-            return true;
-        }
-    }
-    return false;
-}
-
-void ofxHap::PacketCache::limit(std::map<int64_t, AVPacket *> &map, const ofxHap::TimeRangeSet &ranges, bool active)
+template <class T, T (*Clone)(T), void (*Free)(T), ofxHap::TimeRange (*Query)(T)>
+void ofxHap::Cache<T, Clone, Free, Query>::limit(std::map<int64_t, T> &map, const ofxHap::TimeRangeSet &ranges, bool active)
 {
     for (auto itr = map.cbegin(); itr != map.cend();) {
-        AVPacket *p = itr->second;
-        TimeRange current(p->pts, p->duration);
+        T p = itr->second;
         bool keep = false;
-        if (active && p->pts >= ranges.earliest())
+        if (active && itr->first >= ranges.earliest())
         {
             keep = true;
         }
         else
         {
+            TimeRange current = Query(p);
             for (auto range: ranges)
             {
                 if (range.intersects(current))
@@ -155,12 +129,7 @@ void ofxHap::PacketCache::limit(std::map<int64_t, AVPacket *> &map, const ofxHap
         }
         if (!keep)
         {
-#if OFX_HAP_HAS_PACKET_ALLOC
-            av_packet_free(&p);
-#else
-            av_packet_unref(p);
-            av_freep(&p);
-#endif
+            Free(p);
             itr = map.erase(itr);
         }
         else
@@ -170,17 +139,112 @@ void ofxHap::PacketCache::limit(std::map<int64_t, AVPacket *> &map, const ofxHap
     }
 }
 
-void ofxHap::PacketCache::clear(std::map<int64_t, AVPacket *> &map)
+ofxHap::TimeRange ofxHap::PacketQuery(AVPacket *p)
 {
-    for (auto& pair : map)
-    {
-#if OFX_HAP_HAS_PACKET_ALLOC
-        av_packet_free(&pair.second);
-#else
-        av_packet_unref(pair.second);
-        av_freep(&pair.second);
-#endif
+    return TimeRange(p->pts, p->duration);
+}
 
-    }
-    map.clear();
+AVPacket *ofxHap::PacketClone(AVPacket *p)
+{
+#if OFX_HAP_HAS_PACKET_ALLOC
+    AVPacket *packet = av_packet_clone(p);
+#else
+    AVPacket *packet = static_cast<AVPacket *>(av_malloc(sizeof(AVPacket)));
+    av_init_packet(packet);
+    packet->data = nullptr;
+    packet->size = 0;
+    av_packet_ref(packet, p);
+#endif
+    return packet;
+}
+
+void ofxHap::PacketFree(AVPacket *p)
+{
+#if OFX_HAP_HAS_PACKET_ALLOC
+    av_packet_free(&p);
+#else
+    av_packet_unref(p);
+    av_freep(&p);
+#endif
+}
+
+ofxHap::PacketCache::~PacketCache()
+{
+    
+}
+
+ofxHap::LockingPacketCache::~LockingPacketCache()
+{
+
+}
+
+void ofxHap::LockingPacketCache::store(AVPacket *p)
+{
+    std::lock_guard<std::mutex> guard(_lock);
+    Cache::store(p);
+    _condition.notify_one();
+}
+
+void ofxHap::LockingPacketCache::cache()
+{
+    std::lock_guard<std::mutex> guard(_lock);
+    Cache::cache();
+}
+
+bool ofxHap::LockingPacketCache::fetch(int64_t pts, AVPacket *p, std::chrono::microseconds timeout) const
+{
+    std::unique_lock<std::mutex> locker(_lock);
+    std::chrono::time_point<std::chrono::steady_clock> now = std::chrono::steady_clock::now();
+    std::chrono::time_point<std::chrono::steady_clock> end = now + timeout;
+    AVPacket *found;
+    do {
+        found = Cache::fetch(pts);
+        if (found)
+        {
+            av_packet_ref(p, found);
+        }
+        else
+        {
+            _condition.wait_for(locker, end - now);
+            now = std::chrono::steady_clock::now();
+        }
+    } while (found == nullptr && now < end);
+    return found;
+}
+
+void ofxHap::LockingPacketCache::limit(const TimeRangeSet& ranges)
+{
+    std::lock_guard<std::mutex> guard(_lock);
+    Cache::limit(ranges);
+}
+
+void ofxHap::LockingPacketCache::clear()
+{
+    std::lock_guard<std::mutex> guard(_lock);
+    Cache::clear();
+}
+
+AVFrame *ofxHap::FrameClone(AVFrame *f)
+{
+    return av_frame_clone(f);
+}
+
+void ofxHap::FrameFree(AVFrame *f)
+{
+    av_frame_free(&f);
+}
+
+ofxHap::TimeRange ofxHap::FrameQuery(AVFrame *f)
+{
+    return TimeRange(av_frame_get_best_effort_timestamp(f), f->nb_samples);
+}
+
+ofxHap::AudioFrameCache::~AudioFrameCache()
+{
+
+}
+
+AVFrame *ofxHap::AudioFrameCache::fetch(int64_t pts) const
+{
+    return Cache::fetch(pts);
 }

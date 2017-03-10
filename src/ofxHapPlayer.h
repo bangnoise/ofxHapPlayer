@@ -123,7 +123,6 @@ private:
     void            setPositionLoaded(float pct);
     void            update(ofEventArgs& args);
     void            updatePTS();
-    void            limit(ofxHap::TimeRangeSet& set) const;
     void            read(ofxHap::TimeRangeSequence& sequence);
     class AudioOutput : public ofBaseSoundOutput {
     public:
@@ -163,7 +162,7 @@ private:
     bool                _wantsUpload;
 	string              _moviePath;
     ofxHap::TimeRangeSet _active;
-    ofxHap::PacketCache _videoPackets;
+    ofxHap::LockingPacketCache              _videoPackets;
     std::shared_ptr<ofxHap::Demuxer>        _demuxer;
     std::shared_ptr<ofxHap::RingBuffer>     _buffer;
     std::shared_ptr<ofxHap::AudioThread>   _audioThread;

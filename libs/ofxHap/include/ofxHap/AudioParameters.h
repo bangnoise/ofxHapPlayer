@@ -42,16 +42,20 @@ namespace ofxHap {
 class AudioParameters
 {
 public:
+    /*
+     Audio params - from stream, plus length to cache either side of now in usec
+     */
 #if OFX_HAP_HAS_CODECPAR
-	AudioParameters(AVCodecParameters *p);
+	AudioParameters(AVCodecParameters *p, int cache);
 	AVCodecParameters* parameters;
 #else
-	AudioParameters(AVCodecContext *c);
+	AudioParameters(AVCodecContext *c, int cache);
 	AVCodecContext *context;
 #endif
 	~AudioParameters();
 	AudioParameters(const AudioParameters& o);
 	AudioParameters& operator=(const AudioParameters& o);
+    int cache;
 };
 
 }

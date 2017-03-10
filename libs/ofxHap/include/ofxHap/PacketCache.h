@@ -32,37 +32,75 @@
 #include <map>
 #include <mutex>
 #include <condition_variable>
+#include "TimeRangeSet.h"
 
 typedef struct AVPacket AVPacket;
+typedef struct AVFrame AVFrame;
 
 namespace ofxHap {
-    class TimeRangeSet;
-    class PacketCache {
+    template <class T, T (*Clone)(T), void (*Free)(T), TimeRange (*Query)(T)>
+    class Cache {
     public:
         /*
-         PacketCache maintains an active set and a cache
+         Cache maintains an active set and a cache
          */
-        PacketCache();
-        ~PacketCache();
-        // Add packets to the active set
-        void store(AVPacket *p);
-        // Move the active set to the cache
-        void cache();
+        virtual ~Cache();
+        // Add to the active set
+        virtual void store(T p);
         // Fetch
-        bool fetch(int64_t pts, AVPacket *p, std::chrono::microseconds timeout) const;
+        T fetch(int64_t pts) const;
+        // clears active set and cached
+        virtual void clear ();
+        // Move the active set to the cache
+        virtual void cache();
         // discards all outwith range from cache, and all from
         // before range from active
-        void limit(const TimeRangeSet& range);
-        // clears active set and cached
-        void clear();
+        virtual void limit(const TimeRangeSet& range);
     private:
-        static bool fetch(const std::map<int64_t, AVPacket *>& map, int64_t pts, AVPacket *p);
-        static void limit(std::map<int64_t, AVPacket *>& map, const TimeRangeSet& range, bool active);
-        static void clear(std::map<int64_t, AVPacket *>& map);
-        std::map<int64_t, AVPacket *>  _active;
-        std::map<int64_t, AVPacket *>  _cache;
+        static void clear(std::map<int64_t, T>& map)
+        {
+            for (auto& pair : map)
+            {
+                Free(pair.second);
+            }
+            map.clear();
+        }
+        static void limit(std::map<int64_t, T>& map, const TimeRangeSet& range, bool active);
+        static T fetch(const std::map<int64_t, T>& map, int64_t pts);
+        std::map<int64_t, T> _active;
+        std::map<int64_t, T> _cache;
+    };
+
+    AVPacket *PacketClone(AVPacket *p);
+    void PacketFree(AVPacket *p);
+    TimeRange PacketQuery(AVPacket *p);
+
+    class PacketCache : public Cache<AVPacket *, PacketClone, PacketFree, PacketQuery> {
+    public:
+        virtual ~PacketCache();
+    };
+
+    class LockingPacketCache : public PacketCache {
+    public:
+        virtual ~LockingPacketCache();
+        virtual void store(AVPacket *p) override;
+        virtual void cache() override;
+        bool fetch(int64_t pts, AVPacket *p, std::chrono::microseconds timeout) const;
+        virtual void limit(const TimeRangeSet& range) override;
+        virtual void clear() override;
+    private:
         mutable std::mutex              _lock;
         mutable std::condition_variable _condition;
+    };
+
+    AVFrame *FrameClone(AVFrame *f);
+    void FrameFree(AVFrame *f);
+    TimeRange FrameQuery(AVFrame *f);
+
+    class AudioFrameCache : public Cache<AVFrame *, FrameClone, FrameFree, FrameQuery> {
+    public:
+        virtual ~AudioFrameCache();
+        AVFrame *fetch(int64_t pts) const;
     };
 }
 

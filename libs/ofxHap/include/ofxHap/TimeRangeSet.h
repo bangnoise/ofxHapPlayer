@@ -50,6 +50,8 @@ namespace ofxHap {
     class TimeRangeSequence;
     class TimeRangeSet {
     public:
+        TimeRangeSet();
+        TimeRangeSet(const TimeRangeSequence& seq);
         int64_t earliest() const;
         int64_t latest() const;
         bool includes(int64_t t) const;

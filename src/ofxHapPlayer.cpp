@@ -215,7 +215,7 @@ void ofxHapPlayer::foundStream(AVStream *stream)
 #if OFX_HAP_HAS_CODECPAR
         int channels = params->channels;
         int sampleRate = params->sample_rate;
-        ofxHap::AudioParameters parameters(params);
+        ofxHap::AudioParameters parameters(params, kofxHapPlayerBufferUSec);
 #else
         int channels = codec->channels;
         int sampleRate = codec->sample_rate;
@@ -255,7 +255,6 @@ void ofxHapPlayer::readPacket(AVPacket *packet)
     {
         _audioThread->send(packet);
     }
-
 }
 
 void ofxHapPlayer::discontinuity()
@@ -309,58 +308,6 @@ void ofxHapPlayer::close()
     _loaded = false;
     _error.clear();
 }
-
-void ofxHapPlayer::limit(ofxHap::TimeRangeSet &set) const
-{
-    if (set.earliest() < 0)
-    {
-        int64_t overflow = std::min(-set.earliest(), _clock.period);
-
-        if (_clock.mode == ofxHap::Clock::Mode::Palindrome)
-        {
-            set.add(0, overflow);
-        }
-        else if (_clock.mode == ofxHap::Clock::Mode::Loop)
-        {
-            set.add(_clock.period - overflow, overflow);
-        }
-
-        set.remove(set.earliest(), -set.earliest());
-    }
-    if (set.latest() > _clock.period)
-    {
-        int64_t overflow = std::min(set.latest() - _clock.period, _clock.period);
-
-        if (_clock.mode == ofxHap::Clock::Mode::Palindrome)
-        {
-            set.add(_clock.period - overflow, overflow);
-        }
-        else if (_clock.mode == ofxHap::Clock::Mode::Loop)
-        {
-            set.add(0, overflow);
-        }
-
-        set.remove(_clock.period, set.latest() - _clock.period + 1);
-    }
-}
-
-/*
-static void describeTRS(const ofxHap::TimeRangeSet& set)
-{
-    std::cout << "TimeRangeSet " << &set << " ";
-    bool first = true;
-    for (const auto& range : set)
-    {
-        if (!first)
-        {
-            std::cout << ", ";
-        }
-        std::cout << "[" << range.start << " : " << range.latest() << "]";
-        first = false;
-    }
-    std::cout << std::endl;
-}
-*/
 
 void ofxHapPlayer::read(ofxHap::TimeRangeSequence& sequence)
 {
@@ -499,10 +446,6 @@ void ofxHapPlayer::update(ofEventArgs & args)
                     _decodedFrame.invalidate();
                 }
                 av_packet_unref(&packet);
-            }
-            else
-            {
-                std::cout << "MISSED PACKET " << vidPosition << " (" << pts << ")" << std::endl;
             }
         }
     }
@@ -1126,24 +1069,14 @@ void ofxHapPlayer::AudioOutput::audioOut(ofSoundBuffer& buffer)
 
     _buffer->readEnd(filled);
 
-    static bool logged = false;
     if (filled < wanted)
     {
-        if (logged == false)
-        {
-            std::cout << "silence" << std::endl;
-            logged = true;
-        }
         float *out = &buffer.getBuffer()[filled * buffer.getNumChannels()];
         av_samples_set_silence((uint8_t **)&out,
                                0,
                                wanted - filled,
                                static_cast<int>(buffer.getNumChannels()),
                                AV_SAMPLE_FMT_FLT);
-    }
-    else
-    {
-        logged = false;
     }
 }
 

@@ -29,6 +29,19 @@
 #include <algorithm>
 #include <cstdlib>
 
+ofxHap::TimeRangeSet::TimeRangeSet()
+{
+
+}
+
+ofxHap::TimeRangeSet::TimeRangeSet(const TimeRangeSequence& seq)
+{
+    for (const auto& range : seq)
+    {
+        add(range);
+    }
+}
+
 int64_t ofxHap::TimeRangeSet::earliest() const
 {
     return _ranges.begin()->start;

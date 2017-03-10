@@ -36,7 +36,7 @@ extern "C" {
 #include "AudioDecoder.h"
 #include "AudioResampler.h"
 #include "MovieTime.h"
-
+#include "PacketCache.h"
 
 ofxHap::AudioThread::AudioThread(const AudioParameters& params ,
                                  int outRate,
@@ -93,11 +93,13 @@ void ofxHap::AudioThread::threadMain(AudioParameters params, int outRate, std::s
         AudioResampler resampler(params, outRate);
         bool finish = false;
         std::queue<Action> queue;
-        std::map<int64_t, AVFrame *> cache;
+        AudioFrameCache cache;
         AVFrame *reversed = nullptr;
         Clock clock;
         int64_t last = AV_NOPTS_VALUE;
         TimeRange current(AV_NOPTS_VALUE, 0);
+
+        int bufferusec = av_rescale_q(params.cache, {1, AV_TIME_BASE}, {1, sampleRate});
 
         while (!finish) {
 
@@ -113,19 +115,11 @@ void ofxHap::AudioThread::threadMain(AudioParameters params, int outRate, std::s
                         if (result >= 0)
                         {
                             int64_t ts = av_frame_get_best_effort_timestamp(frame);
-                            auto r = cache.insert(std::map<int64_t, AVFrame *>::value_type(ts, frame));
-                            if (r.second == false)
-                            {
-                                // TODO: could we be refusing to add one with more samples than another?
-                                av_frame_free(&frame);
-                            }
+                            cache.store(frame);
                             // TODO: we might be waiting to send samples onwards immediately at this point
                             // so should do that before finishing the loops
                         }
-                        else
-                        {
-                            av_frame_free(&frame);
-                        }
+                        av_frame_free(&frame);
                     }
 
                     if (result < 0 && result != AVERROR(EAGAIN) && result != AVERROR_EOF)
@@ -139,12 +133,21 @@ void ofxHap::AudioThread::threadMain(AudioParameters params, int outRate, std::s
                 {
                     // null is queued to signal end of stream, which requires a flush
                     decoder.flush();
+                    cache.cache();
                 }
 
                 queue.pop();
             }
 
             int64_t now = av_gettime_relative();
+            int64_t expected = av_rescale_q(now, {1, AV_TIME_BASE}, {1, sampleRate});
+
+            {
+                // Dispose of cached samples we no longer need
+                ofxHap::TimeRangeSequence ranges = ofxHap::MovieTime::nextRanges(clock, expected - bufferusec, std::min(clock.period, bufferusec * INT64_C(2)));
+                cache.limit(ranges);
+            }
+
 
             if (!clock.getPaused())
             {
@@ -154,7 +157,6 @@ void ofxHap::AudioThread::threadMain(AudioParameters params, int outRate, std::s
 
                 _buffer->writeBegin(dst[0], count[0], dst[1], count[1]);
 
-                int64_t expected = av_rescale_q(now, {1, AV_TIME_BASE}, {1, sampleRate});
                 if (last == AV_NOPTS_VALUE || std::abs(last - expected) > _buffer->getSamplesPerChannel())
                 {
                     // Drift, hopefully due to missing packets
@@ -206,19 +208,10 @@ void ofxHap::AudioThread::threadMain(AudioParameters params, int outRate, std::s
                         }
                         else
                         {
-                            AVFrame *frame = nullptr;
-                            int64_t pts;
-                            for (const auto pair : cache) {
-                                if (pair.first <= current.start && pair.first + pair.second->nb_samples > current.start)
-                                {
-                                    frame = pair.second;
-                                    pts = pair.first;
-                                    break;
-                                }
-                            }
-
+                            AVFrame *frame = cache.fetch(current.start);
                             if (frame)
                             {
+                                int64_t pts = av_frame_get_best_effort_timestamp(frame);
                                 if (current.length > 0)
                                 {
                                     // TODO: we could maybe request samples from resampler and only feed it if it's empty
@@ -226,7 +219,6 @@ void ofxHap::AudioThread::threadMain(AudioParameters params, int outRate, std::s
                                     // Fill forwards
                                     consumed = std::min(current.length, (frame->nb_samples - (current.start - pts)));
                                     consumed = std::min(consumed, countInMax);
-                                    // AAAAND so we'll need to know about discontinuities and flush the resampler
                                     result = resampler.resample(frame, static_cast<int>(current.start - pts), consumed, dst[i], count[i], written, consumed);
                                 }
                                 else
@@ -250,10 +242,6 @@ void ofxHap::AudioThread::threadMain(AudioParameters params, int outRate, std::s
                                         rpts = av_frame_get_best_effort_timestamp(reversed);
                                     }
 
-                                    // maybe resampler knows pts, detects non-contiguous blocks, resets itself
-
-                                    // TODO: sounds like repeated samples when eg the long horror movie plays backwards
-                                    // check that
                                     if (result >= 0)
                                     {
                                         int offset = static_cast<int>(rpts + reversed->nb_samples - 1 - current.start);
@@ -315,7 +303,6 @@ void ofxHap::AudioThread::threadMain(AudioParameters params, int outRate, std::s
             // Only hold the lock in this { scope }
             {
                 std::unique_lock<std::mutex> locker(_lock);
-                // TODO: check paused and stopped behaviour
                 if (clock.getPaused() || clock.getDone())
                 {
                     _condition.wait(locker);
@@ -347,11 +334,6 @@ void ofxHap::AudioThread::threadMain(AudioParameters params, int outRate, std::s
 
                 resampler.setVolume(_volume);
             }
-        }
-
-        for (auto pair : cache)
-        {
-            av_frame_free(&pair.second);
         }
 
         if (reversed)
