@@ -89,6 +89,10 @@ int ofxHap::AudioResampler::resample(const AVFrame *frame, int offset, int srcLe
         // TODO: deal with rates > INT_MAX (the limit)
         // - we'll need to drop samples
         // and 0
+        if (_resampler)
+        {
+            swr_free(&_resampler);
+        }
         _resampler = swr_alloc_set_opts(nullptr,
                                         _layout,
                                         AV_SAMPLE_FMT_FLT,
