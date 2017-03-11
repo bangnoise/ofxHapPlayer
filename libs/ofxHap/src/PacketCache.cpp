@@ -32,113 +32,6 @@ extern "C" {
 #include "TimeRangeSet.h"
 #include "Common.h"
 
-template <class T, T (*Clone)(T), void (*Free)(T), ofxHap::TimeRange (*Query)(T)>
-ofxHap::Cache<T, Clone, Free, Query>::~Cache()
-{
-    clear();
-}
-
-template <class T, T (*Clone)(T), void (*Free)(T), ofxHap::TimeRange (*Query)(T)>
-void ofxHap::Cache<T, Clone, Free, Query>::store(T p)
-{
-    TimeRange range = Query(p);
-    if (_active.find(range.start) == _active.end())
-    {
-        T got = Clone(p);
-        _active.insert(std::make_pair(range.start, got));
-    }
-}
-
-template <class T, T (*Clone)(T), void (*Free)(T), ofxHap::TimeRange (*Query)(T)>
-T ofxHap::Cache<T, Clone, Free, Query>::fetch(int64_t pts) const
-{
-    T result = fetch(_active, pts);
-    if (!result)
-    {
-        result = fetch(_cache, pts);
-    }
-    return result;
-}
-
-template <class T, T (*Clone)(T), void (*Free)(T), ofxHap::TimeRange (*Query)(T)>
-T ofxHap::Cache<T, Clone, Free, Query>::fetch(const std::map<int64_t, T> &map, int64_t pts)
-{
-    for (const auto& pair : map)
-    {
-        TimeRange range = Query(pair.second);
-        if (range.start <= pts && range.start + range.length > pts)
-        {
-            return pair.second;
-        }
-    }
-    return T();
-}
-
-template <class T, T (*Clone)(T), void (*Free)(T), ofxHap::TimeRange (*Query)(T)>
-void ofxHap::Cache<T, Clone, Free, Query>::clear()
-{
-    clear(_cache);
-    clear(_active);
-}
-
-template <class T, T (*Clone)(T), void (*Free)(T), ofxHap::TimeRange (*Query)(T)>
-void ofxHap::Cache<T, Clone, Free, Query>::cache()
-{
-    for (const auto& pair : _active)
-    {
-        if (_cache.find(pair.first) == _cache.end())
-        {
-            _cache.insert(pair);
-        }
-        else
-        {
-            Free(pair.second);
-        }
-    }
-    _active.clear();
-}
-
-template <class T, T (*Clone)(T), void (*Free)(T), ofxHap::TimeRange (*Query)(T)>
-void ofxHap::Cache<T, Clone, Free, Query>::limit(const TimeRangeSet& ranges)
-{
-    limit(_cache, ranges, false);
-    limit(_active, ranges, true);
-}
-
-template <class T, T (*Clone)(T), void (*Free)(T), ofxHap::TimeRange (*Query)(T)>
-void ofxHap::Cache<T, Clone, Free, Query>::limit(std::map<int64_t, T> &map, const ofxHap::TimeRangeSet &ranges, bool active)
-{
-    for (auto itr = map.cbegin(); itr != map.cend();) {
-        T p = itr->second;
-        bool keep = false;
-        if (active && itr->first >= ranges.earliest())
-        {
-            keep = true;
-        }
-        else
-        {
-            TimeRange current = Query(p);
-            for (auto range: ranges)
-            {
-                if (range.intersects(current))
-                {
-                    keep = true;
-                    break;
-                }
-            }
-        }
-        if (!keep)
-        {
-            Free(p);
-            itr = map.erase(itr);
-        }
-        else
-        {
-            ++itr;
-        }
-    }
-}
-
 ofxHap::TimeRange ofxHap::PacketQuery(AVPacket *p)
 {
     return TimeRange(p->pts, p->duration);
@@ -166,16 +59,6 @@ void ofxHap::PacketFree(AVPacket *p)
     av_packet_unref(p);
     av_freep(&p);
 #endif
-}
-
-ofxHap::PacketCache::~PacketCache()
-{
-    
-}
-
-ofxHap::LockingPacketCache::~LockingPacketCache()
-{
-
 }
 
 void ofxHap::LockingPacketCache::store(AVPacket *p)
@@ -237,14 +120,4 @@ void ofxHap::FrameFree(AVFrame *f)
 ofxHap::TimeRange ofxHap::FrameQuery(AVFrame *f)
 {
     return TimeRange(av_frame_get_best_effort_timestamp(f), f->nb_samples);
-}
-
-ofxHap::AudioFrameCache::~AudioFrameCache()
-{
-
-}
-
-AVFrame *ofxHap::AudioFrameCache::fetch(int64_t pts) const
-{
-    return Cache::fetch(pts);
 }

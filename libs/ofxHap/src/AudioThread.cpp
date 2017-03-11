@@ -203,6 +203,11 @@ void ofxHap::AudioThread::threadMain(AudioParameters params, int outRate, std::s
                             }
                             consumed = std::min(consumed, static_cast<int>(std::abs(current.length)));
                             written = static_cast<int>(av_rescale_q(consumed, {1, sampleRate}, {1, static_cast<int>(outRate / std::fabs(clock.getRate()))}));
+                            if (written > count[i])
+                            {
+                                written = count[i];
+                                consumed = static_cast<int>(av_rescale_q(written, {1, static_cast<int>(outRate / std::fabs(clock.getRate()))}, {1, sampleRate}));
+                            }
                             av_samples_set_silence((uint8_t **)&dst[i], 0, written, channels, AV_SAMPLE_FMT_FLT);
                         }
                         else

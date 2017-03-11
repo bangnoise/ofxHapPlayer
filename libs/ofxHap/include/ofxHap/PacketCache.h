@@ -44,18 +44,59 @@ namespace ofxHap {
         /*
          Cache maintains an active set and a cache
          */
-        virtual ~Cache();
+        virtual ~Cache()
+        {
+            clear();
+        }
         // Add to the active set
-        virtual void store(T p);
+        virtual void store(T p)
+        {
+            TimeRange range = Query(p);
+            if (_active.find(range.start) == _active.end())
+            {
+                T got = Clone(p);
+                _active.insert(std::make_pair(range.start, got));
+            }
+        }
         // Fetch
-        T fetch(int64_t pts) const;
+        T fetch(int64_t pts) const
+        {
+            T result = fetch(_active, pts);
+            if (!result)
+            {
+                result = fetch(_cache, pts);
+            }
+            return result;
+        }
         // clears active set and cached
-        virtual void clear ();
+        virtual void clear ()
+        {
+            clear(_cache);
+            clear(_active);
+        }
         // Move the active set to the cache
-        virtual void cache();
+        virtual void cache()
+        {
+            for (const auto& pair : _active)
+            {
+                if (_cache.find(pair.first) == _cache.end())
+                {
+                    _cache.insert(pair);
+                }
+                else
+                {
+                    Free(pair.second);
+                }
+            }
+            _active.clear();
+        }
         // discards all outwith range from cache, and all from
         // before range from active
-        virtual void limit(const TimeRangeSet& range);
+        virtual void limit(const TimeRangeSet& ranges)
+        {
+            limit(_cache, ranges, false);
+            limit(_active, ranges, true);
+        }
     private:
         static void clear(std::map<int64_t, T>& map)
         {
@@ -65,8 +106,50 @@ namespace ofxHap {
             }
             map.clear();
         }
-        static void limit(std::map<int64_t, T>& map, const TimeRangeSet& range, bool active);
-        static T fetch(const std::map<int64_t, T>& map, int64_t pts);
+        static void limit(std::map<int64_t, T>& map, const TimeRangeSet& ranges, bool active)
+        {
+            for (auto itr = map.cbegin(); itr != map.cend();) {
+                T p = itr->second;
+                bool keep = false;
+                if (active && itr->first >= ranges.earliest())
+                {
+                    keep = true;
+                }
+                else
+                {
+                    TimeRange current = Query(p);
+                    for (auto range: ranges)
+                    {
+                        if (range.intersects(current))
+                        {
+                            keep = true;
+                            break;
+                        }
+                    }
+                }
+                if (!keep)
+                {
+                    Free(p);
+                    itr = map.erase(itr);
+                }
+                else
+                {
+                    ++itr;
+                }
+            }
+        }
+        static T fetch(const std::map<int64_t, T>& map, int64_t pts)
+        {
+            for (const auto& pair : map)
+            {
+                TimeRange range = Query(pair.second);
+                if (range.start <= pts && range.start + range.length > pts)
+                {
+                    return pair.second;
+                }
+            }
+            return T();
+        }
         std::map<int64_t, T> _active;
         std::map<int64_t, T> _cache;
     };
@@ -76,13 +159,10 @@ namespace ofxHap {
     TimeRange PacketQuery(AVPacket *p);
 
     class PacketCache : public Cache<AVPacket *, PacketClone, PacketFree, PacketQuery> {
-    public:
-        virtual ~PacketCache();
     };
 
     class LockingPacketCache : public PacketCache {
     public:
-        virtual ~LockingPacketCache();
         virtual void store(AVPacket *p) override;
         virtual void cache() override;
         bool fetch(int64_t pts, AVPacket *p, std::chrono::microseconds timeout) const;
@@ -98,9 +178,6 @@ namespace ofxHap {
     TimeRange FrameQuery(AVFrame *f);
 
     class AudioFrameCache : public Cache<AVFrame *, FrameClone, FrameFree, FrameQuery> {
-    public:
-        virtual ~AudioFrameCache();
-        AVFrame *fetch(int64_t pts) const;
     };
 }
 
