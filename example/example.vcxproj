@@ -181,6 +181,7 @@
 		<ClCompile Include="..\..\..\addons\ofxHapPlayer\libs\ofxHap\src\AudioThread.cpp" />
 		<ClCompile Include="..\..\..\addons\ofxHapPlayer\libs\ofxHap\src\Clock.cpp" />
 		<ClCompile Include="..\..\..\addons\ofxHapPlayer\libs\ofxHap\src\Demuxer.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxHapPlayer\libs\ofxHap\src\MovieTime.cpp" />
 		<ClCompile Include="..\..\..\addons\ofxHapPlayer\libs\ofxHap\src\PacketCache.cpp" />
 		<ClCompile Include="..\..\..\addons\ofxHapPlayer\libs\ofxHap\src\RingBuffer.cpp" />
 		<ClCompile Include="..\..\..\addons\ofxHapPlayer\libs\ofxHap\src\TimeRangeSet.cpp" />
@@ -197,10 +198,10 @@
 		<ClInclude Include="..\..\..\addons\ofxHapPlayer\libs\ofxHap\include\ofxHap\Common.h" />
 		<ClInclude Include="..\..\..\addons\ofxHapPlayer\libs\ofxHap\include\ofxHap\Demuxer.h" />
 		<ClInclude Include="..\..\..\addons\ofxHapPlayer\libs\ofxHap\include\ofxHap\ErrorReceiving.h" />
+		<ClInclude Include="..\..\..\addons\ofxHapPlayer\libs\ofxHap\include\ofxHap\MovieTime.h" />
 		<ClInclude Include="..\..\..\addons\ofxHapPlayer\libs\ofxHap\include\ofxHap\PacketCache.h" />
 		<ClInclude Include="..\..\..\addons\ofxHapPlayer\libs\ofxHap\include\ofxHap\RingBuffer.h" />
 		<ClInclude Include="..\..\..\addons\ofxHapPlayer\libs\ofxHap\include\ofxHap\TimeRangeSet.h" />
-		<ClInclude Include="..\..\..\addons\ofxHapPlayer\libs\snappy\include\snappy-c.h" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="$(OF_ROOT)\libs\openFrameworksCompiled\project\vs\openframeworksLib.vcxproj">

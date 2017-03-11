@@ -99,7 +99,7 @@ void ofxHap::AudioThread::threadMain(AudioParameters params, int outRate, std::s
         int64_t last = AV_NOPTS_VALUE;
         TimeRange current(AV_NOPTS_VALUE, 0);
 
-        int bufferusec = av_rescale_q(params.cache, {1, AV_TIME_BASE}, {1, sampleRate});
+        int bufferusec = static_cast<int>(av_rescale_q(params.cache, {1, AV_TIME_BASE}, {1, sampleRate}));
 
         while (!finish) {
 
@@ -168,7 +168,7 @@ void ofxHap::AudioThread::threadMain(AudioParameters params, int outRate, std::s
                     while (count[i] > 0)
                     {
                         // Only queue (roughly) as many samples as we need to fill the buffer, to avoid choking the resampler
-                        int countInMax = av_rescale_q(count[i], {1, static_cast<int>(outRate / std::fabs(clock.getRate()))}, {1, sampleRate});
+                        int countInMax = static_cast<int>(av_rescale_q(count[i], {1, static_cast<int>(outRate / std::fabs(clock.getRate()))}, {1, sampleRate}));
 
                         int written = 0;
                         int consumed = 0;
@@ -184,26 +184,26 @@ void ofxHap::AudioThread::threadMain(AudioParameters params, int outRate, std::s
                             {
                                 if (current.length < 0)
                                 {
-                                    consumed = current.start + 1;
+                                    consumed = static_cast<int>(current.start) + 1;
                                 }
                                 else
                                 {
-                                    consumed = streamStart - current.start;
+                                    consumed = static_cast<int>(streamStart - current.start);
                                 }
                             }
                             else
                             {
                                 if (current.length < 0)
                                 {
-                                    consumed = current.start - (streamStart + streamDuration);
+                                    consumed = static_cast<int>(current.start - (streamStart + streamDuration));
                                 }
                                 else
                                 {
-                                    consumed = clock.period - current.start;
+                                    consumed = static_cast<int>(clock.period - current.start);
                                 }
                             }
                             consumed = std::min(consumed, static_cast<int>(std::abs(current.length)));
-                            written = av_rescale_q(consumed, {1, sampleRate}, {1, static_cast<int>(outRate / std::fabs(clock.getRate()))});
+                            written = static_cast<int>(av_rescale_q(consumed, {1, sampleRate}, {1, static_cast<int>(outRate / std::fabs(clock.getRate()))}));
                             av_samples_set_silence((uint8_t **)&dst[i], 0, written, channels, AV_SAMPLE_FMT_FLT);
                         }
                         else
@@ -217,14 +217,14 @@ void ofxHap::AudioThread::threadMain(AudioParameters params, int outRate, std::s
                                     // TODO: we could maybe request samples from resampler and only feed it if it's empty
                                     // and then feed it the entire next chunk - then reset obv on reposition, etc
                                     // Fill forwards
-                                    consumed = std::min(current.length, (frame->nb_samples - (current.start - pts)));
+                                    consumed = static_cast<int>(std::min(current.length, (frame->nb_samples - (current.start - pts))));
                                     consumed = std::min(consumed, countInMax);
                                     result = resampler.resample(frame, static_cast<int>(current.start - pts), consumed, dst[i], count[i], written, consumed);
                                 }
                                 else
                                 {
                                     // Fill backwards
-                                    consumed = std::min(std::abs(current.length), (current.start - pts) + 1);
+                                    consumed = static_cast<int>(std::min(std::abs(current.length), (current.start - pts) + 1));
                                     consumed = std::min(consumed, countInMax);
                                     if (reversed == nullptr)
                                     {

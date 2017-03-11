@@ -209,7 +209,7 @@ bool ofxHap::LockingPacketCache::fetch(int64_t pts, AVPacket *p, std::chrono::mi
             now = std::chrono::steady_clock::now();
         }
     } while (found == nullptr && now < end);
-    return found;
+    return found == nullptr ? false : true;
 }
 
 void ofxHap::LockingPacketCache::limit(const TimeRangeSet& ranges)

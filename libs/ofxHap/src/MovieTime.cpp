@@ -27,6 +27,7 @@
 
 #include "MovieTime.h"
 #include <cstdlib>
+#include <algorithm>
 #include <libavformat/avformat.h>
 
 ofxHap::TimeRangeSequence ofxHap::MovieTime::flatten(ofxHap::TimeRangeSequence sequence)

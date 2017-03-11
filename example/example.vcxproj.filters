@@ -37,6 +37,9 @@
 		<ClCompile Include="..\..\..\addons\ofxHapPlayer\libs\ofxHap\src\Demuxer.cpp">
 			<Filter>addons\ofxHapPlayer\libs\ofxHap\src</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxHapPlayer\libs\ofxHap\src\MovieTime.cpp">
+			<Filter>addons\ofxHapPlayer\libs\ofxHap\src</Filter>
+		</ClCompile>
 		<ClCompile Include="..\..\..\addons\ofxHapPlayer\libs\ofxHap\src\PacketCache.cpp">
 			<Filter>addons\ofxHapPlayer\libs\ofxHap\src</Filter>
 		</ClCompile>
@@ -81,12 +84,6 @@
 		<Filter Include="addons\ofxHapPlayer\libs\ofxHap\src">
 			<UniqueIdentifier>{E1E4E96B-D25B-812B-6CA6-A094}</UniqueIdentifier>
 		</Filter>
-		<Filter Include="addons\ofxHapPlayer\libs\snappy">
-			<UniqueIdentifier>{DE8D24CF-1FEE-A8FC-D414-04F3}</UniqueIdentifier>
-		</Filter>
-		<Filter Include="addons\ofxHapPlayer\libs\snappy\include">
-			<UniqueIdentifier>{F382B96F-D4BC-E604-A05C-DB44}</UniqueIdentifier>
-		</Filter>
 	</ItemGroup>
 	<ItemGroup>
 		<ClInclude Include="src\ofApp.h">
@@ -125,6 +122,9 @@
 		<ClInclude Include="..\..\..\addons\ofxHapPlayer\libs\ofxHap\include\ofxHap\ErrorReceiving.h">
 			<Filter>addons\ofxHapPlayer\libs\ofxHap\include\ofxHap</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxHapPlayer\libs\ofxHap\include\ofxHap\MovieTime.h">
+			<Filter>addons\ofxHapPlayer\libs\ofxHap\include\ofxHap</Filter>
+		</ClInclude>
 		<ClInclude Include="..\..\..\addons\ofxHapPlayer\libs\ofxHap\include\ofxHap\PacketCache.h">
 			<Filter>addons\ofxHapPlayer\libs\ofxHap\include\ofxHap</Filter>
 		</ClInclude>
@@ -133,9 +133,6 @@
 		</ClInclude>
 		<ClInclude Include="..\..\..\addons\ofxHapPlayer\libs\ofxHap\include\ofxHap\TimeRangeSet.h">
 			<Filter>addons\ofxHapPlayer\libs\ofxHap\include\ofxHap</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxHapPlayer\libs\snappy\include\snappy-c.h">
-			<Filter>addons\ofxHapPlayer\libs\snappy\include</Filter>
 		</ClInclude>
 	</ItemGroup>
 	<ItemGroup>
