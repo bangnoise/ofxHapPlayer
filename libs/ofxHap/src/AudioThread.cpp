@@ -114,7 +114,6 @@ void ofxHap::AudioThread::threadMain(AudioParameters params, int outRate, std::s
                         result = decoder.receive(frame);
                         if (result >= 0)
                         {
-                            int64_t ts = av_frame_get_best_effort_timestamp(frame);
                             cache.store(frame);
                             // TODO: we might be waiting to send samples onwards immediately at this point
                             // so should do that before finishing the loops

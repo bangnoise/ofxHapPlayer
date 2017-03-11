@@ -219,7 +219,7 @@ void ofxHapPlayer::foundStream(AVStream *stream)
 #else
         int channels = codec->channels;
         int sampleRate = codec->sample_rate;
-        ofxHap::AudioParameters parameters(codec);
+        ofxHap::AudioParameters parameters(codec, kofxHapPlayerBufferUSec);
 #endif
         sampleRate = _audioOut.getBestRate(sampleRate);
         _audioStreamIndex = stream->index;
