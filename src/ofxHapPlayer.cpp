@@ -855,7 +855,7 @@ void ofxHapPlayer::setPosition(float pct)
 
 void ofxHapPlayer::setPositionLoaded(float pct)
 {
-    int64_t time = std::max(std::min(static_cast<int64_t>(pct * _clock.period), _clock.period), INT64_C(0));
+    int64_t time = ofClamp(pct, 0.0f, 1.0f) * (_clock.period - 1);
     setPTSLoaded(time);
 }
 
