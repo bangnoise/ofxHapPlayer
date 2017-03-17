@@ -233,7 +233,7 @@ void ofxHapPlayer::foundStream(AVStream *stream)
 
         _audioThread = std::make_shared<ofxHap::AudioThread>(parameters, sampleRate, _buffer, *this, stream->start_time, stream->duration);
         _audioThread->setVolume(_volume);
-        _audioThread->sync(_clock);
+        _audioThread->sync(_clock, false);
     }
 }
 
@@ -619,7 +619,7 @@ void ofxHapPlayer::play()
         _clock.syncAt(0, _frameTime);
         if (_audioThread)
         {
-            _audioThread->sync(_clock);
+            _audioThread->sync(_clock, false);
         }
     }
     if (_clock.getPaused())
@@ -653,7 +653,7 @@ void ofxHapPlayer::setPaused(bool pause, bool locked)
         _clock.setPausedAt(pause, _frameTime);
         if (_audioThread)
         {
-            _audioThread->sync(_clock);
+            _audioThread->sync(_clock, true);
             if (pause)
             {
                 _audioOut.stop();
@@ -780,7 +780,7 @@ void ofxHapPlayer::setLoopState(ofLoopType state)
         _clock.mode = mode;
         if (_audioThread)
         {
-            _audioThread->sync(_clock);
+            _audioThread->sync(_clock, false);
         }
     }
 }
@@ -810,7 +810,7 @@ void ofxHapPlayer::setSpeed(float speed)
     _clock.setRateAt(speed, _frameTime);
     if (_audioThread)
     {
-        _audioThread->sync(_clock);
+        _audioThread->sync(_clock, true);
     }
 }
 
@@ -870,7 +870,7 @@ void ofxHapPlayer::setPTSLoaded(int64_t pts)
     _clock.syncAt(pts, _frameTime);
     if (_audioThread)
     {
-        _audioThread->sync(_clock);
+        _audioThread->sync(_clock, false);
     }
 }
 

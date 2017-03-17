@@ -49,7 +49,8 @@ namespace ofxHap {
         AudioThread(AudioThread const &) = delete;
         void        operator=(AudioThread const &x) = delete;
         void        send(AVPacket *packet);
-        void        sync(const Clock& clock);
+        // sync() send soft == true if the playhead position is unaffected (eg pause) 
+        void        sync(const Clock& clock, bool soft);
         void        endOfStream();
         void        flush();
         void        setVolume(float v);
@@ -78,6 +79,7 @@ namespace ofxHap {
         std::queue<Action>                  _queue;
         bool                                _finish;
         bool                                _sync;
+        bool                                _soft;
         Clock                               _clock;
         float                               _volume;
     };

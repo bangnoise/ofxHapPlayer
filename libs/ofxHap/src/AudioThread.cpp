@@ -45,7 +45,7 @@ ofxHap::AudioThread::AudioThread(const AudioParameters& params ,
                                  int64_t start,
                                  int64_t duration)
 : _receiver(receiver), _buffer(buffer), _thread(&ofxHap::AudioThread::threadMain, this, params, outRate, buffer, start, duration),
-  _finish(false), _sync(false)
+  _finish(false), _sync(false), _soft(false)
 {
 
 }
@@ -329,10 +329,18 @@ void ofxHap::AudioThread::threadMain(AudioParameters params, int outRate, std::s
                 {
                     clock = _clock;
                     clock.rescale(AV_TIME_BASE, sampleRate);
+                    if (_soft)
+                    {
+                        // Don't lose playhead position
+                        last = av_rescale_q(av_gettime_relative(), {1, AV_TIME_BASE}, {1, sampleRate});
+                    }
+                    else
+                    {
+                        last = AV_NOPTS_VALUE;
+                        current.start = AV_NOPTS_VALUE;
+                    }
                     resampler.setRate(_clock.getRate());
-                    // TODO: could distinguish between pause/unpause and not reset last on pause
-                    last = AV_NOPTS_VALUE;
-                    current.start = AV_NOPTS_VALUE;
+                    _soft = false;
                     _sync = false;
                 }
 
@@ -354,10 +362,19 @@ void ofxHap::AudioThread::send(AVPacket *p)
     _condition.notify_one();
 }
 
-void ofxHap::AudioThread::sync(const Clock& clock)
+void ofxHap::AudioThread::sync(const Clock& clock, bool soft)
 {
     std::lock_guard<std::mutex> guard(_lock);
     _clock = clock;
+    if (soft == false)
+    {
+        _soft = false;
+    }
+    else if (_sync == false)
+    {
+        // Don't set _soft to true if there is already a pending hard sync
+        _soft = true;
+    }
     _sync = true;
     _condition.notify_one();
 }
