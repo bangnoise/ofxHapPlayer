@@ -225,11 +225,7 @@ void ofxHapPlayer::foundStream(AVStream *stream)
         _audioStreamIndex = stream->index;
         _buffer = std::make_shared<ofxHap::RingBuffer>(channels, sampleRate / 8);
 
-        _audioOut.start(channels, sampleRate, _buffer);
-        if (_clock.getPaused())
-        {
-            _audioOut.stop();
-        }
+        _audioOut.configure(channels, sampleRate, _buffer);
 
         _audioThread = std::make_shared<ofxHap::AudioThread>(parameters, sampleRate, _buffer, *this, stream->start_time, stream->duration);
         _audioThread->setVolume(_volume);
@@ -370,10 +366,6 @@ void ofxHapPlayer::update(ofEventArgs & args)
     // Stop if we have got to the end of the movie and aren't looping
     if (_clock.getDone() && _playing)
     {
-        if (_audioThread)
-        {
-            _audioOut.stop();
-        }
         _playing = false;
     }
     // No frame if the movie position outlies the video track length
@@ -654,14 +646,6 @@ void ofxHapPlayer::setPaused(bool pause, bool locked)
         if (_audioThread)
         {
             _audioThread->sync(_clock, true);
-            if (pause)
-            {
-                _audioOut.stop();
-            }
-            else
-            {
-                _audioOut.start();
-            }
         }
     }
 }
@@ -976,6 +960,7 @@ void ofxHapPlayer::setTimeout(int microseconds)
 }
 
 ofxHapPlayer::AudioOutput::AudioOutput()
+: _started(false), _channels(0), _sampleRate(0)
 {
     
 }
@@ -1013,20 +998,28 @@ unsigned int ofxHapPlayer::AudioOutput::getBestRate(unsigned int r) const
     return r;
 }
 
-void ofxHapPlayer::AudioOutput::start(int channels, int sampleRate, std::shared_ptr<ofxHap::RingBuffer> buffer)
+void ofxHapPlayer::AudioOutput::configure(int channels, int sampleRate, std::shared_ptr<ofxHap::RingBuffer> buffer)
 {
     _buffer = buffer;
-    _soundStream.setOutput(this);
-    bool audio = _soundStream.setup(channels, 0, sampleRate, 128, 2); // TODO: best values for last 2 params?
-    if (!audio)
-    {
-        ofLogError("ofxHapPlayer", "Error starting audio playback.");
-    }
+    _channels = channels;
+    _sampleRate = sampleRate;
 }
 
 void ofxHapPlayer::AudioOutput::start()
 {
-    _soundStream.start();
+    if (!_started)
+    {
+        _soundStream.setOutput(this);
+        _started = _soundStream.setup(_channels, 0, _sampleRate, 128, 2); // TODO: best values for last 2 params?
+        if (!_started)
+        {
+            ofLogError("ofxHapPlayer", "Error starting audio playback.");
+        }
+    }
+    else
+    {
+        _soundStream.start();
+    }
 }
 
 void ofxHapPlayer::AudioOutput::stop()
@@ -1038,6 +1031,7 @@ void ofxHapPlayer::AudioOutput::close()
 {
     _soundStream.stop();
     _soundStream.close();
+    _started = false;
 }
 
 void ofxHapPlayer::AudioOutput::audioOut(ofSoundBuffer& buffer)
@@ -1078,6 +1072,16 @@ void ofxHapPlayer::AudioOutput::audioOut(ofSoundBuffer& buffer)
                                static_cast<int>(buffer.getNumChannels()),
                                AV_SAMPLE_FMT_FLT);
     }
+}
+
+void ofxHapPlayer::startAudio()
+{
+    _audioOut.start();
+}
+
+void ofxHapPlayer::stopAudio()
+{
+    _audioOut.stop();
 }
 
 ofxHapPlayer::DecodedFrame::DecodedFrame() :

@@ -33,6 +33,7 @@
 #include <ofxHap/Clock.h>
 #include <ofxHap/PacketCache.h>
 #include <ofxHap/Demuxer.h>
+#include <ofxHap/AudioThread.h>
 #include <ofxHap/TimeRangeSet.h>
 
 namespace ofxHap {
@@ -40,7 +41,7 @@ namespace ofxHap {
     class RingBuffer;
 }
 
-class ofxHapPlayer : public ofBaseVideoPlayer, public ofxHap::PacketReceiver {
+class ofxHapPlayer : public ofBaseVideoPlayer, public ofxHap::PacketReceiver, public ofxHap::AudioThread::Receiver {
 public:
     ofxHapPlayer();
     virtual ~ofxHapPlayer();
@@ -117,6 +118,8 @@ private:
     virtual void    discontinuity();
     virtual void    endMovie();
     virtual void    error(int averror);
+    virtual void    startAudio();
+    virtual void    stopAudio();
     void            setPaused(bool pause, bool locked);
     void            setVideoPTSLoaded(int64_t pts);
     void            setPTSLoaded(int64_t pts);
@@ -128,13 +131,16 @@ private:
     public:
         AudioOutput();
         ~AudioOutput();
-        void start(int channels, int sampleRate, std::shared_ptr<ofxHap::RingBuffer> buffer);
+        void configure(int channels, int sampleRate, std::shared_ptr<ofxHap::RingBuffer> buffer);
         void start();
         void stop();
         void close();
         unsigned int  getBestRate(unsigned int rate) const;
     private:
         virtual void    audioOut(ofSoundBuffer& buffer) override;
+        bool                                _started;
+        int                                 _channels;
+        int                                 _sampleRate;
         std::shared_ptr<ofxHap::RingBuffer> _buffer;
         ofSoundStream                       _soundStream;
     };

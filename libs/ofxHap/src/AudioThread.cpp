@@ -41,7 +41,7 @@ extern "C" {
 ofxHap::AudioThread::AudioThread(const AudioParameters& params ,
                                  int outRate,
                                  std::shared_ptr<ofxHap::RingBuffer> buffer,
-                                 ErrorReceiving& receiver,
+                                 Receiver& receiver,
                                  int64_t start,
                                  int64_t duration)
 : _receiver(receiver), _buffer(buffer), _thread(&ofxHap::AudioThread::threadMain, this, params, outRate, buffer, start, duration),
@@ -100,6 +100,7 @@ void ofxHap::AudioThread::threadMain(AudioParameters params, int outRate, std::s
         TimeRange current(AV_NOPTS_VALUE, 0);
 
         int bufferusec = static_cast<int>(av_rescale_q(params.cache, {1, AV_TIME_BASE}, {1, sampleRate}));
+        bool playing = false;
 
         while (!finish) {
 
@@ -303,11 +304,29 @@ void ofxHap::AudioThread::threadMain(AudioParameters params, int outRate, std::s
                 }
                 _buffer->writeEnd(filled);
             }
+            if (playing == false && clock.getPaused() == false)
+            {
+                _receiver.startAudio();
+                playing = true;
+            }
+            else if (playing == true && (clock.getPaused() || clock.getDone()))
+            {
+                // Wait for the buffer to drain before stopping audio
+                float *buffers[2];
+                int counts[2];
+                _buffer->writeBegin(buffers[0], counts[0], buffers[1], counts[1]);
+                if (counts[0] + counts[1] == _buffer->getSamplesPerChannel())
+                {
+                    _receiver.stopAudio();
+                    playing = false;
+                }
+                _buffer->writeEnd(0);
+            }
 
             // Only hold the lock in this { scope }
             {
                 std::unique_lock<std::mutex> locker(_lock);
-                if (clock.getPaused() || clock.getDone())
+                if (playing == false)
                 {
                     _condition.wait(locker);
                 }

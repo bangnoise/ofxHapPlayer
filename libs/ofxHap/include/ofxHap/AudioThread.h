@@ -43,8 +43,12 @@ typedef struct AVFrame AVFrame;
 namespace ofxHap {
     class AudioThread {
     public:
-
-        AudioThread(const AudioParameters& params, int outRate, std::shared_ptr<ofxHap::RingBuffer> buffer, ErrorReceiving& receiver, int64_t start, int64_t duration);
+        class Receiver : public ErrorReceiving {
+        public:
+            virtual void startAudio() = 0;
+            virtual void stopAudio() = 0;
+        };
+        AudioThread(const AudioParameters& params, int outRate, std::shared_ptr<ofxHap::RingBuffer> buffer, Receiver& receiver, int64_t start, int64_t duration);
         ~AudioThread();
         AudioThread(AudioThread const &) = delete;
         void        operator=(AudioThread const &x) = delete;
@@ -71,7 +75,7 @@ namespace ofxHap {
         };
         void                                threadMain(AudioParameters params, int ourRate, std::shared_ptr<ofxHap::RingBuffer> buffer, int64_t start, int64_t duration);
         static int                          reverse(AVFrame *dst, const AVFrame *src);
-        ErrorReceiving                      &_receiver;
+        Receiver                            &_receiver;
         std::shared_ptr<ofxHap::RingBuffer> _buffer;
         std::thread                         _thread;
         std::condition_variable             _condition;
