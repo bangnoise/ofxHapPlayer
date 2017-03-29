@@ -31,7 +31,7 @@
 #include <thread>
 #include <condition_variable>
 #include <queue>
-#include <map>
+#include <vector>
 #include "AudioParameters.h"
 #include "RingBuffer.h"
 #include "ErrorReceiving.h"
@@ -72,6 +72,41 @@ namespace ofxHap {
             void operator=(Action const &x) = delete;
             Kind kind;
             AVPacket *packet;
+        };
+        class Fader {
+        public:
+            Fader(int fadeDuration) : _duration(fadeDuration), _pos(0) {};
+            int getFadeDuration() const { return _duration; }
+            void add(int64_t delay, float start, float end);
+            void apply(float *dst, int channels, int length);
+            void clear();
+        private:
+            class Fade {
+            public:
+                Fade(int64_t t, float s, float e) : time(t), start(s), end(e) {};
+                float valueAt(int64_t t, int duration)
+                {
+                    if (t < time)
+                    {
+                        return start;
+                    }
+                    else if (t > time + duration)
+                    {
+                        return end;
+                    }
+                    else
+                    {
+                        float m = static_cast<float>(end - start) / duration;
+                        return (m * (t - time)) + start;
+                    }
+                }
+                int64_t time;
+                float start;
+                float end;
+            };
+            int64_t _pos;
+            std::vector<Fade> _fades;
+            int _duration;
         };
         void                                threadMain(AudioParameters params, int ourRate, std::shared_ptr<ofxHap::RingBuffer> buffer, int64_t start, int64_t duration);
         static int                          reverse(AVFrame *dst, const AVFrame *src);

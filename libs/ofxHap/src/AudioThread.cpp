@@ -91,6 +91,7 @@ void ofxHap::AudioThread::threadMain(AudioParameters params, int outRate, std::s
         int channels = params.context->channels;
 #endif
         AudioResampler resampler(params, outRate);
+        Fader fader(outRate / 20);
         bool finish = false;
         std::queue<Action> queue;
         AudioFrameCache cache;
@@ -176,6 +177,9 @@ void ofxHap::AudioThread::threadMain(AudioParameters params, int outRate, std::s
                         if (current.start == AV_NOPTS_VALUE || current.length == 0)
                         {
                             current = MovieTime::nextRange(clock, last, clock.period);
+                            fader.clear();
+                            fader.add(0, 0.0, 1.0);
+                            fader.add(av_rescale_q(std::abs(current.length), {1, sampleRate}, {1, static_cast<int>(outRate / std::fabs(clock.getRate()))}) - fader.getFadeDuration(), 1.0, 0.0);
                         }
 
                         if (current.start < streamStart || current.start > streamStart + streamDuration)
@@ -260,6 +264,8 @@ void ofxHap::AudioThread::threadMain(AudioParameters params, int outRate, std::s
                                 break;
                             }
                         }
+
+                        fader.apply(dst[i], channels, written);
 
                         if (written > 0)
                         {
@@ -346,12 +352,17 @@ void ofxHap::AudioThread::threadMain(AudioParameters params, int outRate, std::s
 
                 if (_sync)
                 {
+                    bool started = clock.getPaused() && !_clock.getPaused();
                     clock = _clock;
                     clock.rescale(AV_TIME_BASE, sampleRate);
                     if (_soft)
                     {
                         // Don't lose playhead position
                         last = av_rescale_q(av_gettime_relative(), {1, AV_TIME_BASE}, {1, sampleRate});
+                        if (started)
+                        {
+                            fader.add(0, 0.0, 1.0);
+                        }
                     }
                     else
                     {
@@ -504,4 +515,43 @@ ofxHap::AudioThread::Action::~Action()
         av_freep(&packet);
 #endif
     }
+}
+
+void ofxHap::AudioThread::Fader::add(int64_t delay, float start, float end)
+{
+    _fades.emplace_back(_pos + delay, start, end);
+}
+
+void ofxHap::AudioThread::Fader::clear()
+{
+    _fades.clear();
+}
+
+void ofxHap::AudioThread::Fader::apply(float *dst, int channels, int length)
+{
+    TimeRange dstRange(_pos, length);
+    for (auto itr = _fades.begin(); itr != _fades.end();) {
+        if (itr->time + _duration < _pos)
+        {
+            itr = _fades.erase(itr);
+        }
+        else
+        {
+            TimeRange fadeRange(itr->time, _duration);
+            if (fadeRange.intersects(dstRange))
+            {
+                int offset = itr->time - _pos;
+                int start = std::max(0, offset);
+                int end = std::min(length, _duration - offset);
+                for (int i = start; i < end; i++) {
+                    float intensity = itr->valueAt(_pos + i, _duration);
+                    for (int j = 0; j < channels; j++) {
+                        dst[(i * channels) + j] *= intensity;
+                    }
+                }
+            }
+            itr++;
+        }
+    }
+    _pos += length;
 }
