@@ -540,7 +540,7 @@ void ofxHap::AudioThread::Fader::apply(float *dst, int channels, int length)
             TimeRange fadeRange(itr->time, _duration);
             if (fadeRange.intersects(dstRange))
             {
-                int offset = itr->time - _pos;
+                int offset = static_cast<int>(itr->time - _pos);
                 int start = std::max(0, offset);
                 int end = std::min(length, _duration - offset);
                 for (int i = start; i < end; i++) {
