@@ -100,7 +100,7 @@ void ofxHap::AudioThread::threadMain(AudioParameters params, int outRate, std::s
         int64_t last = AV_NOPTS_VALUE;
         TimeRange current(AV_NOPTS_VALUE, 0);
 
-        int bufferusec = static_cast<int>(av_rescale_q(params.cache, {1, AV_TIME_BASE}, {1, sampleRate}));
+        int cacheusec = static_cast<int>(av_rescale_q(params.cache, {1, AV_TIME_BASE}, {1, sampleRate}));
         bool playing = false;
 
         while (!finish) {
@@ -145,7 +145,7 @@ void ofxHap::AudioThread::threadMain(AudioParameters params, int outRate, std::s
 
             {
                 // Dispose of cached samples we no longer need
-                ofxHap::TimeRangeSequence ranges = ofxHap::MovieTime::nextRanges(clock, expected - bufferusec, std::min(clock.period, bufferusec * INT64_C(2)));
+                ofxHap::TimeRangeSequence ranges = ofxHap::MovieTime::nextRanges(clock, expected - cacheusec, std::min(clock.period, cacheusec * INT64_C(2)));
                 cache.limit(ranges);
             }
 
