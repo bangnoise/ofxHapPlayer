@@ -75,7 +75,7 @@ namespace ofxHap {
         };
         class Fader {
         public:
-            Fader(int fadeDuration) : _duration(fadeDuration), _pos(0) {};
+            Fader(int fadeDuration) : _pos(0), _duration(fadeDuration) {}
             int getFadeDuration() const { return _duration; }
             void add(int64_t delay, float start, float end);
             void apply(float *dst, int channels, int length);
@@ -83,7 +83,7 @@ namespace ofxHap {
         private:
             class Fade {
             public:
-                Fade(int64_t t, float s, float e) : time(t), start(s), end(e) {};
+                Fade(int64_t t, float s, float e) : time(t), start(s), end(e) {}
                 float valueAt(int64_t t, int duration)
                 {
                     if (t < time)
