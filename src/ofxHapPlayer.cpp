@@ -1039,26 +1039,21 @@ void ofxHapPlayer::AudioOutput::audioOut(ofSoundBuffer& buffer)
     int wanted = static_cast<int>(buffer.getNumFrames());
     int filled = 0;
 
-    const float *first, *second;
-    int firstCount, secondCount;
+    const float *src[2];
+    int count[2];
 
-    _buffer->readBegin(first, firstCount, second, secondCount);
+    _buffer->readBegin(src[0], count[0], src[1], count[1]);
 
-    if (firstCount && wanted)
+    for (int i = 0; i < 2; i++)
     {
-        int todo = std::min(wanted, firstCount);
-        size_t copy = todo * sizeof(float) * buffer.getNumChannels();
-        float *out = &buffer.getBuffer()[filled * buffer.getNumChannels()];
-        memcpy(out, first, copy);
-        filled += todo;
-    }
-    if (secondCount && filled < wanted)
-    {
-        int todo = std::min(wanted - filled, secondCount);
-        size_t copy = todo * sizeof(float) * buffer.getNumChannels();
-        float *out = &buffer.getBuffer()[filled * buffer.getNumChannels()];
-        memcpy(out, second, copy);
-        filled += todo;
+        int todo = std::min(wanted - filled, count[i]);
+        if (todo > 0)
+        {
+            size_t copy = todo * sizeof(float) * buffer.getNumChannels();
+            float *out = &buffer.getBuffer()[filled * buffer.getNumChannels()];
+            memcpy(out, src[i], copy);
+            filled += todo;
+        }
     }
 
     _buffer->readEnd(filled);
