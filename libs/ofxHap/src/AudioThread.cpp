@@ -158,7 +158,8 @@ void ofxHap::AudioThread::threadMain(AudioParameters params, int outRate, std::s
 
                 _buffer->writeBegin(dst[0], count[0], dst[1], count[1]);
 
-                if (last == AV_NOPTS_VALUE || std::abs(last - expected) > _buffer->getSamplesPerChannel())
+                // Be more tolerant of being ahead than behind, because some outputs take a while to start consuming samples
+                if (last == AV_NOPTS_VALUE || expected - last > _buffer->getSamplesPerChannel() || last - expected > _buffer->getSamplesPerChannel() * 2)
                 {
                     // Drift, hopefully due to missing packets
                     last = expected;
