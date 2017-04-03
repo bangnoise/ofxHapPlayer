@@ -33,8 +33,8 @@ extern "C" {
 
 #if OFX_HAP_HAS_CODECPAR
 
-ofxHap::AudioParameters::AudioParameters(AVCodecParameters* p, int c)
-: parameters(avcodec_parameters_alloc()), cache(c)
+ofxHap::AudioParameters::AudioParameters(AVCodecParameters* p, int c, int64_t s, int64_t d)
+: parameters(avcodec_parameters_alloc()), cache(c), start(s), duration(d)
 {
 	avcodec_parameters_copy(parameters, p);
 }
@@ -45,7 +45,7 @@ ofxHap::AudioParameters::~AudioParameters()
 }
 
 ofxHap::AudioParameters::AudioParameters(const AudioParameters& o)
-: parameters(avcodec_parameters_alloc()), cache(o.cache)
+: parameters(avcodec_parameters_alloc()), cache(o.cache), start(o.start), duration(o.duration)
 {
 	avcodec_parameters_copy(parameters, o.parameters);
 }
@@ -57,13 +57,15 @@ ofxHap::AudioParameters& ofxHap::AudioParameters::operator=(const AudioParameter
 	avcodec_parameters_free(&parameters);
 	parameters = p;
     cache = o.cache;
+    start = o.start;
+    duration = o.duration;
     return *this;
 }
 
 #else
 
-ofxHap::AudioParameters::AudioParameters(AVCodecContext* c, int ca)
-: context(avcodec_alloc_context3(avcodec_find_decoder(c->codec_id))), cache(ca)
+ofxHap::AudioParameters::AudioParameters(AVCodecContext* c, int ca, int64_t s, int64_t d)
+: context(avcodec_alloc_context3(avcodec_find_decoder(c->codec_id))), cache(ca), start(s), duration(d)
 {
 	avcodec_copy_context(context, c);
 }
@@ -74,7 +76,7 @@ ofxHap::AudioParameters::~AudioParameters()
 }
 
 ofxHap::AudioParameters::AudioParameters(const AudioParameters& o)
-: context(avcodec_alloc_context3(avcodec_find_decoder(o.context->codec_id))), cache(o.cache)
+: context(avcodec_alloc_context3(avcodec_find_decoder(o.context->codec_id))), cache(o.cache), start(o.start), duration(o.duration)
 {
 	avcodec_copy_context(context, o.context);
 }
@@ -86,6 +88,8 @@ ofxHap::AudioParameters& ofxHap::AudioParameters::operator=(const AudioParameter
 	avcodec_free_context(&context);
 	context = c;
     cache = o.cache;
+    start = o.start;
+    duration = o.duration;
     return *this;
 }
 

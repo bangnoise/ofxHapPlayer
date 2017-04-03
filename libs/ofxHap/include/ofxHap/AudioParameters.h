@@ -46,16 +46,18 @@ public:
      Audio params - from stream, plus length to cache either side of now in usec
      */
 #if OFX_HAP_HAS_CODECPAR
-	AudioParameters(AVCodecParameters *p, int cache);
+	AudioParameters(AVCodecParameters *p, int cache, int64_t start, int64_t duration);
 	AVCodecParameters* parameters;
 #else
-	AudioParameters(AVCodecContext *c, int cache);
+	AudioParameters(AVCodecContext *c, int cache, int64_t start, int64_t duration);
 	AVCodecContext *context;
 #endif
 	~AudioParameters();
 	AudioParameters(const AudioParameters& o);
 	AudioParameters& operator=(const AudioParameters& o);
     int cache;
+    int64_t start;
+    int64_t duration;
 };
 
 }

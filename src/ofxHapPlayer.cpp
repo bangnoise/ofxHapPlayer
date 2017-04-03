@@ -215,11 +215,11 @@ void ofxHapPlayer::foundStream(AVStream *stream)
 #if OFX_HAP_HAS_CODECPAR
         int channels = params->channels;
         int sampleRate = params->sample_rate;
-        ofxHap::AudioParameters parameters(params, kofxHapPlayerBufferUSec);
+        ofxHap::AudioParameters parameters(params, kofxHapPlayerBufferUSec, stream->start_time, stream->duration);
 #else
         int channels = codec->channels;
         int sampleRate = codec->sample_rate;
-        ofxHap::AudioParameters parameters(codec, kofxHapPlayerBufferUSec);
+        ofxHap::AudioParameters parameters(codec, kofxHapPlayerBufferUSec, stream->start_time, stream->duration);
 #endif
         sampleRate = _audioOut.getBestRate(sampleRate);
         _audioStreamIndex = stream->index;
@@ -227,7 +227,7 @@ void ofxHapPlayer::foundStream(AVStream *stream)
 
         _audioOut.configure(channels, sampleRate, _buffer);
 
-        _audioThread = std::make_shared<ofxHap::AudioThread>(parameters, sampleRate, _buffer, *this, stream->start_time, stream->duration);
+        _audioThread = std::make_shared<ofxHap::AudioThread>(parameters, sampleRate, _buffer, *this);
         _audioThread->setVolume(_volume);
         _audioThread->sync(_clock, false);
     }

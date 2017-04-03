@@ -41,10 +41,8 @@ extern "C" {
 ofxHap::AudioThread::AudioThread(const AudioParameters& params ,
                                  int outRate,
                                  std::shared_ptr<ofxHap::RingBuffer> buffer,
-                                 Receiver& receiver,
-                                 int64_t start,
-                                 int64_t duration)
-: _receiver(receiver), _buffer(buffer), _thread(&ofxHap::AudioThread::threadMain, this, params, outRate, buffer, start, duration),
+                                 Receiver& receiver)
+: _receiver(receiver), _buffer(buffer), _thread(&ofxHap::AudioThread::threadMain, this, params, outRate, buffer),
   _finish(false), _sync(false), _soft(false)
 {
 
@@ -60,15 +58,15 @@ ofxHap::AudioThread::~AudioThread()
     _thread.join();
 }
 
-void ofxHap::AudioThread::threadMain(AudioParameters params, int outRate, std::shared_ptr<ofxHap::RingBuffer> buffer, int64_t streamStart, int64_t streamDuration)
+void ofxHap::AudioThread::threadMain(AudioParameters params, int outRate, std::shared_ptr<ofxHap::RingBuffer> buffer)
 {
-    if (streamDuration == 0)
+    if (params.duration == 0)
     {
         return;
     }
-    if (streamStart == AV_NOPTS_VALUE)
+    if (params.start == AV_NOPTS_VALUE)
     {
-        streamStart = INT64_C(0);
+        params.start = INT64_C(0);
     }
 
     int result = 0;
@@ -183,9 +181,9 @@ void ofxHap::AudioThread::threadMain(AudioParameters params, int outRate, std::s
                             fader.add(av_rescale_q(std::abs(current.length), {1, sampleRate}, {1, static_cast<int>(outRate / std::fabs(clock.getRate()))}) - fader.getFadeDuration(), 1.0, 0.0);
                         }
 
-                        if (current.start < streamStart || current.start > streamStart + streamDuration)
+                        if (current.start < params.start || current.start > params.start + params.duration)
                         {
-                            if (current.start < streamStart)
+                            if (current.start < params.start)
                             {
                                 if (current.length < 0)
                                 {
@@ -193,14 +191,14 @@ void ofxHap::AudioThread::threadMain(AudioParameters params, int outRate, std::s
                                 }
                                 else
                                 {
-                                    consumed = static_cast<int>(streamStart - current.start);
+                                    consumed = static_cast<int>(params.start - current.start);
                                 }
                             }
                             else
                             {
                                 if (current.length < 0)
                                 {
-                                    consumed = static_cast<int>(current.start - (streamStart + streamDuration));
+                                    consumed = static_cast<int>(current.start - (params.start + params.duration));
                                 }
                                 else
                                 {
