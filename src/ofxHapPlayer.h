@@ -48,7 +48,7 @@ public:
 
     // TODO: allow these
     ofxHapPlayer(ofxHapPlayer const &) = delete;
-    void operator=(ofxHapPlayer const &x) = delete;
+    ofxHapPlayer& operator=(ofxHapPlayer const &x) = delete;
 
     virtual bool                load(std::string name);
     virtual void                close();
