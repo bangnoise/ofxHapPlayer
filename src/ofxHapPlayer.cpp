@@ -175,9 +175,9 @@ bool ofxHapPlayer::load(string name)
         name = ofToDataPath(name);
     }
 
-    _demuxer = std::make_shared<ofxHap::Demuxer>(name, *this);
-
     _positionOnLoad = 0.0;
+
+    _demuxer = std::make_shared<ofxHap::Demuxer>(name, *this);
 
     /*
     Apply our current state to the movie
@@ -330,13 +330,14 @@ void ofxHapPlayer::read(ofxHap::TimeRangeSequence& sequence)
 void ofxHapPlayer::update(ofEventArgs & args)
 {
     std::lock_guard<std::mutex> guard(_lock);
+
+    // Calculate our current position for video and audio (if present)
+    updatePTS();
+
     if (!_loaded)
     {
         return;
     }
-
-    // Calculate our current position for video and audio (if present)
-    updatePTS();
 
     int64_t pts = _clock.getTime();
 
