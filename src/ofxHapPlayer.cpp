@@ -143,6 +143,7 @@ ofxHapPlayer::ofxHapPlayer() :
     _demuxer(), _buffer(nullptr), _audioThread(nullptr), _audioOut(), _volume(1.0), _timeout(30000),
     _positionOnLoad(0.0)
 {
+    _clock.setPausedAt(true, 0);
     ofAddListener(ofEvents().update, this, &ofxHapPlayer::update);
 }
 
@@ -295,6 +296,7 @@ void ofxHapPlayer::close()
     _buffer.reset();
     _videoPackets.clear();
     _clock.period = 0;
+    _clock.setPausedAt(true, 0);
     _wantsUpload = false;
     _videoStream = nullptr;
     _audioStreamIndex = -1;
