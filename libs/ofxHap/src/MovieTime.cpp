@@ -62,9 +62,16 @@ ofxHap::TimeRangeSequence ofxHap::MovieTime::nextRanges(const Clock& clock, int6
     TimeRangeSequence result;
     while (duration > 0) {
         TimeRange next = nextRange(clock, absolute, duration);
-        duration -= std::abs(next.length);
-        absolute += std::abs(next.length);
-        result.add(next);
+        if (next.length == 0)
+        {
+            break;
+        }
+        else
+        {
+            duration -= std::abs(next.length);
+            absolute += std::abs(next.length);
+            result.add(next);
+        }
     }
     return result;
 }
