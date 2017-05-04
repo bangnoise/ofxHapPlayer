@@ -361,15 +361,17 @@ void ofxHapPlayer::update(ofEventArgs & args)
 
     read(future);
 
-    int64_t vidPosition = av_rescale_q(pts, { 1, AV_TIME_BASE }, _videoStream->time_base);
-    if (pts == _clock.period)
+    int64_t vidPosition;
+    if (_clock.getDone())
     {
-        vidPosition--;
-    }
-    // Stop if we have got to the end of the movie and aren't looping
-    if (_clock.getDone() && _playing)
-    {
+        // Don't use pts from the clock which is duration - we want the last frame time
+        vidPosition = _videoStream->duration - 1;
+        // Stop if we have got to the end of the movie and aren't looping
         _playing = false;
+    }
+    else
+    {
+        vidPosition = av_rescale_q_rnd(pts, { 1, AV_TIME_BASE }, _videoStream->time_base, AV_ROUND_DOWN);
     }
     // No frame if the movie position outlies the video track length
     if (vidPosition > _videoStream->duration || (_videoStream->start_time != AV_NOPTS_VALUE && vidPosition < _videoStream->start_time))
