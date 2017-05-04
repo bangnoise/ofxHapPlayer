@@ -350,8 +350,9 @@ void ofxHapPlayer::update(ofEventArgs & args)
     ofxHap::TimeRangeSet vcache;
     for (auto& range : cache)
     {
-        ofxHap::TimeRange vrange(av_rescale_q(range.start, { 1, AV_TIME_BASE }, _videoStream->time_base),
-                                 av_rescale_q(range.length, { 1, AV_TIME_BASE }, _videoStream->time_base));
+        // Careful rounding: don't discard needed samples - important at low rates when timebase is framerate
+        ofxHap::TimeRange vrange(av_rescale_q_rnd(range.start, { 1, AV_TIME_BASE }, _videoStream->time_base, AV_ROUND_DOWN),
+                                 av_rescale_q_rnd(range.length, { 1, AV_TIME_BASE }, _videoStream->time_base, AV_ROUND_UP));
         vcache.add(vrange);
     }
     // Release any packets we no longer need
