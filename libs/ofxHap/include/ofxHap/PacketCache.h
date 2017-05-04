@@ -108,33 +108,40 @@ namespace ofxHap {
         }
         static void limit(std::map<int64_t, T>& map, const TimeRangeSet& ranges, bool active)
         {
-            for (auto itr = map.cbegin(); itr != map.cend();) {
-                T p = itr->second;
-                bool keep = false;
-                if (active && itr->first >= ranges.earliest())
-                {
-                    keep = true;
-                }
-                else
-                {
-                    TimeRange current = Query(p);
-                    for (auto range: ranges)
+            if (ranges.size() == 0)
+            {
+                clear(map);
+            }
+            else
+            {
+                for (auto itr = map.cbegin(); itr != map.cend();) {
+                    T p = itr->second;
+                    bool keep = false;
+                    if (active && itr->first >= ranges.earliest())
                     {
-                        if (range.intersects(current))
+                        keep = true;
+                    }
+                    else
+                    {
+                        TimeRange current = Query(p);
+                        for (auto range: ranges)
                         {
-                            keep = true;
-                            break;
+                            if (range.intersects(current))
+                            {
+                                keep = true;
+                                break;
+                            }
                         }
                     }
-                }
-                if (!keep)
-                {
-                    Free(p);
-                    itr = map.erase(itr);
-                }
-                else
-                {
-                    ++itr;
+                    if (!keep)
+                    {
+                        Free(p);
+                        itr = map.erase(itr);
+                    }
+                    else
+                    {
+                        ++itr;
+                    }
                 }
             }
         }
