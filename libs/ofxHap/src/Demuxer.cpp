@@ -56,6 +56,7 @@ void ofxHap::Demuxer::threadMain(const std::string movie, PacketReceiver& receiv
     {
         static std::once_flag registerFlag;
         std::call_once(registerFlag, [](){
+            av_log_set_level(AV_LOG_QUIET);
             av_register_all();
             avformat_network_init();
         });
