@@ -50,55 +50,55 @@ public:
     ofxHapPlayer(ofxHapPlayer const &) = delete;
     ofxHapPlayer& operator=(ofxHapPlayer const &x) = delete;
 
-    virtual bool                load(std::string name);
-    virtual void                close();
-    virtual void                update() {};
+    virtual bool                load(std::string name) override;
+    virtual void                close() override;
+    virtual void                update() override {};
     
-    virtual void                play();
-    virtual void                stop();     
+    virtual void                play() override;
+    virtual void                stop() override;
     
-    virtual bool                isFrameNew() const;
-    virtual ofPixels&           getPixels();
-    virtual const ofPixels&     getPixels() const;
+    virtual bool                isFrameNew() const override;
+    virtual ofPixels&           getPixels() override;
+    virtual const ofPixels&     getPixels() const override;
 
     virtual ofTexture *         getTexture();
     virtual ofShader *          getShader();
-    virtual float               getWidth() const;
-    virtual float               getHeight() const;
+    virtual float               getWidth() const override;
+    virtual float               getHeight() const override;
     
-    virtual bool                isPaused() const;
-    virtual bool                isLoaded() const;
-    virtual bool                isPlaying() const;
+    virtual bool                isPaused() const override;
+    virtual bool                isLoaded() const override;
+    virtual bool                isPlaying() const override;
     std::string                 getError() const;
     
-    virtual bool                setPixelFormat(ofPixelFormat pixelFormat) {return false;};
+    virtual bool                setPixelFormat(ofPixelFormat pixelFormat) override {return false;};
 
     /*
     Returns OF_PIXELS_RGBA, OF_PIXELS_RGB or OF_PIXELS_UNKNOWN
     */
-    virtual ofPixelFormat       getPixelFormat() const;
+    virtual ofPixelFormat       getPixelFormat() const override;
     virtual string              getMoviePath() const;
     virtual bool				getHapAvailable() const; // TODO: delete (and mvar)?
 	
-    virtual float               getPosition() const;
-    virtual float               getSpeed() const;
-    virtual float               getDuration() const;
-    virtual bool                getIsMovieDone() const;
+    virtual float               getPosition() const override;
+    virtual float               getSpeed() const override;
+    virtual float               getDuration() const override;
+    virtual bool                getIsMovieDone() const override;
 
-    virtual void                setPaused(bool pause);
-    virtual void                setPosition(float pct);
+    virtual void                setPaused(bool pause) override;
+    virtual void                setPosition(float pct) override;
     float                       getVolume() const;
-    virtual void                setVolume(float volume); // 0..1
-    virtual void                setLoopState(ofLoopType state);
-    virtual void                setSpeed(float speed);
+    virtual void                setVolume(float volume) override; // 0..1
+    virtual void                setLoopState(ofLoopType state) override;
+    virtual void                setSpeed(float speed) override;
 /*  virtual void                setFrame(int frame);  // frame 0 = first frame... // TODO: */
 /*  virtual int                 getCurrentFrame() const; // TODO: */
-    virtual int                 getTotalNumFrames() const;
-    virtual ofLoopType          getLoopState() const;
+    virtual int                 getTotalNumFrames() const override;
+    virtual ofLoopType          getLoopState() const override;
 
-    virtual void                firstFrame();
-    virtual void                nextFrame();
-    virtual void                previousFrame();
+    virtual void                firstFrame() override;
+    virtual void                nextFrame() override;
+    virtual void                previousFrame() override;
 
     //
     virtual void                draw(float x, float y);
@@ -111,15 +111,15 @@ public:
     int                         getTimeout() const;
     void                        setTimeout(int microseconds);
 private:
-    virtual void    foundMovie(int64_t duration);
-    virtual void    foundStream(AVStream *stream);
-    virtual void    foundAllStreams();
-    virtual void    readPacket(AVPacket *packet);
-    virtual void    discontinuity();
-    virtual void    endMovie();
-    virtual void    error(int averror);
-    virtual void    startAudio();
-    virtual void    stopAudio();
+    virtual void    foundMovie(int64_t duration) override;
+    virtual void    foundStream(AVStream *stream) override;
+    virtual void    foundAllStreams() override;
+    virtual void    readPacket(AVPacket *packet) override;
+    virtual void    discontinuity() override;
+    virtual void    endMovie() override;
+    virtual void    error(int averror) override;
+    virtual void    startAudio() override;
+    virtual void    stopAudio() override;
     void            setPaused(bool pause, bool locked);
     void            setVideoPTSLoaded(int64_t pts);
     void            setPTSLoaded(int64_t pts);
