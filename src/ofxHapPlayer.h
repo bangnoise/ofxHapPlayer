@@ -174,7 +174,7 @@ private:
     std::shared_ptr<ofxHap::AudioThread>   _audioThread;
     AudioOutput         _audioOut;
     float               _volume;
-    int                 _timeout;
+    std::chrono::microseconds               _timeout;
     float               _positionOnLoad;
 };
 

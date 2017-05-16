@@ -74,6 +74,17 @@ void ofxHap::LockingPacketCache::cache()
     Cache::cache();
 }
 
+bool ofxHap::LockingPacketCache::fetch(int64_t pts, AVPacket *p) const
+{
+    std::lock_guard<std::mutex> guard(_lock);
+    AVPacket *found = Cache::fetch(pts);
+    if (found)
+    {
+        av_packet_ref(p, found);
+    }
+    return found == nullptr ? false : true;
+}
+
 bool ofxHap::LockingPacketCache::fetch(int64_t pts, AVPacket *p, std::chrono::microseconds timeout) const
 {
     std::unique_lock<std::mutex> locker(_lock);

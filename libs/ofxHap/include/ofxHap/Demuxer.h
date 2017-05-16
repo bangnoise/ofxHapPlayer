@@ -63,6 +63,7 @@ namespace ofxHap {
         /* // TODO:
         void readFrame(int64_t start, int64_t end); // read at least up to frame number in
          */
+        bool isActive() const; // true if currently seeking or reading
     private:
         void threadMain(const std::string movie, PacketReceiver& receiver);
         class Action {
@@ -81,9 +82,10 @@ namespace ofxHap {
         int64_t                 _lastSeek;
         std::thread             _thread;
         std::condition_variable _condition;
-        std::mutex              _lock;
+        mutable std::mutex      _lock;
         bool                    _finish;
         std::queue<Action>      _actions;
+        bool                    _active;
     };
 }
 

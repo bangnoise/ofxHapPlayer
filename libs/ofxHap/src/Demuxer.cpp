@@ -35,7 +35,7 @@ extern "C" {
 ofxHap::Demuxer::Demuxer(const std::string& movie, PacketReceiver& receiver) :
 _lastRead(AV_NOPTS_VALUE), _lastSeek(AV_NOPTS_VALUE),
 _thread(&ofxHap::Demuxer::threadMain, this, movie, std::ref(receiver)),
-_finish(false)
+_finish(false), _active(false)
 {
 
 }
@@ -209,9 +209,13 @@ void ofxHap::Demuxer::threadMain(const std::string movie, PacketReceiver& receiv
 
                     result = 0;
 
-                    if (actions.size() == 0 && finish == false)
+                    if (actions.size() == 0)
                     {
-                        _condition.wait(locker);
+                        _active = false;
+                        if (finish == false)
+                        {
+                            _condition.wait(locker);
+                        }
                     }
                 }
             }
@@ -229,6 +233,7 @@ void ofxHap::Demuxer::read(int64_t pts)
     std::unique_lock<std::mutex> locker(_lock);
     _lastRead = pts;
     _actions.emplace(Action::Kind::Read, pts);
+    _active = true;
     _condition.notify_one();
 }
 
@@ -238,6 +243,7 @@ void ofxHap::Demuxer::seekTime(int64_t time)
     _lastSeek = time;
     _lastRead = AV_NOPTS_VALUE;
     _actions.emplace(Action::Kind::SeekTime, time);
+    _active = true;
     _condition.notify_one();
 }
 
@@ -245,6 +251,7 @@ void ofxHap::Demuxer::seekFrame(int64_t frame)
 {
     std::unique_lock<std::mutex> locker(_lock);
     _actions.emplace(Action::Kind::SeekFrame, frame);
+    _active = true;
     _condition.notify_one();
 }
 
@@ -263,6 +270,12 @@ int64_t ofxHap::Demuxer::getLastReadTime() const
 int64_t ofxHap::Demuxer::getLastSeekTime() const
 {
     return _lastSeek;
+}
+
+bool ofxHap::Demuxer::isActive() const
+{
+    std::unique_lock<std::mutex> locker(_lock);
+    return _active;
 }
 
 ofxHap::Demuxer::Action::Action(Kind k, int64_t p)

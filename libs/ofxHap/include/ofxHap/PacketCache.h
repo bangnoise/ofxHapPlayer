@@ -172,6 +172,7 @@ namespace ofxHap {
     public:
         virtual void store(AVPacket *p) override;
         virtual void cache() override;
+        bool fetch(int64_t pts, AVPacket *p) const;
         bool fetch(int64_t pts, AVPacket *p, std::chrono::microseconds timeout) const;
         virtual void limit(const TimeRangeSet& range) override;
         virtual void clear() override;

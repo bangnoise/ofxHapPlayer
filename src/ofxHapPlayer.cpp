@@ -389,8 +389,13 @@ void ofxHapPlayer::update(ofEventArgs & args)
             av_init_packet(&packet);
             packet.data = NULL;
             packet.size = 0;
-            // Fetch a stored packet, blocking until our timeout if necessary
-            if (_videoPackets.fetch(vidPosition, &packet, std::chrono::microseconds(_timeout)))
+            // Fetch a stored packet, blocking until our timeout only if necessary
+            bool found = _videoPackets.fetch(vidPosition, &packet);
+            if (!found && _demuxer->isActive())
+            {
+                found = _videoPackets.fetch(vidPosition, &packet, _timeout);
+            }
+            if (found)
             {
                 unsigned int textureCount;
                 unsigned int hapResult = HapGetFrameTextureCount(packet.data, packet.size, &textureCount);
@@ -957,12 +962,12 @@ void ofxHapPlayer::updatePTS()
 
 int ofxHapPlayer::getTimeout() const
 {
-    return _timeout;
+    return _timeout.count();
 }
 
 void ofxHapPlayer::setTimeout(int microseconds)
 {
-    _timeout = microseconds;
+    _timeout = std::chrono::microseconds(microseconds);
 }
 
 ofxHapPlayer::AudioOutput::AudioOutput()
