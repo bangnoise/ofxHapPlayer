@@ -55,6 +55,7 @@ extern "C" {
 namespace ofxHapPY {
     static const string vertexShader = "void main(void)\
     {\
+    gl_FrontColor = gl_Color;\
     gl_Position = ftransform();\
     gl_TexCoord[0] = gl_MultiTexCoord0;\
     }";
@@ -70,7 +71,7 @@ namespace ofxHapPY {
     float Cg = CoCgSY.y / scale;\
     float Y = CoCgSY.w;\
     vec4 rgba = vec4(Y + Co - Cg, Y + Cg, Y - Co - Cg, 1.0);\
-    gl_FragColor = rgba;\
+    gl_FragColor = rgba * gl_Color;\
     }";
 
     /*
