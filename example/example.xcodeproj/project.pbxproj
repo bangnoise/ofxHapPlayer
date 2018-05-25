@@ -9,25 +9,25 @@
 		<string>46</string>
 		<key>objects</key>
 		<dict>
-			<key>AF24098F3EE61E761F184C8F</key>
+			<key>4774F36141444127CFF18422</key>
 			<dict>
 				<key>fileRef</key>
-				<string>000270D61857A9C7C7628691</string>
+				<string>1700621FD10DE4D4F9697B24</string>
 				<key>isa</key>
 				<string>PBXBuildFile</string>
 			</dict>
-			<key>000270D61857A9C7C7628691</key>
+			<key>1700621FD10DE4D4F9697B24</key>
 			<dict>
 				<key>explicitFileType</key>
 				<string>sourcecode.cpp.cpp</string>
 				<key>fileEncoding</key>
-				<string>30</string>
+				<string>4</string>
 				<key>isa</key>
 				<string>PBXFileReference</string>
 				<key>name</key>
-				<string>TimeRangeSet.cpp</string>
+				<string>AudioThread.cpp</string>
 				<key>path</key>
-				<string>../../../addons/ofxHapPlayer/libs/ofxHap/src/TimeRangeSet.cpp</string>
+				<string>../../../addons/ofxHapPlayer/libs/ofxHap/src/AudioThread.cpp</string>
 				<key>sourceTree</key>
 				<string>SOURCE_ROOT</string>
 			</dict>
@@ -43,145 +43,13 @@
 				<key>explicitFileType</key>
 				<string>sourcecode.cpp.cpp</string>
 				<key>fileEncoding</key>
-				<string>30</string>
+				<string>4</string>
 				<key>isa</key>
 				<string>PBXFileReference</string>
 				<key>name</key>
 				<string>RingBuffer.cpp</string>
 				<key>path</key>
 				<string>../../../addons/ofxHapPlayer/libs/ofxHap/src/RingBuffer.cpp</string>
-				<key>sourceTree</key>
-				<string>SOURCE_ROOT</string>
-			</dict>
-			<key>2302C21FAE47D435CF095990</key>
-			<dict>
-				<key>fileRef</key>
-				<string>2D623880D84A52CF35CA2160</string>
-				<key>isa</key>
-				<string>PBXBuildFile</string>
-			</dict>
-			<key>2D623880D84A52CF35CA2160</key>
-			<dict>
-				<key>explicitFileType</key>
-				<string>sourcecode.cpp.cpp</string>
-				<key>fileEncoding</key>
-				<string>30</string>
-				<key>isa</key>
-				<string>PBXFileReference</string>
-				<key>name</key>
-				<string>PacketCache.cpp</string>
-				<key>path</key>
-				<string>../../../addons/ofxHapPlayer/libs/ofxHap/src/PacketCache.cpp</string>
-				<key>sourceTree</key>
-				<string>SOURCE_ROOT</string>
-			</dict>
-			<key>FCE78EB42A44ECB3261E18AB</key>
-			<dict>
-				<key>fileRef</key>
-				<string>97338BB48921889487BDA51E</string>
-				<key>isa</key>
-				<string>PBXBuildFile</string>
-			</dict>
-			<key>97338BB48921889487BDA51E</key>
-			<dict>
-				<key>explicitFileType</key>
-				<string>sourcecode.cpp.cpp</string>
-				<key>fileEncoding</key>
-				<string>30</string>
-				<key>isa</key>
-				<string>PBXFileReference</string>
-				<key>name</key>
-				<string>MovieTime.cpp</string>
-				<key>path</key>
-				<string>../../../addons/ofxHapPlayer/libs/ofxHap/src/MovieTime.cpp</string>
-				<key>sourceTree</key>
-				<string>SOURCE_ROOT</string>
-			</dict>
-			<key>6D4C0ECBC21CF195A5BDBE31</key>
-			<dict>
-				<key>fileRef</key>
-				<string>EE008DE736F55C209519A9B1</string>
-				<key>isa</key>
-				<string>PBXBuildFile</string>
-			</dict>
-			<key>EE008DE736F55C209519A9B1</key>
-			<dict>
-				<key>explicitFileType</key>
-				<string>sourcecode.cpp.cpp</string>
-				<key>fileEncoding</key>
-				<string>30</string>
-				<key>isa</key>
-				<string>PBXFileReference</string>
-				<key>name</key>
-				<string>Demuxer.cpp</string>
-				<key>path</key>
-				<string>../../../addons/ofxHapPlayer/libs/ofxHap/src/Demuxer.cpp</string>
-				<key>sourceTree</key>
-				<string>SOURCE_ROOT</string>
-			</dict>
-			<key>8B40DD2B41C58FF6B6907B86</key>
-			<dict>
-				<key>fileRef</key>
-				<string>238B65DDD4862C9A94A29AB4</string>
-				<key>isa</key>
-				<string>PBXBuildFile</string>
-			</dict>
-			<key>238B65DDD4862C9A94A29AB4</key>
-			<dict>
-				<key>explicitFileType</key>
-				<string>sourcecode.cpp.cpp</string>
-				<key>fileEncoding</key>
-				<string>30</string>
-				<key>isa</key>
-				<string>PBXFileReference</string>
-				<key>name</key>
-				<string>Clock.cpp</string>
-				<key>path</key>
-				<string>../../../addons/ofxHapPlayer/libs/ofxHap/src/Clock.cpp</string>
-				<key>sourceTree</key>
-				<string>SOURCE_ROOT</string>
-			</dict>
-			<key>4774F36141444127CFF18422</key>
-			<dict>
-				<key>fileRef</key>
-				<string>1700621FD10DE4D4F9697B24</string>
-				<key>isa</key>
-				<string>PBXBuildFile</string>
-			</dict>
-			<key>1700621FD10DE4D4F9697B24</key>
-			<dict>
-				<key>explicitFileType</key>
-				<string>sourcecode.cpp.cpp</string>
-				<key>fileEncoding</key>
-				<string>30</string>
-				<key>isa</key>
-				<string>PBXFileReference</string>
-				<key>name</key>
-				<string>AudioThread.cpp</string>
-				<key>path</key>
-				<string>../../../addons/ofxHapPlayer/libs/ofxHap/src/AudioThread.cpp</string>
-				<key>sourceTree</key>
-				<string>SOURCE_ROOT</string>
-			</dict>
-			<key>4B9BF6D1580B334023C9FA9F</key>
-			<dict>
-				<key>fileRef</key>
-				<string>5F2DF17E9FEFBA2715A7A317</string>
-				<key>isa</key>
-				<string>PBXBuildFile</string>
-			</dict>
-			<key>5F2DF17E9FEFBA2715A7A317</key>
-			<dict>
-				<key>explicitFileType</key>
-				<string>sourcecode.cpp.cpp</string>
-				<key>fileEncoding</key>
-				<string>30</string>
-				<key>isa</key>
-				<string>PBXFileReference</string>
-				<key>name</key>
-				<string>AudioResampler.cpp</string>
-				<key>path</key>
-				<string>../../../addons/ofxHapPlayer/libs/ofxHap/src/AudioResampler.cpp</string>
 				<key>sourceTree</key>
 				<string>SOURCE_ROOT</string>
 			</dict>
@@ -197,7 +65,7 @@
 				<key>explicitFileType</key>
 				<string>sourcecode.cpp.cpp</string>
 				<key>fileEncoding</key>
-				<string>30</string>
+				<string>4</string>
 				<key>isa</key>
 				<string>PBXFileReference</string>
 				<key>name</key>
@@ -207,20 +75,152 @@
 				<key>sourceTree</key>
 				<string>SOURCE_ROOT</string>
 			</dict>
+			<key>4B9BF6D1580B334023C9FA9F</key>
+			<dict>
+				<key>fileRef</key>
+				<string>5F2DF17E9FEFBA2715A7A317</string>
+				<key>isa</key>
+				<string>PBXBuildFile</string>
+			</dict>
+			<key>5F2DF17E9FEFBA2715A7A317</key>
+			<dict>
+				<key>explicitFileType</key>
+				<string>sourcecode.cpp.cpp</string>
+				<key>fileEncoding</key>
+				<string>4</string>
+				<key>isa</key>
+				<string>PBXFileReference</string>
+				<key>name</key>
+				<string>AudioResampler.cpp</string>
+				<key>path</key>
+				<string>../../../addons/ofxHapPlayer/libs/ofxHap/src/AudioResampler.cpp</string>
+				<key>sourceTree</key>
+				<string>SOURCE_ROOT</string>
+			</dict>
+			<key>AF24098F3EE61E761F184C8F</key>
+			<dict>
+				<key>fileRef</key>
+				<string>000270D61857A9C7C7628691</string>
+				<key>isa</key>
+				<string>PBXBuildFile</string>
+			</dict>
+			<key>000270D61857A9C7C7628691</key>
+			<dict>
+				<key>explicitFileType</key>
+				<string>sourcecode.cpp.cpp</string>
+				<key>fileEncoding</key>
+				<string>4</string>
+				<key>isa</key>
+				<string>PBXFileReference</string>
+				<key>name</key>
+				<string>TimeRangeSet.cpp</string>
+				<key>path</key>
+				<string>../../../addons/ofxHapPlayer/libs/ofxHap/src/TimeRangeSet.cpp</string>
+				<key>sourceTree</key>
+				<string>SOURCE_ROOT</string>
+			</dict>
+			<key>6D4C0ECBC21CF195A5BDBE31</key>
+			<dict>
+				<key>fileRef</key>
+				<string>EE008DE736F55C209519A9B1</string>
+				<key>isa</key>
+				<string>PBXBuildFile</string>
+			</dict>
+			<key>EE008DE736F55C209519A9B1</key>
+			<dict>
+				<key>explicitFileType</key>
+				<string>sourcecode.cpp.cpp</string>
+				<key>fileEncoding</key>
+				<string>4</string>
+				<key>isa</key>
+				<string>PBXFileReference</string>
+				<key>name</key>
+				<string>Demuxer.cpp</string>
+				<key>path</key>
+				<string>../../../addons/ofxHapPlayer/libs/ofxHap/src/Demuxer.cpp</string>
+				<key>sourceTree</key>
+				<string>SOURCE_ROOT</string>
+			</dict>
+			<key>FCE78EB42A44ECB3261E18AB</key>
+			<dict>
+				<key>fileRef</key>
+				<string>97338BB48921889487BDA51E</string>
+				<key>isa</key>
+				<string>PBXBuildFile</string>
+			</dict>
+			<key>97338BB48921889487BDA51E</key>
+			<dict>
+				<key>explicitFileType</key>
+				<string>sourcecode.cpp.cpp</string>
+				<key>fileEncoding</key>
+				<string>4</string>
+				<key>isa</key>
+				<string>PBXFileReference</string>
+				<key>name</key>
+				<string>MovieTime.cpp</string>
+				<key>path</key>
+				<string>../../../addons/ofxHapPlayer/libs/ofxHap/src/MovieTime.cpp</string>
+				<key>sourceTree</key>
+				<string>SOURCE_ROOT</string>
+			</dict>
+			<key>2302C21FAE47D435CF095990</key>
+			<dict>
+				<key>fileRef</key>
+				<string>2D623880D84A52CF35CA2160</string>
+				<key>isa</key>
+				<string>PBXBuildFile</string>
+			</dict>
+			<key>2D623880D84A52CF35CA2160</key>
+			<dict>
+				<key>explicitFileType</key>
+				<string>sourcecode.cpp.cpp</string>
+				<key>fileEncoding</key>
+				<string>4</string>
+				<key>isa</key>
+				<string>PBXFileReference</string>
+				<key>name</key>
+				<string>PacketCache.cpp</string>
+				<key>path</key>
+				<string>../../../addons/ofxHapPlayer/libs/ofxHap/src/PacketCache.cpp</string>
+				<key>sourceTree</key>
+				<string>SOURCE_ROOT</string>
+			</dict>
+			<key>8B40DD2B41C58FF6B6907B86</key>
+			<dict>
+				<key>fileRef</key>
+				<string>238B65DDD4862C9A94A29AB4</string>
+				<key>isa</key>
+				<string>PBXBuildFile</string>
+			</dict>
+			<key>238B65DDD4862C9A94A29AB4</key>
+			<dict>
+				<key>explicitFileType</key>
+				<string>sourcecode.cpp.cpp</string>
+				<key>fileEncoding</key>
+				<string>4</string>
+				<key>isa</key>
+				<string>PBXFileReference</string>
+				<key>name</key>
+				<string>Clock.cpp</string>
+				<key>path</key>
+				<string>../../../addons/ofxHapPlayer/libs/ofxHap/src/Clock.cpp</string>
+				<key>sourceTree</key>
+				<string>SOURCE_ROOT</string>
+			</dict>
 			<key>2EC5155BBB4AFAE8E1B719E7</key>
 			<dict>
 				<key>children</key>
 				<array>
 					<string>E190CC61090BCFFC54D69770</string>
-					<string>C0C7A497249DBD2F8DE862C9</string>
-					<string>5F2DF17E9FEFBA2715A7A317</string>
-					<string>1700621FD10DE4D4F9697B24</string>
 					<string>238B65DDD4862C9A94A29AB4</string>
-					<string>EE008DE736F55C209519A9B1</string>
-					<string>97338BB48921889487BDA51E</string>
 					<string>2D623880D84A52CF35CA2160</string>
-					<string>9A8EC2BF48E2C3C42C379138</string>
+					<string>97338BB48921889487BDA51E</string>
+					<string>EE008DE736F55C209519A9B1</string>
 					<string>000270D61857A9C7C7628691</string>
+					<string>5F2DF17E9FEFBA2715A7A317</string>
+					<string>C0C7A497249DBD2F8DE862C9</string>
+					<string>9A8EC2BF48E2C3C42C379138</string>
+					<string>1700621FD10DE4D4F9697B24</string>
 				</array>
 				<key>isa</key>
 				<string>PBXGroup</string>
@@ -241,7 +241,7 @@
 				<key>explicitFileType</key>
 				<string>sourcecode.cpp.cpp</string>
 				<key>fileEncoding</key>
-				<string>30</string>
+				<string>4</string>
 				<key>isa</key>
 				<string>PBXFileReference</string>
 				<key>name</key>
@@ -251,27 +251,12 @@
 				<key>sourceTree</key>
 				<string>SOURCE_ROOT</string>
 			</dict>
-			<key>A3CD349FD8C7B388CE841D0D</key>
-			<dict>
-				<key>explicitFileType</key>
-				<string>sourcecode.c.h</string>
-				<key>fileEncoding</key>
-				<string>30</string>
-				<key>isa</key>
-				<string>PBXFileReference</string>
-				<key>name</key>
-				<string>TimeRangeSet.h</string>
-				<key>path</key>
-				<string>../../../addons/ofxHapPlayer/libs/ofxHap/include/ofxHap/TimeRangeSet.h</string>
-				<key>sourceTree</key>
-				<string>SOURCE_ROOT</string>
-			</dict>
 			<key>FAE24647AFB9C4EDBDDA0EE8</key>
 			<dict>
 				<key>explicitFileType</key>
 				<string>sourcecode.c.h</string>
 				<key>fileEncoding</key>
-				<string>30</string>
+				<string>4</string>
 				<key>isa</key>
 				<string>PBXFileReference</string>
 				<key>name</key>
@@ -281,87 +266,12 @@
 				<key>sourceTree</key>
 				<string>SOURCE_ROOT</string>
 			</dict>
-			<key>44A7B4A73286DB60EC1938DC</key>
-			<dict>
-				<key>explicitFileType</key>
-				<string>sourcecode.c.h</string>
-				<key>fileEncoding</key>
-				<string>30</string>
-				<key>isa</key>
-				<string>PBXFileReference</string>
-				<key>name</key>
-				<string>PacketCache.h</string>
-				<key>path</key>
-				<string>../../../addons/ofxHapPlayer/libs/ofxHap/include/ofxHap/PacketCache.h</string>
-				<key>sourceTree</key>
-				<string>SOURCE_ROOT</string>
-			</dict>
-			<key>4D40695920B3379E19F1A11D</key>
-			<dict>
-				<key>explicitFileType</key>
-				<string>sourcecode.c.h</string>
-				<key>fileEncoding</key>
-				<string>30</string>
-				<key>isa</key>
-				<string>PBXFileReference</string>
-				<key>name</key>
-				<string>MovieTime.h</string>
-				<key>path</key>
-				<string>../../../addons/ofxHapPlayer/libs/ofxHap/include/ofxHap/MovieTime.h</string>
-				<key>sourceTree</key>
-				<string>SOURCE_ROOT</string>
-			</dict>
-			<key>2CB998AF03E1DC191394C214</key>
-			<dict>
-				<key>explicitFileType</key>
-				<string>sourcecode.c.h</string>
-				<key>fileEncoding</key>
-				<string>30</string>
-				<key>isa</key>
-				<string>PBXFileReference</string>
-				<key>name</key>
-				<string>ErrorReceiving.h</string>
-				<key>path</key>
-				<string>../../../addons/ofxHapPlayer/libs/ofxHap/include/ofxHap/ErrorReceiving.h</string>
-				<key>sourceTree</key>
-				<string>SOURCE_ROOT</string>
-			</dict>
-			<key>C7E31A41D29A71BC7651883D</key>
-			<dict>
-				<key>explicitFileType</key>
-				<string>sourcecode.c.h</string>
-				<key>fileEncoding</key>
-				<string>30</string>
-				<key>isa</key>
-				<string>PBXFileReference</string>
-				<key>name</key>
-				<string>Demuxer.h</string>
-				<key>path</key>
-				<string>../../../addons/ofxHapPlayer/libs/ofxHap/include/ofxHap/Demuxer.h</string>
-				<key>sourceTree</key>
-				<string>SOURCE_ROOT</string>
-			</dict>
-			<key>C8ACC5ADB42FB88EC0A6BA43</key>
-			<dict>
-				<key>explicitFileType</key>
-				<string>sourcecode.c.h</string>
-				<key>fileEncoding</key>
-				<string>30</string>
-				<key>isa</key>
-				<string>PBXFileReference</string>
-				<key>name</key>
-				<string>Common.h</string>
-				<key>path</key>
-				<string>../../../addons/ofxHapPlayer/libs/ofxHap/include/ofxHap/Common.h</string>
-				<key>sourceTree</key>
-				<string>SOURCE_ROOT</string>
-			</dict>
 			<key>5168D41D3FD219BF54E02804</key>
 			<dict>
 				<key>explicitFileType</key>
 				<string>sourcecode.c.h</string>
 				<key>fileEncoding</key>
-				<string>30</string>
+				<string>4</string>
 				<key>isa</key>
 				<string>PBXFileReference</string>
 				<key>name</key>
@@ -371,12 +281,42 @@
 				<key>sourceTree</key>
 				<string>SOURCE_ROOT</string>
 			</dict>
+			<key>A3CD349FD8C7B388CE841D0D</key>
+			<dict>
+				<key>explicitFileType</key>
+				<string>sourcecode.c.h</string>
+				<key>fileEncoding</key>
+				<string>4</string>
+				<key>isa</key>
+				<string>PBXFileReference</string>
+				<key>name</key>
+				<string>TimeRangeSet.h</string>
+				<key>path</key>
+				<string>../../../addons/ofxHapPlayer/libs/ofxHap/include/ofxHap/TimeRangeSet.h</string>
+				<key>sourceTree</key>
+				<string>SOURCE_ROOT</string>
+			</dict>
+			<key>C8ACC5ADB42FB88EC0A6BA43</key>
+			<dict>
+				<key>explicitFileType</key>
+				<string>sourcecode.c.h</string>
+				<key>fileEncoding</key>
+				<string>4</string>
+				<key>isa</key>
+				<string>PBXFileReference</string>
+				<key>name</key>
+				<string>Common.h</string>
+				<key>path</key>
+				<string>../../../addons/ofxHapPlayer/libs/ofxHap/include/ofxHap/Common.h</string>
+				<key>sourceTree</key>
+				<string>SOURCE_ROOT</string>
+			</dict>
 			<key>AC1ED9E2EADE684C6250AB38</key>
 			<dict>
 				<key>explicitFileType</key>
 				<string>sourcecode.c.h</string>
 				<key>fileEncoding</key>
-				<string>30</string>
+				<string>4</string>
 				<key>isa</key>
 				<string>PBXFileReference</string>
 				<key>name</key>
@@ -386,18 +326,48 @@
 				<key>sourceTree</key>
 				<string>SOURCE_ROOT</string>
 			</dict>
-			<key>77AC83A7566E052535EFA339</key>
+			<key>C7E31A41D29A71BC7651883D</key>
 			<dict>
 				<key>explicitFileType</key>
 				<string>sourcecode.c.h</string>
 				<key>fileEncoding</key>
-				<string>30</string>
+				<string>4</string>
 				<key>isa</key>
 				<string>PBXFileReference</string>
 				<key>name</key>
-				<string>AudioResampler.h</string>
+				<string>Demuxer.h</string>
 				<key>path</key>
-				<string>../../../addons/ofxHapPlayer/libs/ofxHap/include/ofxHap/AudioResampler.h</string>
+				<string>../../../addons/ofxHapPlayer/libs/ofxHap/include/ofxHap/Demuxer.h</string>
+				<key>sourceTree</key>
+				<string>SOURCE_ROOT</string>
+			</dict>
+			<key>2CB998AF03E1DC191394C214</key>
+			<dict>
+				<key>explicitFileType</key>
+				<string>sourcecode.c.h</string>
+				<key>fileEncoding</key>
+				<string>4</string>
+				<key>isa</key>
+				<string>PBXFileReference</string>
+				<key>name</key>
+				<string>ErrorReceiving.h</string>
+				<key>path</key>
+				<string>../../../addons/ofxHapPlayer/libs/ofxHap/include/ofxHap/ErrorReceiving.h</string>
+				<key>sourceTree</key>
+				<string>SOURCE_ROOT</string>
+			</dict>
+			<key>4D40695920B3379E19F1A11D</key>
+			<dict>
+				<key>explicitFileType</key>
+				<string>sourcecode.c.h</string>
+				<key>fileEncoding</key>
+				<string>4</string>
+				<key>isa</key>
+				<string>PBXFileReference</string>
+				<key>name</key>
+				<string>MovieTime.h</string>
+				<key>path</key>
+				<string>../../../addons/ofxHapPlayer/libs/ofxHap/include/ofxHap/MovieTime.h</string>
 				<key>sourceTree</key>
 				<string>SOURCE_ROOT</string>
 			</dict>
@@ -406,7 +376,7 @@
 				<key>explicitFileType</key>
 				<string>sourcecode.c.h</string>
 				<key>fileEncoding</key>
-				<string>30</string>
+				<string>4</string>
 				<key>isa</key>
 				<string>PBXFileReference</string>
 				<key>name</key>
@@ -416,22 +386,52 @@
 				<key>sourceTree</key>
 				<string>SOURCE_ROOT</string>
 			</dict>
+			<key>01ACF32DD2BE3FB5BC5DFA8A</key>
+			<dict>
+				<key>explicitFileType</key>
+				<string>sourcecode.c.h</string>
+				<key>fileEncoding</key>
+				<string>4</string>
+				<key>isa</key>
+				<string>PBXFileReference</string>
+				<key>name</key>
+				<string>AudioDecoder.h</string>
+				<key>path</key>
+				<string>../../../addons/ofxHapPlayer/libs/ofxHap/include/ofxHap/AudioDecoder.h</string>
+				<key>sourceTree</key>
+				<string>SOURCE_ROOT</string>
+			</dict>
+			<key>77AC83A7566E052535EFA339</key>
+			<dict>
+				<key>explicitFileType</key>
+				<string>sourcecode.c.h</string>
+				<key>fileEncoding</key>
+				<string>4</string>
+				<key>isa</key>
+				<string>PBXFileReference</string>
+				<key>name</key>
+				<string>AudioResampler.h</string>
+				<key>path</key>
+				<string>../../../addons/ofxHapPlayer/libs/ofxHap/include/ofxHap/AudioResampler.h</string>
+				<key>sourceTree</key>
+				<string>SOURCE_ROOT</string>
+			</dict>
 			<key>7C5E4E98933A05F194AE813A</key>
 			<dict>
 				<key>children</key>
 				<array>
+					<string>44A7B4A73286DB60EC1938DC</string>
+					<string>77AC83A7566E052535EFA339</string>
 					<string>01ACF32DD2BE3FB5BC5DFA8A</string>
 					<string>9FA6754E55758AF846AF0E83</string>
-					<string>77AC83A7566E052535EFA339</string>
-					<string>AC1ED9E2EADE684C6250AB38</string>
-					<string>5168D41D3FD219BF54E02804</string>
-					<string>C8ACC5ADB42FB88EC0A6BA43</string>
-					<string>C7E31A41D29A71BC7651883D</string>
-					<string>2CB998AF03E1DC191394C214</string>
 					<string>4D40695920B3379E19F1A11D</string>
-					<string>44A7B4A73286DB60EC1938DC</string>
-					<string>FAE24647AFB9C4EDBDDA0EE8</string>
+					<string>2CB998AF03E1DC191394C214</string>
+					<string>C7E31A41D29A71BC7651883D</string>
+					<string>AC1ED9E2EADE684C6250AB38</string>
+					<string>C8ACC5ADB42FB88EC0A6BA43</string>
 					<string>A3CD349FD8C7B388CE841D0D</string>
+					<string>5168D41D3FD219BF54E02804</string>
+					<string>FAE24647AFB9C4EDBDDA0EE8</string>
 				</array>
 				<key>isa</key>
 				<string>PBXGroup</string>
@@ -467,33 +467,40 @@
 				<key>sourceTree</key>
 				<string>&lt;group&gt;</string>
 			</dict>
-			<key>01ACF32DD2BE3FB5BC5DFA8A</key>
+			<key>44A7B4A73286DB60EC1938DC</key>
 			<dict>
 				<key>explicitFileType</key>
 				<string>sourcecode.c.h</string>
 				<key>fileEncoding</key>
-				<string>30</string>
+				<string>4</string>
 				<key>isa</key>
 				<string>PBXFileReference</string>
 				<key>name</key>
-				<string>AudioDecoder.h</string>
+				<string>PacketCache.h</string>
 				<key>path</key>
-				<string>../../../addons/ofxHapPlayer/libs/ofxHap/include/ofxHap/AudioDecoder.h</string>
+				<string>../../../addons/ofxHapPlayer/libs/ofxHap/include/ofxHap/PacketCache.h</string>
 				<key>sourceTree</key>
 				<string>SOURCE_ROOT</string>
 			</dict>
-			<key>15EECCAE1A639FE0771146E3</key>
+			<key>D2589C81FE555C37DFA9890C</key>
+			<dict>
+				<key>fileRef</key>
+				<string>C8F6794ACA9E9E23B93E0350</string>
+				<key>isa</key>
+				<string>PBXBuildFile</string>
+			</dict>
+			<key>C8F6794ACA9E9E23B93E0350</key>
 			<dict>
 				<key>explicitFileType</key>
-				<string>sourcecode.c.h</string>
+				<string>sourcecode.c.c</string>
 				<key>fileEncoding</key>
-				<string>30</string>
+				<string>4</string>
 				<key>isa</key>
 				<string>PBXFileReference</string>
 				<key>name</key>
-				<string>hap.h</string>
+				<string>hap.c</string>
 				<key>path</key>
-				<string>../../../addons/ofxHapPlayer/libs/hap/src/hap.h</string>
+				<string>../../../addons/ofxHapPlayer/libs/hap/src/hap.c</string>
 				<key>sourceTree</key>
 				<string>SOURCE_ROOT</string>
 			</dict>
@@ -501,8 +508,8 @@
 			<dict>
 				<key>children</key>
 				<array>
-					<string>C8F6794ACA9E9E23B93E0350</string>
 					<string>15EECCAE1A639FE0771146E3</string>
+					<string>C8F6794ACA9E9E23B93E0350</string>
 				</array>
 				<key>isa</key>
 				<string>PBXGroup</string>
@@ -538,40 +545,40 @@
 				<key>sourceTree</key>
 				<string>&lt;group&gt;</string>
 			</dict>
-			<key>D2589C81FE555C37DFA9890C</key>
-			<dict>
-				<key>fileRef</key>
-				<string>C8F6794ACA9E9E23B93E0350</string>
-				<key>isa</key>
-				<string>PBXBuildFile</string>
-			</dict>
-			<key>C8F6794ACA9E9E23B93E0350</key>
-			<dict>
-				<key>explicitFileType</key>
-				<string>sourcecode.c.c</string>
-				<key>fileEncoding</key>
-				<string>30</string>
-				<key>isa</key>
-				<string>PBXFileReference</string>
-				<key>name</key>
-				<string>hap.c</string>
-				<key>path</key>
-				<string>../../../addons/ofxHapPlayer/libs/hap/src/hap.c</string>
-				<key>sourceTree</key>
-				<string>SOURCE_ROOT</string>
-			</dict>
-			<key>A9816531495AFFBC1BB87CF3</key>
+			<key>15EECCAE1A639FE0771146E3</key>
 			<dict>
 				<key>explicitFileType</key>
 				<string>sourcecode.c.h</string>
 				<key>fileEncoding</key>
-				<string>30</string>
+				<string>4</string>
 				<key>isa</key>
 				<string>PBXFileReference</string>
 				<key>name</key>
-				<string>ofxHapPlayer.h</string>
+				<string>hap.h</string>
 				<key>path</key>
-				<string>../../../addons/ofxHapPlayer/src/ofxHapPlayer.h</string>
+				<string>../../../addons/ofxHapPlayer/libs/hap/src/hap.h</string>
+				<key>sourceTree</key>
+				<string>SOURCE_ROOT</string>
+			</dict>
+			<key>9DECE28DE972DD39553DD35C</key>
+			<dict>
+				<key>fileRef</key>
+				<string>B3A8B29F47FD67274D82443D</string>
+				<key>isa</key>
+				<string>PBXBuildFile</string>
+			</dict>
+			<key>B3A8B29F47FD67274D82443D</key>
+			<dict>
+				<key>explicitFileType</key>
+				<string>sourcecode.cpp.cpp</string>
+				<key>fileEncoding</key>
+				<string>4</string>
+				<key>isa</key>
+				<string>PBXFileReference</string>
+				<key>name</key>
+				<string>ofxHapPlayer.cpp</string>
+				<key>path</key>
+				<string>../../../addons/ofxHapPlayer/src/ofxHapPlayer.cpp</string>
 				<key>sourceTree</key>
 				<string>SOURCE_ROOT</string>
 			</dict>
@@ -579,8 +586,8 @@
 			<dict>
 				<key>children</key>
 				<array>
-					<string>B3A8B29F47FD67274D82443D</string>
 					<string>A9816531495AFFBC1BB87CF3</string>
+					<string>B3A8B29F47FD67274D82443D</string>
 				</array>
 				<key>isa</key>
 				<string>PBXGroup</string>
@@ -603,25 +610,18 @@
 				<key>sourceTree</key>
 				<string>&lt;group&gt;</string>
 			</dict>
-			<key>9DECE28DE972DD39553DD35C</key>
-			<dict>
-				<key>fileRef</key>
-				<string>B3A8B29F47FD67274D82443D</string>
-				<key>isa</key>
-				<string>PBXBuildFile</string>
-			</dict>
-			<key>B3A8B29F47FD67274D82443D</key>
+			<key>A9816531495AFFBC1BB87CF3</key>
 			<dict>
 				<key>explicitFileType</key>
-				<string>sourcecode.cpp.cpp</string>
+				<string>sourcecode.c.h</string>
 				<key>fileEncoding</key>
-				<string>30</string>
+				<string>4</string>
 				<key>isa</key>
 				<string>PBXFileReference</string>
 				<key>name</key>
-				<string>ofxHapPlayer.cpp</string>
+				<string>ofxHapPlayer.h</string>
 				<key>path</key>
-				<string>../../../addons/ofxHapPlayer/src/ofxHapPlayer.cpp</string>
+				<string>../../../addons/ofxHapPlayer/src/ofxHapPlayer.h</string>
 				<key>sourceTree</key>
 				<string>SOURCE_ROOT</string>
 			</dict>
@@ -635,6 +635,297 @@
 				<string>local_addons</string>
 				<key>sourceTree</key>
 				<string>&lt;group&gt;</string>
+			</dict>
+			<key>8466F1851C04CA0E00918B1C</key>
+			<dict>
+				<key>buildActionMask</key>
+				<string>12</string>
+				<key>files</key>
+				<array />
+				<key>inputPaths</key>
+				<array />
+				<key>isa</key>
+				<string>PBXShellScriptBuildPhase</string>
+				<key>outputPaths</key>
+				<array />
+				<key>runOnlyForDeploymentPostprocessing</key>
+				<string>0</string>
+				<key>shellPath</key>
+				<string>/bin/sh</string>
+				<key>shellScript</key>
+				<string>echo "$GCC_PREPROCESSOR_DEFINITIONS";
+APPSTORE=`expr "$GCC_PREPROCESSOR_DEFINITIONS" : ".*APPSTORE=\([0-9]*\)"`
+if [ -z "$APPSTORE" ] ; then
+echo "Note: Not copying bin/data to App Package or doing App Code signing. Use AppStore target for AppStore distribution";
+else
+# Copy bin/data into App/Resources
+rsync -avz --exclude='.DS_Store' "${SRCROOT}/bin/data/" "${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/data/"
+
+# ---- Code Sign App Package ----
+
+# WARNING: You may have to run Clean in Xcode after changing CODE_SIGN_IDENTITY!
+
+# Verify that $CODE_SIGN_IDENTITY is set
+if [ -z "${CODE_SIGN_IDENTITY}" ] ; then
+echo "CODE_SIGN_IDENTITY needs to be set for framework code-signing"
+exit 0
+fi
+
+if [ -z "${CODE_SIGN_ENTITLEMENTS}" ] ; then
+echo "CODE_SIGN_ENTITLEMENTS needs to be set for framework code-signing!"
+
+if [ "${CONFIGURATION}" = "Release" ] ; then
+exit 1
+else
+# Code-signing is optional for non-release builds.
+exit 0
+fi
+fi
+
+ITEMS=""
+
+FRAMEWORKS_DIR="${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}"
+echo "$FRAMEWORKS_DIR"
+if [ -d "$FRAMEWORKS_DIR" ] ; then
+FRAMEWORKS=$(find "${FRAMEWORKS_DIR}" -depth -type d -name "*.framework" -or -name "*.dylib" -or -name "*.bundle" | sed -e "s/\(.*framework\)/\1\/Versions\/A\//")
+RESULT=$?
+if [[ $RESULT != 0 ]] ; then
+exit 1
+fi
+
+ITEMS="${FRAMEWORKS}"
+fi
+
+LOGINITEMS_DIR="${TARGET_BUILD_DIR}/${CONTENTS_FOLDER_PATH}/Library/LoginItems/"
+if [ -d "$LOGINITEMS_DIR" ] ; then
+LOGINITEMS=$(find "${LOGINITEMS_DIR}" -depth -type d -name "*.app")
+RESULT=$?
+if [[ $RESULT != 0 ]] ; then
+exit 1
+fi
+
+ITEMS="${ITEMS}"$'\n'"${LOGINITEMS}"
+fi
+
+# Prefer the expanded name, if available.
+CODE_SIGN_IDENTITY_FOR_ITEMS="${EXPANDED_CODE_SIGN_IDENTITY_NAME}"
+if [ "${CODE_SIGN_IDENTITY_FOR_ITEMS}" = "" ] ; then
+# Fall back to old behavior.
+CODE_SIGN_IDENTITY_FOR_ITEMS="${CODE_SIGN_IDENTITY}"
+fi
+
+echo "Identity:"
+echo "${CODE_SIGN_IDENTITY_FOR_ITEMS}"
+
+echo "Entitlements:"
+echo "${CODE_SIGN_ENTITLEMENTS}"
+
+echo "Found:"
+echo "${ITEMS}"
+
+# Change the Internal Field Separator (IFS) so that spaces in paths will not cause problems below.
+SAVED_IFS=$IFS
+IFS=$(echo -en "\n\b")
+
+# Loop through all items.
+for ITEM in $ITEMS;
+do
+echo "Signing '${ITEM}'"
+codesign --force --verbose --sign "${CODE_SIGN_IDENTITY_FOR_ITEMS}" --entitlements "${CODE_SIGN_ENTITLEMENTS}" "${ITEM}"
+RESULT=$?
+if [[ $RESULT != 0 ]] ; then
+echo "Failed to sign '${ITEM}'."
+IFS=$SAVED_IFS
+exit 1
+fi
+done
+
+# Restore $IFS.
+IFS=$SAVED_IFS
+
+fi
+</string>
+			</dict>
+			<key>99FA3DBB1C7456C400CFA0EE</key>
+			<dict>
+				<key>baseConfigurationReference</key>
+				<string>E4EB6923138AFD0F00A09F29</string>
+				<key>buildSettings</key>
+				<dict>
+					<key>OTHER_LDFLAGS</key>
+					<array>
+						<string>$(OF_CORE_FRAMEWORKS) $(OF_CORE_LIBS)</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavutil.55.34.101.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavcodec.57.64.101.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libswresample.2.3.100.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavcodec.57.64.101.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavformat.57.56.101.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavutil.55.34.101.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavcodec.57.64.101.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libswresample.2.3.100.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libswresample.2.3.100.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavutil.55.34.101.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavformat.57.56.101.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavformat.57.56.101.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/snappy/lib/osx/libsnappy.1.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/snappy/lib/osx/libsnappy.1.dylib</string>
+						<string>-rpath</string>
+						<string>@loader_path/../../../../../../../addons/ofxHapPlayer/libs</string>
+					</array>
+					<key>HEADER_SEARCH_PATHS</key>
+					<array>
+						<string>$(OF_CORE_HEADERS)</string>
+						<string>src</string>
+						<string>../../../addons/ofxHapPlayer/libs</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/include</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx</string>
+						<string>../../../addons/ofxHapPlayer/libs/hap</string>
+						<string>../../../addons/ofxHapPlayer/libs/hap/src</string>
+						<string>../../../addons/ofxHapPlayer/libs/ofxHap</string>
+						<string>../../../addons/ofxHapPlayer/libs/ofxHap/include</string>
+						<string>../../../addons/ofxHapPlayer/libs/ofxHap/include/ofxHap</string>
+						<string>../../../addons/ofxHapPlayer/libs/ofxHap/src</string>
+						<string>../../../addons/ofxHapPlayer/libs/snappy</string>
+						<string>../../../addons/ofxHapPlayer/libs/snappy/include</string>
+						<string>../../../addons/ofxHapPlayer/libs/snappy/lib</string>
+						<string>../../../addons/ofxHapPlayer/libs/snappy/lib/osx</string>
+						<string>../../../addons/ofxHapPlayer/libs/snappy/license</string>
+						<string>../../../addons/ofxHapPlayer/src</string>
+					</array>
+					<key>CONFIGURATION_BUILD_DIR</key>
+					<string>$(SRCROOT)/bin/</string>
+					<key>COPY_PHASE_STRIP</key>
+					<string>YES</string>
+					<key>DEAD_CODE_STRIPPING</key>
+					<string>YES</string>
+					<key>GCC_AUTO_VECTORIZATION</key>
+					<string>YES</string>
+					<key>GCC_ENABLE_SSE3_EXTENSIONS</key>
+					<string>YES</string>
+					<key>GCC_ENABLE_SUPPLEMENTAL_SSE3_INSTRUCTIONS</key>
+					<string>YES</string>
+					<key>GCC_INLINES_ARE_PRIVATE_EXTERN</key>
+					<string>NO</string>
+					<key>GCC_OPTIMIZATION_LEVEL</key>
+					<string>3</string>
+					<key>GCC_PREPROCESSOR_DEFINITIONS[arch=*]</key>
+					<string>DISTRIBUTION=1</string>
+					<key>GCC_SYMBOLS_PRIVATE_EXTERN</key>
+					<string>NO</string>
+					<key>GCC_UNROLL_LOOPS</key>
+					<string>YES</string>
+					<key>GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS</key>
+					<string>YES</string>
+					<key>GCC_WARN_ABOUT_INVALID_OFFSETOF_MACRO</key>
+					<string>NO</string>
+					<key>GCC_WARN_ALLOW_INCOMPLETE_PROTOCOL</key>
+					<string>NO</string>
+					<key>GCC_WARN_UNINITIALIZED_AUTOS</key>
+					<string>NO</string>
+					<key>GCC_WARN_UNUSED_VALUE</key>
+					<string>NO</string>
+					<key>GCC_WARN_UNUSED_VARIABLE</key>
+					<string>NO</string>
+					<key>MACOSX_DEPLOYMENT_TARGET</key>
+					<string>10.9</string>
+					<key>OTHER_CPLUSPLUSFLAGS</key>
+					<array>
+						<string>-D__MACOSX_CORE__</string>
+						<string>-mtune=native</string>
+					</array>
+					<key>SDKROOT</key>
+					<string>macosx</string>
+				</dict>
+				<key>isa</key>
+				<string>XCBuildConfiguration</string>
+				<key>name</key>
+				<string>AppStore</string>
+			</dict>
+			<key>99FA3DBC1C7456C400CFA0EE</key>
+			<dict>
+				<key>baseConfigurationReference</key>
+				<string>E4EB6923138AFD0F00A09F29</string>
+				<key>buildSettings</key>
+				<dict>
+					<key>OTHER_LDFLAGS</key>
+					<array>
+						<string>$(OF_CORE_FRAMEWORKS) $(OF_CORE_LIBS)</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavutil.55.34.101.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavcodec.57.64.101.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libswresample.2.3.100.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavcodec.57.64.101.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavformat.57.56.101.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavutil.55.34.101.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavcodec.57.64.101.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libswresample.2.3.100.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libswresample.2.3.100.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavutil.55.34.101.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavformat.57.56.101.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavformat.57.56.101.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/snappy/lib/osx/libsnappy.1.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/snappy/lib/osx/libsnappy.1.dylib</string>
+						<string>-rpath</string>
+						<string>@loader_path/../../../../../../../addons/ofxHapPlayer/libs</string>
+					</array>
+					<key>HEADER_SEARCH_PATHS</key>
+					<array>
+						<string>$(OF_CORE_HEADERS)</string>
+						<string>src</string>
+						<string>../../../addons/ofxHapPlayer/libs</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/include</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx</string>
+						<string>../../../addons/ofxHapPlayer/libs/hap</string>
+						<string>../../../addons/ofxHapPlayer/libs/hap/src</string>
+						<string>../../../addons/ofxHapPlayer/libs/ofxHap</string>
+						<string>../../../addons/ofxHapPlayer/libs/ofxHap/include</string>
+						<string>../../../addons/ofxHapPlayer/libs/ofxHap/include/ofxHap</string>
+						<string>../../../addons/ofxHapPlayer/libs/ofxHap/src</string>
+						<string>../../../addons/ofxHapPlayer/libs/snappy</string>
+						<string>../../../addons/ofxHapPlayer/libs/snappy/include</string>
+						<string>../../../addons/ofxHapPlayer/libs/snappy/lib</string>
+						<string>../../../addons/ofxHapPlayer/libs/snappy/lib/osx</string>
+						<string>../../../addons/ofxHapPlayer/libs/snappy/license</string>
+						<string>../../../addons/ofxHapPlayer/src</string>
+					</array>
+					<key>COMBINE_HIDPI_IMAGES</key>
+					<string>YES</string>
+					<key>COPY_PHASE_STRIP</key>
+					<string>YES</string>
+					<key>FRAMEWORK_SEARCH_PATHS</key>
+					<array>
+						<string>$(inherited)</string>
+					</array>
+					<key>GCC_GENERATE_DEBUGGING_SYMBOLS</key>
+					<string>YES</string>
+					<key>GCC_MODEL_TUNING</key>
+					<string>NONE</string>
+					<key>GCC_PREPROCESSOR_DEFINITIONS[arch=*]</key>
+					<string>APPSTORE=1</string>
+					<key>ICON</key>
+					<string>$(ICON_NAME_RELEASE)</string>
+					<key>ICON_FILE</key>
+					<string>$(ICON_FILE_PATH)$(ICON)</string>
+					<key>INFOPLIST_FILE</key>
+					<string>openFrameworks-Info.plist</string>
+					<key>INSTALL_PATH</key>
+					<string>/Applications</string>
+					<key>LIBRARY_SEARCH_PATHS</key>
+					<string>$(inherited)</string>
+					<key>PRODUCT_NAME</key>
+					<string>$(TARGET_NAME)</string>
+					<key>WRAPPER_EXTENSION</key>
+					<string>app</string>
+					<key>baseConfigurationReference</key>
+					<string>E4EB6923138AFD0F00A09F29</string>
+				</dict>
+				<key>isa</key>
+				<string>XCBuildConfiguration</string>
+				<key>name</key>
+				<string>AppStore</string>
 			</dict>
 			<key>BB4B014C10F69532006C3DED</key>
 			<dict>
@@ -777,6 +1068,7 @@
 				<array>
 					<string>E4B69B4E0A3A1720003C02F2</string>
 					<string>E4B69B4F0A3A1720003C02F2</string>
+					<string>99FA3DBB1C7456C400CFA0EE</string>
 				</array>
 				<key>defaultConfigurationIsVisible</key>
 				<string>0</string>
@@ -794,18 +1086,18 @@
 					<key>OTHER_LDFLAGS</key>
 					<array>
 						<string>$(OF_CORE_FRAMEWORKS) $(OF_CORE_LIBS)</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavutil.55.34.101.dylib</string>
 						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavcodec.57.64.101.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavcodec.57.64.101.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libswresample.2.3.100.dylib</string>
 						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavcodec.57.64.101.dylib</string>
 						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavformat.57.56.101.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavutil.55.34.101.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavcodec.57.64.101.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libswresample.2.3.100.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libswresample.2.3.100.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavutil.55.34.101.dylib</string>
 						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavformat.57.56.101.dylib</string>
 						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavformat.57.56.101.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavutil.55.34.101.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavutil.55.34.101.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavutil.55.34.101.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libswresample.2.3.100.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libswresample.2.3.100.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libswresample.2.3.100.dylib</string>
 						<string>../../../addons/ofxHapPlayer/libs/snappy/lib/osx/libsnappy.1.dylib</string>
 						<string>../../../addons/ofxHapPlayer/libs/snappy/lib/osx/libsnappy.1.dylib</string>
 						<string>-rpath</string>
@@ -864,7 +1156,7 @@
 					<key>GCC_WARN_UNUSED_VARIABLE</key>
 					<string>NO</string>
 					<key>MACOSX_DEPLOYMENT_TARGET</key>
-					<string>10.8</string>
+					<string>10.9</string>
 					<key>ONLY_ACTIVE_ARCH</key>
 					<string>YES</string>
 					<key>OTHER_CPLUSPLUSFLAGS</key>
@@ -889,18 +1181,18 @@
 					<key>OTHER_LDFLAGS</key>
 					<array>
 						<string>$(OF_CORE_FRAMEWORKS) $(OF_CORE_LIBS)</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavutil.55.34.101.dylib</string>
 						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavcodec.57.64.101.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavcodec.57.64.101.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libswresample.2.3.100.dylib</string>
 						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavcodec.57.64.101.dylib</string>
 						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavformat.57.56.101.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavutil.55.34.101.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavcodec.57.64.101.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libswresample.2.3.100.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libswresample.2.3.100.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavutil.55.34.101.dylib</string>
 						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavformat.57.56.101.dylib</string>
 						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavformat.57.56.101.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavutil.55.34.101.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavutil.55.34.101.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavutil.55.34.101.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libswresample.2.3.100.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libswresample.2.3.100.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libswresample.2.3.100.dylib</string>
 						<string>../../../addons/ofxHapPlayer/libs/snappy/lib/osx/libsnappy.1.dylib</string>
 						<string>../../../addons/ofxHapPlayer/libs/snappy/lib/osx/libsnappy.1.dylib</string>
 						<string>-rpath</string>
@@ -961,7 +1253,7 @@
 					<key>GCC_WARN_UNUSED_VARIABLE</key>
 					<string>NO</string>
 					<key>MACOSX_DEPLOYMENT_TARGET</key>
-					<string>10.8</string>
+					<string>10.9</string>
 					<key>OTHER_CPLUSPLUSFLAGS</key>
 					<array>
 						<string>-D__MACOSX_CORE__</string>
@@ -986,15 +1278,15 @@
 					<string>9DECE28DE972DD39553DD35C</string>
 					<string>D2589C81FE555C37DFA9890C</string>
 					<string>9A375B432B98EE95A23FD001</string>
-					<string>25F76A53846BBC81A84C5519</string>
-					<string>4B9BF6D1580B334023C9FA9F</string>
-					<string>4774F36141444127CFF18422</string>
 					<string>8B40DD2B41C58FF6B6907B86</string>
-					<string>6D4C0ECBC21CF195A5BDBE31</string>
-					<string>FCE78EB42A44ECB3261E18AB</string>
 					<string>2302C21FAE47D435CF095990</string>
-					<string>4EC00043E3376C87F0ECA874</string>
+					<string>FCE78EB42A44ECB3261E18AB</string>
+					<string>6D4C0ECBC21CF195A5BDBE31</string>
 					<string>AF24098F3EE61E761F184C8F</string>
+					<string>4B9BF6D1580B334023C9FA9F</string>
+					<string>25F76A53846BBC81A84C5519</string>
+					<string>4EC00043E3376C87F0ECA874</string>
+					<string>4774F36141444127CFF18422</string>
 				</array>
 				<key>isa</key>
 				<string>PBXSourcesBuildPhase</string>
@@ -1024,6 +1316,7 @@
 					<string>E4B69B590A3A1756003C02F2</string>
 					<string>E4B6FFFD0C3F9AB9008CF71C</string>
 					<string>E4C2427710CC5ABF004149E2</string>
+					<string>8466F1851C04CA0E00918B1C</string>
 				</array>
 				<key>buildRules</key>
 				<array />
@@ -1061,6 +1354,7 @@
 				<array>
 					<string>E4B69B600A3A1757003C02F2</string>
 					<string>E4B69B610A3A1757003C02F2</string>
+					<string>99FA3DBC1C7456C400CFA0EE</string>
 				</array>
 				<key>defaultConfigurationIsVisible</key>
 				<string>0</string>
@@ -1078,18 +1372,18 @@
 					<key>OTHER_LDFLAGS</key>
 					<array>
 						<string>$(OF_CORE_FRAMEWORKS) $(OF_CORE_LIBS)</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavutil.55.34.101.dylib</string>
 						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavcodec.57.64.101.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavcodec.57.64.101.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libswresample.2.3.100.dylib</string>
 						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavcodec.57.64.101.dylib</string>
 						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavformat.57.56.101.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavutil.55.34.101.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavcodec.57.64.101.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libswresample.2.3.100.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libswresample.2.3.100.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavutil.55.34.101.dylib</string>
 						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavformat.57.56.101.dylib</string>
 						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavformat.57.56.101.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavutil.55.34.101.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavutil.55.34.101.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavutil.55.34.101.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libswresample.2.3.100.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libswresample.2.3.100.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libswresample.2.3.100.dylib</string>
 						<string>../../../addons/ofxHapPlayer/libs/snappy/lib/osx/libsnappy.1.dylib</string>
 						<string>../../../addons/ofxHapPlayer/libs/snappy/lib/osx/libsnappy.1.dylib</string>
 						<string>-rpath</string>
@@ -1124,10 +1418,7 @@
 					<key>FRAMEWORK_SEARCH_PATHS</key>
 					<array>
 						<string>$(inherited)</string>
-						<string>$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)</string>
 					</array>
-					<key>FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1</key>
-					<string>"$(SRCROOT)/../../../libs/glut/lib/osx"</string>
 					<key>GCC_DYNAMIC_NO_PIC</key>
 					<string>NO</string>
 					<key>GCC_GENERATE_DEBUGGING_SYMBOLS</key>
@@ -1163,18 +1454,18 @@
 					<key>OTHER_LDFLAGS</key>
 					<array>
 						<string>$(OF_CORE_FRAMEWORKS) $(OF_CORE_LIBS)</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavutil.55.34.101.dylib</string>
 						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavcodec.57.64.101.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavcodec.57.64.101.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libswresample.2.3.100.dylib</string>
 						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavcodec.57.64.101.dylib</string>
 						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavformat.57.56.101.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavutil.55.34.101.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavcodec.57.64.101.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libswresample.2.3.100.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libswresample.2.3.100.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavutil.55.34.101.dylib</string>
 						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavformat.57.56.101.dylib</string>
 						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavformat.57.56.101.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavutil.55.34.101.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavutil.55.34.101.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavutil.55.34.101.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libswresample.2.3.100.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libswresample.2.3.100.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libswresample.2.3.100.dylib</string>
 						<string>../../../addons/ofxHapPlayer/libs/snappy/lib/osx/libsnappy.1.dylib</string>
 						<string>../../../addons/ofxHapPlayer/libs/snappy/lib/osx/libsnappy.1.dylib</string>
 						<string>-rpath</string>
@@ -1209,10 +1500,7 @@
 					<key>FRAMEWORK_SEARCH_PATHS</key>
 					<array>
 						<string>$(inherited)</string>
-						<string>$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)</string>
 					</array>
-					<key>FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1</key>
-					<string>"$(SRCROOT)/../../../libs/glut/lib/osx"</string>
 					<key>GCC_GENERATE_DEBUGGING_SYMBOLS</key>
 					<string>YES</string>
 					<key>GCC_MODEL_TUNING</key>
@@ -1257,7 +1545,7 @@
 			<key>E4B69E1D0A3A1BDC003C02F2</key>
 			<dict>
 				<key>fileEncoding</key>
-				<string>30</string>
+				<string>4</string>
 				<key>isa</key>
 				<string>PBXFileReference</string>
 				<key>lastKnownFileType</key>
@@ -1274,7 +1562,7 @@
 				<key>explicitFileType</key>
 				<string>sourcecode.cpp.cpp</string>
 				<key>fileEncoding</key>
-				<string>30</string>
+				<string>4</string>
 				<key>isa</key>
 				<string>PBXFileReference</string>
 				<key>name</key>
@@ -1287,7 +1575,7 @@
 			<key>E4B69E1F0A3A1BDC003C02F2</key>
 			<dict>
 				<key>fileEncoding</key>
-				<string>30</string>
+				<string>4</string>
 				<key>isa</key>
 				<string>PBXFileReference</string>
 				<key>lastKnownFileType</key>
@@ -1316,7 +1604,7 @@
 			<key>E4B6FCAD0C3E899E008CF71C</key>
 			<dict>
 				<key>fileEncoding</key>
-				<string>30</string>
+				<string>4</string>
 				<key>isa</key>
 				<string>PBXFileReference</string>
 				<key>lastKnownFileType</key>
@@ -1347,10 +1635,10 @@
 # Copy default icon file into App/Resources
 rsync -aved "$ICON_FILE" "$TARGET_BUILD_DIR/$PRODUCT_NAME.app/Contents/Resources/"
 # Copy libfmod and change install directory for fmod to run
-rsync -aved ../../../libs/fmodex/lib/osx/libfmodex.dylib "$TARGET_BUILD_DIR/$PRODUCT_NAME.app/Contents/Frameworks/";
+rsync -aved "$OF_PATH/libs/fmodex/lib/osx/libfmodex.dylib" "$TARGET_BUILD_DIR/$PRODUCT_NAME.app/Contents/Frameworks/";
 install_name_tool -change @executable_path/libfmodex.dylib @executable_path/../Frameworks/libfmodex.dylib "$TARGET_BUILD_DIR/$PRODUCT_NAME.app/Contents/MacOS/$PRODUCT_NAME";
-# Copy GLUT framework (must remove for AppStore submissions)
-rsync -aved ../../../libs/glut/lib/osx/GLUT.framework "$TARGET_BUILD_DIR/$PRODUCT_NAME.app/Contents/Frameworks/"
+
+echo "$GCC_PREPROCESSOR_DEFINITIONS";
 </string>
 			</dict>
 			<key>E4C2427710CC5ABF004149E2</key>
