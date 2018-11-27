@@ -1021,8 +1021,17 @@ void ofxHapPlayer::AudioOutput::start()
 {
     if (!_started)
     {
-        _soundStream.setOutput(this);
-        _started = _soundStream.setup(_channels, 0, _sampleRate, 128, 2); // TODO: best values for last 2 params?
+        ofSoundStreamSettings settings;
+        settings.numInputChannels = 0;
+        settings.numOutputChannels = _channels;
+        settings.sampleRate = _sampleRate;
+        settings.setOutListener(this);
+
+        // TODO: best values for last 2 params?
+        settings.bufferSize = 128;
+        settings.numBuffers = 2;
+
+        _started = _soundStream.setup(settings);
         if (!_started)
         {
             ofLogError("ofxHapPlayer", "Error starting audio playback.");

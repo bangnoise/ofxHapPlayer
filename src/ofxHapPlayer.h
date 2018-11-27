@@ -135,9 +135,9 @@ private:
         void start();
         void stop();
         void close();
-        unsigned int  getBestRate(unsigned int rate) const;
+        unsigned int getBestRate(unsigned int rate) const;
+        virtual void audioOut(ofSoundBuffer& buffer) override;
     private:
-        virtual void    audioOut(ofSoundBuffer& buffer) override;
         bool                                _started;
         int                                 _channels;
         int                                 _sampleRate;

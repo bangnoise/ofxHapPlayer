@@ -48,7 +48,7 @@ void ofApp::setup(){
 //--------------------------------------------------------------
 void ofApp::update(){
     // Show or hide the cursor and position bar
-    if (ofGetSystemTime() - lastMovement < 3000)
+    if (ofGetSystemTimeMillis() - lastMovement < 3000)
     {
         drawBar = true;
     }
@@ -108,7 +108,7 @@ void ofApp::load(std::string movie)
     ofSetWindowTitle(ofFilePath::getBaseName(movie));
     player.load(movie);
     player.play();
-    lastMovement = ofGetSystemTime();
+    lastMovement = ofGetSystemTimeMillis();
 }
 
 //--------------------------------------------------------------
@@ -144,7 +144,7 @@ void ofApp::mouseExited(int x, int y) {
 void ofApp::mouseMoved(int x, int y){
     if (ofGetWindowRect().inside(x, y))
     {
-        lastMovement = ofGetSystemTime();
+        lastMovement = ofGetSystemTimeMillis();
     }
 }
 
@@ -155,7 +155,7 @@ void ofApp::mouseDragged(int x, int y, int button){
         float position = static_cast<float>(x - BarInset) / getBarRectangle().width;
         position = std::max(0.0f, std::min(position, 1.0f));
         player.setPosition(position);
-        lastMovement = ofGetSystemTime();
+        lastMovement = ofGetSystemTimeMillis();
     }
 }
 
@@ -169,7 +169,7 @@ void ofApp::mousePressed(int x, int y, int button){
         player.setPaused(true);
         mouseDragged(x, y, button);
     }
-    lastMovement = ofGetSystemTime();
+    lastMovement = ofGetSystemTimeMillis();
 }
 
 //--------------------------------------------------------------
