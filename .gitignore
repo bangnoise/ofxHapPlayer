@@ -24,3 +24,5 @@ obj/
 *.suo
 *.opensdf
 ipch/
+.vs
+*.VC.db
