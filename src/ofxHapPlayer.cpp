@@ -528,17 +528,15 @@ ofTexture* ofxHapPlayer::getTexture()
 #endif
         }
 
-        glPushClientAttrib(GL_CLIENT_PIXEL_STORE_BIT);
-        glEnable(GL_TEXTURE_2D);
-
-        ofTextureData &texData = _texture.getTextureData();
-        {
-            glBindTexture(GL_TEXTURE_2D, texData.textureID);
-        }
+        _texture.bind();
 
 #if defined(TARGET_OSX)
-        glTextureRangeAPPLE(GL_TEXTURE_2D, _decodedFrame.buffer.size(), _decodedFrame.buffer.data());
+        if (ofGetGLRenderer()->getGLVersionMajor() < 3)
+        {
+            glPushClientAttrib(GL_CLIENT_PIXEL_STORE_BIT);
+        }
         glPixelStorei(GL_UNPACK_CLIENT_STORAGE_APPLE, GL_TRUE);
+        glTextureRangeAPPLE(GL_TEXTURE_2D, _decodedFrame.buffer.size(), _decodedFrame.buffer.data());
 #endif
 
         glCompressedTexSubImage2D(GL_TEXTURE_2D,
@@ -556,8 +554,17 @@ ofTexture* ofxHapPlayer::getTexture()
             static_cast<GLsizei>(_decodedFrame.buffer.size()),
             _decodedFrame.buffer.data());
 
-        glPopClientAttrib();
-        glDisable(GL_TEXTURE_2D);
+#if defined(TARGET_OSX)
+        if (ofGetGLRenderer()->getGLVersionMajor() < 3)
+        {
+            glPopClientAttrib();
+        }
+        else
+        {
+            glPixelStorei(GL_UNPACK_CLIENT_STORAGE_APPLE, GL_FALSE);
+        }
+#endif
+        _texture.unbind();
         _wantsUpload = false;
     }
     return &_texture;
