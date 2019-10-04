@@ -862,9 +862,9 @@ void ofxHapPlayer::setPositionLoaded(float pct)
     setPTSLoaded(time);
 }
 
-void ofxHapPlayer::setVideoPTSLoaded(int64_t pts)
+void ofxHapPlayer::setVideoPTSLoaded(int64_t pts, bool round_up)
 {
-    pts = std::max(std::min(av_rescale_q(pts, _videoStream->time_base, { 1, AV_TIME_BASE }), _clock.period - 1), INT64_C(0));
+    pts = std::max(std::min(av_rescale_q_rnd(pts, _videoStream->time_base, { 1, AV_TIME_BASE }, round_up ? AV_ROUND_UP : AV_ROUND_DOWN), _clock.period - 1), INT64_C(0));
     setPTSLoaded(pts);
 }
 
@@ -887,7 +887,7 @@ void ofxHapPlayer::firstFrame()
         {
             time = 0;
         }
-        setVideoPTSLoaded(time);
+        setVideoPTSLoaded(time, false);
     }
     else
     {
@@ -900,7 +900,7 @@ void ofxHapPlayer::nextFrame()
     std::lock_guard<std::mutex> guard(_lock);
     if (_loaded && _decodedFrame.isValid())
     {
-        setVideoPTSLoaded(std::min(_decodedFrame.pts + _decodedFrame.duration, _videoStream->duration - 1));
+        setVideoPTSLoaded(std::min(_decodedFrame.pts + _decodedFrame.duration, _videoStream->duration - 1), true);
     }
 }
 
@@ -909,7 +909,7 @@ void ofxHapPlayer::previousFrame()
     std::lock_guard<std::mutex> guard(_lock);
     if (_loaded && _decodedFrame.isValid())
     {
-        setVideoPTSLoaded(_decodedFrame.pts - 1);
+        setVideoPTSLoaded(_decodedFrame.pts - 1, false);
     }
 }
 

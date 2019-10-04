@@ -121,7 +121,7 @@ private:
     virtual void    startAudio() override;
     virtual void    stopAudio() override;
     void            setPaused(bool pause, bool locked);
-    void            setVideoPTSLoaded(int64_t pts);
+    void            setVideoPTSLoaded(int64_t pts, bool round_up);
     void            setPTSLoaded(int64_t pts);
     void            setPositionLoaded(float pct);
     void            update(ofEventArgs& args);
