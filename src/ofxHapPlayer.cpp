@@ -1127,5 +1127,5 @@ void ofxHapPlayer::DecodedFrame::clear()
 {
     pts = AV_NOPTS_VALUE;
     duration = 0;
-    buffer.clear();
+    buffer.swap(vector<char>());
 }
