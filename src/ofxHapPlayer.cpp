@@ -1127,5 +1127,7 @@ void ofxHapPlayer::DecodedFrame::clear()
 {
     pts = AV_NOPTS_VALUE;
     duration = 0;
-    buffer.clear();
+    // Force deallocation of the vector's storage
+    // (std::vector::clear() is not required to deallocate storage)
+    std::vector<char>().swap(buffer);
 }
