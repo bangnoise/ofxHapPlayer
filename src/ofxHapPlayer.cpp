@@ -510,15 +510,19 @@ ofTexture* ofxHapPlayer::getTexture()
              */
             ofTextureData texData;
 #if OFX_HAP_HAS_CODECPAR
-            texData.width = _videoStream->codecpar->width;
-            texData.height = _videoStream->codecpar->height;
+            texData.width = ofxHapPY::roundUpToMultipleOf4(_videoStream->codecpar->width);
+            texData.height = ofxHapPY::roundUpToMultipleOf4(_videoStream->codecpar->height);
 #else
-            texData.width = _videoStream->codec->width;
-            texData.height = _videoStream->codec->height;
+            texData.width = ofxHapPY::roundUpToMultipleOf4(_videoStream->codec->width);
+            texData.height = ofxHapPY::roundUpToMultipleOf4(_videoStream->codec->height);
 #endif
             texData.textureTarget = GL_TEXTURE_2D;
             texData.glInternalFormat = internalFormat;
             _texture.allocate(texData, GL_BGRA, GL_UNSIGNED_INT_8_8_8_8_REV);
+            _texture.texData.width = _videoStream->codecpar->width;
+            _texture.texData.height = _videoStream->codecpar->height;
+            _texture.texData.tex_t = _texture.texData.width / _texture.texData.tex_w;
+            _texture.texData.tex_u = _texture.texData.height / _texture.texData.tex_h;
 
 
 #if defined(TARGET_OSX)
@@ -544,11 +548,11 @@ ofTexture* ofxHapPlayer::getTexture()
             0,
             0,
 #if OFX_HAP_HAS_CODECPAR
-            _videoStream->codecpar->width,
-            _videoStream->codecpar->height,
+            ofxHapPY::roundUpToMultipleOf4(_videoStream->codecpar->width),
+            ofxHapPY::roundUpToMultipleOf4(_videoStream->codecpar->height),
 #else
-            _videoStream->codec->width,
-            _videoStream->codec->height,
+            ofxHapPY::roundUpToMultipleOf4(_videoStream->codec->width),
+            ofxHapPY::roundUpToMultipleOf4(_videoStream->codec->height),
 #endif
             internalFormat,
             static_cast<GLsizei>(_decodedFrame.buffer.size()),
