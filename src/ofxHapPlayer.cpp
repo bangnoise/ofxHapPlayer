@@ -509,6 +509,9 @@ ofTexture* ofxHapPlayer::getTexture()
              Create our texture for DXT upload
              */
             ofTextureData texData;
+
+            // Drivers should accept the actual dimensions here, but some have problems with
+            // non-multiple-of-4 dimensions, so allocate with rounded-up dimensions
 #if OFX_HAP_HAS_CODECPAR
             texData.width = ofxHapPY::roundUpToMultipleOf4(_videoStream->codecpar->width);
             texData.height = ofxHapPY::roundUpToMultipleOf4(_videoStream->codecpar->height);
@@ -519,6 +522,8 @@ ofTexture* ofxHapPlayer::getTexture()
             texData.textureTarget = GL_TEXTURE_2D;
             texData.glInternalFormat = internalFormat;
             _texture.allocate(texData, GL_BGRA, GL_UNSIGNED_INT_8_8_8_8_REV);
+
+            // Now store the actual dimensions so drawing is correct
             _texture.texData.width = _videoStream->codecpar->width;
             _texture.texData.height = _videoStream->codecpar->height;
             _texture.texData.tex_t = _texture.texData.width / _texture.texData.tex_w;
@@ -542,7 +547,7 @@ ofTexture* ofxHapPlayer::getTexture()
         glPixelStorei(GL_UNPACK_CLIENT_STORAGE_APPLE, GL_TRUE);
         glTextureRangeAPPLE(GL_TEXTURE_2D, _decodedFrame.buffer.size(), _decodedFrame.buffer.data());
 #endif
-
+        // As above, some drivers require rounded dimensions here
         glCompressedTexSubImage2D(GL_TEXTURE_2D,
             0,
             0,
