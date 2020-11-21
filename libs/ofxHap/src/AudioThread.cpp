@@ -337,8 +337,8 @@ void ofxHap::AudioThread::threadMain(AudioParameters params, int outRate, std::s
                 }
                 else
                 {
-                    int64_t next = av_gettime_relative() - av_rescale_q(_buffer->getSamplesPerChannel() / 2, {1, outRate}, {1, AV_TIME_BASE});
-                    int64_t wait = next - now;
+                    int64_t next = now + av_rescale_q(_buffer->getSamplesPerChannel() / 2, {1, outRate}, {1, AV_TIME_BASE});
+                    int64_t wait = next - av_gettime_relative();
                     if (wait > 0)
                     {
                         _condition.wait_for(locker, std::chrono::microseconds(wait));
