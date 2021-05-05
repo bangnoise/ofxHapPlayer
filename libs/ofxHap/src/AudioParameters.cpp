@@ -25,7 +25,7 @@
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "AudioParameters.h"
+#include <ofxHap/AudioParameters.h>
 
 extern "C" {
 #include <libavformat/avformat.h>

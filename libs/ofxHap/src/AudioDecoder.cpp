@@ -26,7 +26,7 @@
  */
 
 
-#include "AudioDecoder.h"
+#include <ofxHap/AudioDecoder.h>
 extern "C" {
 #include <libavformat/avformat.h>
 #include <libavutil/time.h>

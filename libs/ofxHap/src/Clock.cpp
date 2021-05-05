@@ -25,7 +25,7 @@
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "Clock.h"
+#include <ofxHap/Clock.h>
 extern "C" {
 #include <libavutil/avutil.h>
 }

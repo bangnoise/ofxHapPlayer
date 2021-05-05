@@ -25,7 +25,7 @@
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "MovieTime.h"
+#include <ofxHap/MovieTime.h>
 #include <cstdlib>
 #include <algorithm>
 #include <libavformat/avformat.h>

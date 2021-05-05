@@ -25,7 +25,7 @@
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "AudioThread.h"
+#include <ofxHap/AudioThread.h>
 extern "C" {
 #include <libavformat/avformat.h>
 #include <libavutil/time.h>
@@ -33,10 +33,10 @@ extern "C" {
 #include <map>
 #include <cstdlib>
 #include <cmath>
-#include "AudioDecoder.h"
-#include "AudioResampler.h"
-#include "MovieTime.h"
-#include "PacketCache.h"
+#include <ofxHap/AudioDecoder.h>
+#include <ofxHap/AudioResampler.h>
+#include <ofxHap/MovieTime.h>
+#include <ofxHap/PacketCache.h>
 
 ofxHap::AudioThread::AudioThread(const AudioParameters& params ,
                                  int outRate,

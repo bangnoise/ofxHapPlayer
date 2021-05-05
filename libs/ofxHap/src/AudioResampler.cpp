@@ -25,7 +25,7 @@
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "AudioResampler.h"
+#include <ofxHap/AudioResampler.h>
 extern "C" {
 #include <libavformat/avformat.h>
 #include <libswresample/swresample.h>

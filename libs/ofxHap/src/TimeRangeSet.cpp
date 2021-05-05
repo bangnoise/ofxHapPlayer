@@ -25,7 +25,7 @@
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "TimeRangeSet.h"
+#include <ofxHap/TimeRangeSet.h>
 #include <algorithm>
 #include <cstdlib>
 

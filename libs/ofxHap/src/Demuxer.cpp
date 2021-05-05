@@ -25,8 +25,8 @@
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "Demuxer.h"
-#include "Common.h"
+#include <ofxHap/Demuxer.h>
+#include <ofxHap/Common.h>
 extern "C" {
 #include <libavformat/avformat.h>
 }

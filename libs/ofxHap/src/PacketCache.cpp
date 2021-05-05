@@ -25,12 +25,12 @@
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "PacketCache.h"
+#include <ofxHap/PacketCache.h>
 extern "C" {
 #include <libavformat/avformat.h>
 }
-#include "TimeRangeSet.h"
-#include "Common.h"
+#include <ofxHap/TimeRangeSet.h>
+#include <ofxHap/Common.h>
 
 ofxHap::TimeRange ofxHap::PacketQuery(AVPacket *p)
 {

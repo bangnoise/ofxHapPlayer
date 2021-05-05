@@ -25,7 +25,7 @@
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "RingBuffer.h"
+#include <ofxHap/RingBuffer.h>
 #include <algorithm>
 
 ofxHap::RingBuffer::RingBuffer(int channels, int samplesPerChannel)
