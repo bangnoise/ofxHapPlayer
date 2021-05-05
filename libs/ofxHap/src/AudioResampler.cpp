@@ -42,7 +42,14 @@ _layout(params.parameters->channel_layout), _sampleRateIn(params.parameters->sam
 _layout(params.context->channel_layout), _sampleRateIn(params.context->sample_rate), _sampleRateOut(outRate), _format(params.context->sample_fmt)
 #endif
 {
-
+    if (_layout == 0)
+    {
+#if OFX_HAP_HAS_CODECPAR
+        _layout = av_get_default_channel_layout(params.parameters->channels);
+#else
+        _layout = av_get_default_channel_layout(params.context->channels);
+#endif
+    }
 }
 
 ofxHap::AudioResampler::~AudioResampler()
