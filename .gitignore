@@ -26,3 +26,4 @@ obj/
 ipch/
 .vs
 *.VC.db
+*.obj

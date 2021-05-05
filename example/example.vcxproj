@@ -102,7 +102,7 @@
 			<WarningLevel>Level3</WarningLevel>
 			<AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;..\..\..\addons\ofxHapPlayer\libs;..\..\..\addons\ofxHapPlayer\libs\ffmpeg;..\..\..\addons\ofxHapPlayer\libs\ffmpeg\include;..\..\..\addons\ofxHapPlayer\libs\ffmpeg\lib;..\..\..\addons\ofxHapPlayer\libs\ffmpeg\lib\vs;..\..\..\addons\ofxHapPlayer\libs\ffmpeg\lib\vs\Win32;..\..\..\addons\ofxHapPlayer\libs\ffmpeg\lib\vs\x64;..\..\..\addons\ofxHapPlayer\libs\hap;..\..\..\addons\ofxHapPlayer\libs\hap\src;..\..\..\addons\ofxHapPlayer\libs\ofxHap;..\..\..\addons\ofxHapPlayer\libs\ofxHap\include;..\..\..\addons\ofxHapPlayer\libs\ofxHap\include\ofxHap;..\..\..\addons\ofxHapPlayer\libs\ofxHap\src;..\..\..\addons\ofxHapPlayer\libs\snappy;..\..\..\addons\ofxHapPlayer\libs\snappy\include;..\..\..\addons\ofxHapPlayer\libs\snappy\lib;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\Win32;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\Win32\Debug;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\Win32\Release;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\x64;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\x64\Debug;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\x64\Release;..\..\..\addons\ofxHapPlayer\libs\snappy\license;..\..\..\addons\ofxHapPlayer\src</AdditionalIncludeDirectories>
 			<CompileAs>CompileAsCpp</CompileAs>
-			<ObjectFileName>$(IntDir)</ObjectFileName>
+			<ObjectFileName>$(IntDir)%(RelativeDir)</ObjectFileName>
 		</ClCompile>
 		<Link>
 			<GenerateDebugInformation>true</GenerateDebugInformation>
@@ -123,7 +123,7 @@
 			<AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;..\..\..\addons\ofxHapPlayer\libs;..\..\..\addons\ofxHapPlayer\libs\ffmpeg;..\..\..\addons\ofxHapPlayer\libs\ffmpeg\include;..\..\..\addons\ofxHapPlayer\libs\ffmpeg\lib;..\..\..\addons\ofxHapPlayer\libs\ffmpeg\lib\vs;..\..\..\addons\ofxHapPlayer\libs\ffmpeg\lib\vs\Win32;..\..\..\addons\ofxHapPlayer\libs\ffmpeg\lib\vs\x64;..\..\..\addons\ofxHapPlayer\libs\hap;..\..\..\addons\ofxHapPlayer\libs\hap\src;..\..\..\addons\ofxHapPlayer\libs\ofxHap;..\..\..\addons\ofxHapPlayer\libs\ofxHap\include;..\..\..\addons\ofxHapPlayer\libs\ofxHap\include\ofxHap;..\..\..\addons\ofxHapPlayer\libs\ofxHap\src;..\..\..\addons\ofxHapPlayer\libs\snappy;..\..\..\addons\ofxHapPlayer\libs\snappy\include;..\..\..\addons\ofxHapPlayer\libs\snappy\lib;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\Win32;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\Win32\Debug;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\Win32\Release;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\x64;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\x64\Debug;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\x64\Release;..\..\..\addons\ofxHapPlayer\libs\snappy\license;..\..\..\addons\ofxHapPlayer\src</AdditionalIncludeDirectories>
 			<CompileAs>CompileAsCpp</CompileAs>
 			<MultiProcessorCompilation>true</MultiProcessorCompilation>
-			<ObjectFileName>$(IntDir)</ObjectFileName>
+			<ObjectFileName>$(IntDir)%(RelativeDir)</ObjectFileName>
 		</ClCompile>
 		<Link>
 			<GenerateDebugInformation>true</GenerateDebugInformation>
@@ -143,7 +143,7 @@
 			<AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;..\..\..\addons\ofxHapPlayer\libs;..\..\..\addons\ofxHapPlayer\libs\ffmpeg;..\..\..\addons\ofxHapPlayer\libs\ffmpeg\include;..\..\..\addons\ofxHapPlayer\libs\ffmpeg\lib;..\..\..\addons\ofxHapPlayer\libs\ffmpeg\lib\vs;..\..\..\addons\ofxHapPlayer\libs\ffmpeg\lib\vs\Win32;..\..\..\addons\ofxHapPlayer\libs\ffmpeg\lib\vs\x64;..\..\..\addons\ofxHapPlayer\libs\hap;..\..\..\addons\ofxHapPlayer\libs\hap\src;..\..\..\addons\ofxHapPlayer\libs\ofxHap;..\..\..\addons\ofxHapPlayer\libs\ofxHap\include;..\..\..\addons\ofxHapPlayer\libs\ofxHap\include\ofxHap;..\..\..\addons\ofxHapPlayer\libs\ofxHap\src;..\..\..\addons\ofxHapPlayer\libs\snappy;..\..\..\addons\ofxHapPlayer\libs\snappy\include;..\..\..\addons\ofxHapPlayer\libs\snappy\lib;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\Win32;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\Win32\Debug;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\Win32\Release;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\x64;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\x64\Debug;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\x64\Release;..\..\..\addons\ofxHapPlayer\libs\snappy\license;..\..\..\addons\ofxHapPlayer\src</AdditionalIncludeDirectories>
 			<CompileAs>CompileAsCpp</CompileAs>
 			<MultiProcessorCompilation>true</MultiProcessorCompilation>
-			<ObjectFileName>$(IntDir)</ObjectFileName>
+			<ObjectFileName>$(IntDir)%(RelativeDir)</ObjectFileName>
 		</ClCompile>
 		<Link>
 			<IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
@@ -165,7 +165,7 @@
 			<WarningLevel>Level3</WarningLevel>
 			<AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;..\..\..\addons\ofxHapPlayer\libs;..\..\..\addons\ofxHapPlayer\libs\ffmpeg;..\..\..\addons\ofxHapPlayer\libs\ffmpeg\include;..\..\..\addons\ofxHapPlayer\libs\ffmpeg\lib;..\..\..\addons\ofxHapPlayer\libs\ffmpeg\lib\vs;..\..\..\addons\ofxHapPlayer\libs\ffmpeg\lib\vs\Win32;..\..\..\addons\ofxHapPlayer\libs\ffmpeg\lib\vs\x64;..\..\..\addons\ofxHapPlayer\libs\hap;..\..\..\addons\ofxHapPlayer\libs\hap\src;..\..\..\addons\ofxHapPlayer\libs\ofxHap;..\..\..\addons\ofxHapPlayer\libs\ofxHap\include;..\..\..\addons\ofxHapPlayer\libs\ofxHap\include\ofxHap;..\..\..\addons\ofxHapPlayer\libs\ofxHap\src;..\..\..\addons\ofxHapPlayer\libs\snappy;..\..\..\addons\ofxHapPlayer\libs\snappy\include;..\..\..\addons\ofxHapPlayer\libs\snappy\lib;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\Win32;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\Win32\Debug;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\Win32\Release;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\x64;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\x64\Debug;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\x64\Release;..\..\..\addons\ofxHapPlayer\libs\snappy\license;..\..\..\addons\ofxHapPlayer\src</AdditionalIncludeDirectories>
 			<CompileAs>CompileAsCpp</CompileAs>
-			<ObjectFileName>$(IntDir)</ObjectFileName>
+			<ObjectFileName>$(IntDir)%(RelativeDir)</ObjectFileName>
 		</ClCompile>
 		<Link>
 			<IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
