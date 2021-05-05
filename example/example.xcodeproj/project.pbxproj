@@ -896,8 +896,9 @@ fi
 						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavutil.55.34.101.dylib</string>
 						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavformat.57.56.101.dylib</string>
 						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavformat.57.56.101.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/snappy/lib/osx/libsnappy.1.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/snappy/lib/osx/libsnappy.1.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/snappy/lib/osx/libsnappy.1.1.9.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/snappy/lib/osx/libsnappy.1.1.9.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/snappy/lib/osx/libsnappy.1.1.9.dylib</string>
 						<string>-rpath</string>
 						<string>@loader_path/../../../../../../../addons/ofxHapPlayer/libs</string>
 					</array>
@@ -3962,8 +3963,9 @@ fi
 						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavutil.55.34.101.dylib</string>
 						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavformat.57.56.101.dylib</string>
 						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavformat.57.56.101.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/snappy/lib/osx/libsnappy.1.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/snappy/lib/osx/libsnappy.1.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/snappy/lib/osx/libsnappy.1.1.9.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/snappy/lib/osx/libsnappy.1.1.9.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/snappy/lib/osx/libsnappy.1.1.9.dylib</string>
 						<string>-rpath</string>
 						<string>@loader_path/../../../../../../../addons/ofxHapPlayer/libs</string>
 					</array>
@@ -4047,8 +4049,9 @@ fi
 						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavutil.55.34.101.dylib</string>
 						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavformat.57.56.101.dylib</string>
 						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavformat.57.56.101.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/snappy/lib/osx/libsnappy.1.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/snappy/lib/osx/libsnappy.1.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/snappy/lib/osx/libsnappy.1.1.9.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/snappy/lib/osx/libsnappy.1.1.9.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/snappy/lib/osx/libsnappy.1.1.9.dylib</string>
 						<string>-rpath</string>
 						<string>@loader_path/../../../../../../../addons/ofxHapPlayer/libs</string>
 					</array>
