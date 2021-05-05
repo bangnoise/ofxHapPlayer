@@ -50,7 +50,7 @@ ofxHap::AudioDecoder::AudioDecoder(const AudioParameters& params, int& result)
         result = AVERROR(ENOMEM);
     }
 #if OFX_HAP_HAS_CODECPAR
-    AVCodec *decoder = avcodec_find_decoder(params.parameters->codec_id);
+    const AVCodec *decoder = avcodec_find_decoder(params.parameters->codec_id);
 #else
 #if !OFX_HAP_HAS_PACKET_ALLOC
     av_init_packet(_packet);

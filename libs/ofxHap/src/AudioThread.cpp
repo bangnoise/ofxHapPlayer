@@ -219,7 +219,7 @@ void ofxHap::AudioThread::threadMain(AudioParameters params, int outRate, std::s
                             AVFrame *frame = cache.fetch(current.start);
                             if (frame)
                             {
-                                int64_t pts = av_frame_get_best_effort_timestamp(frame);
+                                int64_t pts = frame->best_effort_timestamp;
                                 if (current.length > 0)
                                 {
                                     // TODO: we could maybe request samples from resampler and only feed it if it's empty
@@ -243,11 +243,11 @@ void ofxHap::AudioThread::threadMain(AudioParameters params, int outRate, std::s
                                         }
                                     }
 
-                                    int64_t rpts = av_frame_get_best_effort_timestamp(reversed);
+                                    int64_t rpts = reversed->best_effort_timestamp;
                                     if (result >= 0 && rpts != pts)
                                     {
                                         result = reverse(reversed, frame);
-                                        rpts = av_frame_get_best_effort_timestamp(reversed);
+                                        rpts = reversed->best_effort_timestamp;
                                     }
 
                                     if (result >= 0)

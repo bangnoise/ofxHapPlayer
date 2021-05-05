@@ -130,5 +130,5 @@ void ofxHap::FrameFree(AVFrame *f)
 
 ofxHap::TimeRange ofxHap::FrameQuery(AVFrame *f)
 {
-    return TimeRange(av_frame_get_best_effort_timestamp(f), f->nb_samples);
+    return TimeRange(f->best_effort_timestamp, f->nb_samples);
 }

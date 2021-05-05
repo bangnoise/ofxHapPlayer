@@ -887,18 +887,18 @@ fi
 						<string>$(OF_CORE_LIBS)</string>
 						<string>$(OF_CORE_FRAMEWORKS)</string>
 						<string>$(LIB_OF)</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavutil.55.34.101.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavcodec.57.64.101.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libswresample.2.3.100.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavcodec.57.64.101.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavformat.57.56.101.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavutil.55.34.101.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavcodec.57.64.101.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libswresample.2.3.100.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libswresample.2.3.100.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavutil.55.34.101.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavformat.57.56.101.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavformat.57.56.101.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavutil.56.70.100.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libswresample.3.9.100.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavformat.58.76.100.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavformat.58.76.100.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libswresample.3.9.100.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavformat.58.76.100.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavutil.56.70.100.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavutil.56.70.100.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavcodec.58.134.100.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libswresample.3.9.100.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavcodec.58.134.100.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavcodec.58.134.100.dylib</string>
 						<string>../../../addons/ofxHapPlayer/libs/snappy/lib/osx/libsnappy.1.1.9.dylib</string>
 						<string>../../../addons/ofxHapPlayer/libs/snappy/lib/osx/libsnappy.1.1.9.dylib</string>
 						<string>../../../addons/ofxHapPlayer/libs/snappy/lib/osx/libsnappy.1.1.9.dylib</string>
@@ -3956,18 +3956,18 @@ fi
 						<string>$(OF_CORE_LIBS)</string>
 						<string>$(OF_CORE_FRAMEWORKS)</string>
 						<string>$(LIB_OF_DEBUG)</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavutil.55.34.101.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavcodec.57.64.101.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libswresample.2.3.100.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavcodec.57.64.101.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavformat.57.56.101.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavutil.55.34.101.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavcodec.57.64.101.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libswresample.2.3.100.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libswresample.2.3.100.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavutil.55.34.101.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavformat.57.56.101.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavformat.57.56.101.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavutil.56.70.100.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libswresample.3.9.100.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavformat.58.76.100.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavformat.58.76.100.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libswresample.3.9.100.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavformat.58.76.100.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavutil.56.70.100.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavutil.56.70.100.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavcodec.58.134.100.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libswresample.3.9.100.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavcodec.58.134.100.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavcodec.58.134.100.dylib</string>
 						<string>../../../addons/ofxHapPlayer/libs/snappy/lib/osx/libsnappy.1.1.9.dylib</string>
 						<string>../../../addons/ofxHapPlayer/libs/snappy/lib/osx/libsnappy.1.1.9.dylib</string>
 						<string>../../../addons/ofxHapPlayer/libs/snappy/lib/osx/libsnappy.1.1.9.dylib</string>
@@ -4042,18 +4042,18 @@ fi
 						<string>$(OF_CORE_LIBS)</string>
 						<string>$(OF_CORE_FRAMEWORKS)</string>
 						<string>$(LIB_OF)</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavutil.55.34.101.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavcodec.57.64.101.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libswresample.2.3.100.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavcodec.57.64.101.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavformat.57.56.101.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavutil.55.34.101.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavcodec.57.64.101.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libswresample.2.3.100.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libswresample.2.3.100.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavutil.55.34.101.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavformat.57.56.101.dylib</string>
-						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavformat.57.56.101.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavutil.56.70.100.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libswresample.3.9.100.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavformat.58.76.100.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavformat.58.76.100.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libswresample.3.9.100.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavformat.58.76.100.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavutil.56.70.100.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavutil.56.70.100.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavcodec.58.134.100.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libswresample.3.9.100.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavcodec.58.134.100.dylib</string>
+						<string>../../../addons/ofxHapPlayer/libs/ffmpeg/lib/osx/libavcodec.58.134.100.dylib</string>
 						<string>../../../addons/ofxHapPlayer/libs/snappy/lib/osx/libsnappy.1.1.9.dylib</string>
 						<string>../../../addons/ofxHapPlayer/libs/snappy/lib/osx/libsnappy.1.1.9.dylib</string>
 						<string>../../../addons/ofxHapPlayer/libs/snappy/lib/osx/libsnappy.1.1.9.dylib</string>
