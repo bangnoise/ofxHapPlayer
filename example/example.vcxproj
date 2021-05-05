@@ -108,8 +108,8 @@
 			<GenerateDebugInformation>true</GenerateDebugInformation>
 			<SubSystem>Console</SubSystem>
 			<RandomizedBaseAddress>false</RandomizedBaseAddress>
-			<AdditionalDependencies>%(AdditionalDependencies);libavcodec.lib;libavformat.lib;libavutil.lib;libswresample.lib;snappyd.lib</AdditionalDependencies>
-			<AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);..\..\..\addons\ofxHapPlayer\libs\ffmpeg\lib\vs\Win32;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\Win32\Debug</AdditionalLibraryDirectories>
+			<AdditionalDependencies>%(AdditionalDependencies);libavcodec.lib;libavformat.lib;libavutil.lib;libswresample.lib;snappyd.lib;bcrypt.lib;Secur32.lib</AdditionalDependencies>
+			<AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);..\..\..\addons\ofxHapPlayer\libs\ffmpeg\lib\vs\Win32;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\Win32\Debug;..\..\..\addons\ofxHapPlayer</AdditionalLibraryDirectories>
 		</Link>
 		<PostBuildEvent />
 	</ItemDefinitionGroup>
@@ -129,8 +129,8 @@
 			<GenerateDebugInformation>true</GenerateDebugInformation>
 			<SubSystem>Console</SubSystem>
 			<RandomizedBaseAddress>false</RandomizedBaseAddress>
-			<AdditionalDependencies>%(AdditionalDependencies);libavcodec.lib;libavformat.lib;libavutil.lib;libswresample.lib;snappyd.lib</AdditionalDependencies>
-			<AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);..\..\..\addons\ofxHapPlayer\libs\ffmpeg\lib\vs\x64;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\x64\Debug</AdditionalLibraryDirectories>
+			<AdditionalDependencies>%(AdditionalDependencies);libavcodec.lib;libavformat.lib;libavutil.lib;libswresample.lib;snappyd.lib;bcrypt.lib;Secur32.lib</AdditionalDependencies>
+			<AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);..\..\..\addons\ofxHapPlayer\libs\ffmpeg\lib\vs\x64;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\x64\Debug;..\..\..\addons\ofxHapPlayer</AdditionalLibraryDirectories>
 		</Link>
 		<PostBuildEvent />
 	</ItemDefinitionGroup>
@@ -152,8 +152,8 @@
 			<OptimizeReferences>true</OptimizeReferences>
 			<EnableCOMDATFolding>true</EnableCOMDATFolding>
 			<RandomizedBaseAddress>false</RandomizedBaseAddress>
-			<AdditionalDependencies>%(AdditionalDependencies);libavcodec.lib;libavformat.lib;libavutil.lib;libswresample.lib;snappy.lib</AdditionalDependencies>
-			<AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);..\..\..\addons\ofxHapPlayer\libs\ffmpeg\lib\vs\Win32;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\Win32\Release</AdditionalLibraryDirectories>
+			<AdditionalDependencies>%(AdditionalDependencies);libavcodec.lib;libavformat.lib;libavutil.lib;libswresample.lib;snappy.lib;bcrypt.lib;Secur32.lib</AdditionalDependencies>
+			<AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);..\..\..\addons\ofxHapPlayer\libs\ffmpeg\lib\vs\Win32;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\Win32\Release;..\..\..\addons\ofxHapPlayer</AdditionalLibraryDirectories>
 		</Link>
 		<PostBuildEvent />
 	</ItemDefinitionGroup>
@@ -174,8 +174,8 @@
 			<OptimizeReferences>true</OptimizeReferences>
 			<EnableCOMDATFolding>true</EnableCOMDATFolding>
 			<RandomizedBaseAddress>false</RandomizedBaseAddress>
-			<AdditionalDependencies>%(AdditionalDependencies);libavcodec.lib;libavformat.lib;libavutil.lib;libswresample.lib;snappy.lib</AdditionalDependencies>
-			<AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);..\..\..\addons\ofxHapPlayer\libs\ffmpeg\lib\vs\x64;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\x64\Release</AdditionalLibraryDirectories>
+			<AdditionalDependencies>%(AdditionalDependencies);libavcodec.lib;libavformat.lib;libavutil.lib;libswresample.lib;snappy.lib;bcrypt.lib;Secur32.lib</AdditionalDependencies>
+			<AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);..\..\..\addons\ofxHapPlayer\libs\ffmpeg\lib\vs\x64;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\x64\Release;..\..\..\addons\ofxHapPlayer</AdditionalLibraryDirectories>
 		</Link>
 		<PostBuildEvent />
 	</ItemDefinitionGroup>

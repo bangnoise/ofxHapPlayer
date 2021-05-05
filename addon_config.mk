@@ -104,6 +104,8 @@ osx:
 	ADDON_INCLUDES_EXCLUDE += libs/ffmpeg/include/libswresample
 
 vs:
+	ADDON_LIBS += bcrypt.lib
+	ADDON_LIBS += Secur32.lib
 	ADDON_INCLUDES_EXCLUDE = libs/ffmpeg/include/libavformat
 	ADDON_INCLUDES_EXCLUDE += libs/ffmpeg/include/libavutil
 	ADDON_INCLUDES_EXCLUDE += libs/ffmpeg/include/libavcodec
