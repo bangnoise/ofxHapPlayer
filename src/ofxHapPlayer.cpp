@@ -46,6 +46,8 @@ extern "C" {
 #include <ppl.h>
 #elif defined(TARGET_LINUX)
 #include <dispatch/dispatch.h>
+#elif defined(TARGET_OSX)
+#include <dispatch/dispatch.h>
 #endif
 
 // This amount will be bufferred before and after the playhead
