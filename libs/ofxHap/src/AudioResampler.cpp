@@ -37,11 +37,18 @@ extern "C" {
 ofxHap::AudioResampler::AudioResampler(const AudioParameters& params, int outRate)
 : _volume(1.0), _rate(1.0), _resampler(nullptr), _reconfigure(true),
 #if OFX_HAP_HAS_CODECPAR
-_layout(params.parameters->channel_layout), _sampleRateIn(params.parameters->sample_rate), _sampleRateOut(outRate), _format(params.parameters->format)
+#if OFX_HAP_HAS_CHANNEL_LAYOUT
+_layout(&params.parameters->ch_layout),
 #else
-_layout(params.context->channel_layout), _sampleRateIn(params.context->sample_rate), _sampleRateOut(outRate), _format(params.context->sample_fmt)
+_layout(&params.parameters->channel_layout),
 #endif
+_sampleRateIn(params.parameters->sample_rate), _format(params.parameters->format),
+#else
+_layout(params.context->channel_layout), _sampleRateIn(params.context->sample_rate), _format(params.context->sample_fmt),
+#endif
+_sampleRateOut(outRate)
 {
+#if !OFX_HAP_HAS_CHANNEL_LAYOUT
     if (_layout == 0)
     {
 #if OFX_HAP_HAS_CODECPAR
@@ -50,6 +57,7 @@ _layout(params.context->channel_layout), _sampleRateIn(params.context->sample_ra
         _layout = av_get_default_channel_layout(params.context->channels);
 #endif
     }
+#endif
 }
 
 ofxHap::AudioResampler::~AudioResampler()
@@ -100,6 +108,19 @@ int ofxHap::AudioResampler::resample(const AVFrame *frame, int offset, int srcLe
         {
             swr_free(&_resampler);
         }
+#if OFX_HAP_HAS_CHANNEL_LAYOUT
+        int res = swr_alloc_set_opts2(&_resampler,
+                                      _layout,
+                                      AV_SAMPLE_FMT_FLT,
+                                      static_cast<int>(_sampleRateOut / _rate),
+                                      _layout,
+                                      static_cast<AVSampleFormat>(_format),
+                                      _sampleRateIn,
+                                      0,
+                                      nullptr);
+        
+        int channels = _layout->nb_channels;
+#else
         _resampler = swr_alloc_set_opts(nullptr,
                                         _layout,
                                         AV_SAMPLE_FMT_FLT,
@@ -111,6 +132,7 @@ int ofxHap::AudioResampler::resample(const AVFrame *frame, int offset, int srcLe
                                         nullptr);
 
         int channels = av_get_channel_layout_nb_channels(_layout);
+#endif
         std::vector<double> matrix(channels * channels);
         for (int i = 0; i < channels; i++) {
             for (int j = 0; j < channels; j++) {
@@ -133,16 +155,21 @@ int ofxHap::AudioResampler::resample(const AVFrame *frame, int offset, int srcLe
         _reconfigure = false;
     }
 
-    std::vector<const uint8_t *> src(frame->channels);
+#if OFX_HAP_HAS_CHANNEL_LAYOUT
+    int nb_channels = frame->ch_layout.nb_channels;
+#else
+    int nb_channels = frame->channels;
+#endif
+    std::vector<const uint8_t *> src(nb_channels);
     if (av_sample_fmt_is_planar(static_cast<AVSampleFormat>(frame->format)))
     {
-        for (int i = 0; i < frame->channels; i++) {
+        for (int i = 0; i < nb_channels; i++) {
             src[i] = frame->extended_data[i] + (offset * av_get_bytes_per_sample(static_cast<AVSampleFormat>(frame->format)));
         }
     }
     else
     {
-        src[0] = frame->data[0] + (offset * av_get_bytes_per_sample(static_cast<AVSampleFormat>(frame->format)) * frame->channels);
+        src[0] = frame->data[0] + (offset * av_get_bytes_per_sample(static_cast<AVSampleFormat>(frame->format)) * nb_channels);
     }
 
     int result = swr_convert(_resampler,

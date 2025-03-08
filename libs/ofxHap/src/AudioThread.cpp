@@ -83,7 +83,11 @@ void ofxHap::AudioThread::threadMain(AudioParameters params, int outRate, std::s
     {
 #if OFX_HAP_HAS_CODECPAR
         int sampleRate = params.parameters->sample_rate;
+#if OFX_HAP_HAS_CHANNEL_LAYOUT
+        int channels = params.parameters->ch_layout.nb_channels;
+#else
         int channels = params.parameters->channels;
+#endif
 #else
         int sampleRate = params.context->sample_rate;
         int channels = params.context->channels;
@@ -440,8 +444,12 @@ int ofxHap::AudioThread::reverse(AVFrame *dst, const AVFrame *src)
         av_frame_unref(dst);
         if (result >= 0)
         {
+#if OFX_HAP_HAS_CHANNEL_LAYOUT
+            dst->ch_layout = src->ch_layout;
+#else
             dst->channel_layout = src->channel_layout;
             dst->channels = src->channels;
+#endif
             dst->format = src->format;
             dst->nb_samples = src->nb_samples;
             result = av_frame_get_buffer(dst, 1);
@@ -461,9 +469,14 @@ int ofxHap::AudioThread::reverse(AVFrame *dst, const AVFrame *src)
         result = av_frame_copy_props(dst, src);
         if (av_sample_fmt_is_planar(static_cast<AVSampleFormat>(src->format)))
         {
+#if OFX_HAP_HAS_CHANNEL_LAYOUT
+            int nb_channels = dst->ch_layout.nb_channels;
+#else
+            int nb_channels = dst->channels;
+#endif
             // TODO: these needn't use memcpy if we deal with different formats
             int bps = av_get_bytes_per_sample(static_cast<AVSampleFormat>(src->format));
-            for (int i = 0; i < dst->channels; i++) {
+            for (int i = 0; i < nb_channels; i++) {
                 for (int j = 0, k = dst->nb_samples - 1; j < dst->nb_samples; j++, k--) {
                     memcpy(&dst->extended_data[i][j * bps], &src->extended_data[i][k * bps], bps);
                 }
@@ -471,7 +484,12 @@ int ofxHap::AudioThread::reverse(AVFrame *dst, const AVFrame *src)
         }
         else
         {
-            int bpcs = av_get_bytes_per_sample(static_cast<AVSampleFormat>(src->format)) * src->channels;
+#if OFX_HAP_HAS_CHANNEL_LAYOUT
+            int nb_channels = src->ch_layout.nb_channels;
+#else
+            int nb_channels = src->channels;
+#endif
+            int bpcs = av_get_bytes_per_sample(static_cast<AVSampleFormat>(src->format)) * nb_channels;
             for (int i = 0, j = dst->nb_samples - 1; i < dst->nb_samples; i++, j--) {
                 memcpy(&dst->data[0][i * bpcs], &src->data[0][j * bpcs], bpcs);
             }

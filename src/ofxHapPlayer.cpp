@@ -215,7 +215,11 @@ void ofxHapPlayer::foundStream(AVStream *stream)
     {
         // We will output silence until we have samples to play
 #if OFX_HAP_HAS_CODECPAR
+#if OFX_HAP_HAS_CHANNEL_LAYOUT
+        int channels = params->ch_layout.nb_channels;
+#else
         int channels = params->channels;
+#endif
         int sampleRate = params->sample_rate;
         ofxHap::AudioParameters parameters(params, kofxHapPlayerBufferUSec, stream->start_time, stream->duration);
 #else
@@ -386,24 +390,23 @@ void ofxHapPlayer::update(ofEventArgs & args)
         bool inBuffer = (_decodedFrame.isValid() && _decodedFrame.pts <= vidPosition && _decodedFrame.pts + _decodedFrame.duration > vidPosition) ? true : false;
         if (!inBuffer)
         {
-            AVPacket packet;
-            av_init_packet(&packet);
-            packet.data = NULL;
-            packet.size = 0;
+            AVPacket *packet = av_packet_alloc();
+            packet->data = NULL;
+            packet->size = 0;
             // Fetch a stored packet, blocking until our timeout only if necessary
-            bool found = _videoPackets.fetch(vidPosition, &packet);
+            bool found = _videoPackets.fetch(vidPosition, packet);
             if (!found && _demuxer->isActive())
             {
-                found = _videoPackets.fetch(vidPosition, &packet, _timeout);
+                found = _videoPackets.fetch(vidPosition, packet, _timeout);
             }
             if (found)
             {
                 unsigned int textureCount;
-                unsigned int hapResult = HapGetFrameTextureCount(packet.data, packet.size, &textureCount);
+                unsigned int hapResult = HapGetFrameTextureCount(packet->data, packet->size, &textureCount);
                 if (hapResult == HapResult_No_Error && textureCount == 1) // TODO: Hap Q+A
                 {
                     unsigned int textureFormat;
-                    hapResult = HapGetFrameTextureFormat(packet.data, packet.size, 0, &textureFormat);
+                    hapResult = HapGetFrameTextureFormat(packet->data, packet->size, 0, &textureFormat);
 #if OFX_HAP_HAS_CODECPAR
                     if (hapResult == HapResult_No_Error && !ofxHapPY::frameMatchesStream(textureFormat, _videoStream->codecpar->codec_tag))
 #else
@@ -428,8 +431,8 @@ void ofxHapPlayer::update(ofEventArgs & args)
                             _decodedFrame.buffer.resize(length);
                         }
                         unsigned long bytesUsed;
-                        hapResult = HapDecode(packet.data,
-                                              packet.size,
+                        hapResult = HapDecode(packet->data,
+                                              packet->size,
                                               0,
                                               ofxHapPY::doDecode,
                                               NULL,
@@ -441,15 +444,15 @@ void ofxHapPlayer::update(ofEventArgs & args)
                 }
                 if (hapResult == HapResult_No_Error)
                 {
-                    _decodedFrame.pts = packet.pts;
-                    _decodedFrame.duration = packet.duration;
+                    _decodedFrame.pts = packet->pts;
+                    _decodedFrame.duration = packet->duration;
                     _wantsUpload = true;
                 }
                 else
                 {
                     _decodedFrame.invalidate();
                 }
-                av_packet_unref(&packet);
+                av_packet_free(&packet);
             }
         }
     }

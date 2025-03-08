@@ -121,8 +121,7 @@ void ofxHap::Demuxer::threadMain(const std::string movie, PacketReceiver& receiv
             int64_t lastReadVideo = AV_NOPTS_VALUE;
             int64_t lastReadAudio = AV_NOPTS_VALUE;
 
-            AVPacket packet;
-            av_init_packet(&packet);
+            AVPacket *packet = av_packet_alloc();
             
             while (!finish)
             {
@@ -145,20 +144,20 @@ void ofxHap::Demuxer::threadMain(const std::string movie, PacketReceiver& receiv
                             if ((lastReadVideo == AV_NOPTS_VALUE || lastReadVideo < action.pts) ||
                                 (audioStreamIndex >= 0 && (lastReadAudio == AV_NOPTS_VALUE || lastReadAudio < action.pts)))
                             {
-                                packet.data = NULL;
-                                packet.size = 0;
-                                result = av_read_frame(fmt_ctx, &packet);
+                                packet->data = NULL;
+                                packet->size = 0;
+                                result = av_read_frame(fmt_ctx, packet);
                                 if (result >= 0)
                                 {
-                                    receiver.readPacket(&packet);
-                                    if (packet.stream_index == videoStreamIndex)
+                                    receiver.readPacket(packet);
+                                    if (packet->stream_index == videoStreamIndex)
                                     {
-                                        lastReadVideo = av_rescale_q(packet.pts + packet.duration - 1,
+                                        lastReadVideo = av_rescale_q(packet->pts + packet->duration - 1,
                                                                      fmt_ctx->streams[videoStreamIndex]->time_base, { 1, AV_TIME_BASE });
                                     }
-                                    else if (packet.stream_index == audioStreamIndex)
+                                    else if (packet->stream_index == audioStreamIndex)
                                     {
-                                        lastReadAudio = av_rescale_q(packet.pts + packet.duration - 1,
+                                        lastReadAudio = av_rescale_q(packet->pts + packet->duration - 1,
                                                                      fmt_ctx->streams[audioStreamIndex]->time_base, { 1, AV_TIME_BASE });
                                     }
                                 }
@@ -166,7 +165,7 @@ void ofxHap::Demuxer::threadMain(const std::string movie, PacketReceiver& receiv
                                 {
                                     receiver.endMovie();
                                 }
-                                av_packet_unref(&packet);
+                                av_packet_unref(packet);
                             }
                             break;
                         default:
@@ -218,6 +217,7 @@ void ofxHap::Demuxer::threadMain(const std::string movie, PacketReceiver& receiv
                     }
                 }
             }
+            av_packet_free(&packet);
         }
 
         if (fmt_ctx)

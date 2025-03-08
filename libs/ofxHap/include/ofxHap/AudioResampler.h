@@ -33,6 +33,9 @@
 
 typedef struct SwrContext SwrContext;
 typedef struct AVFrame AVFrame;
+#if OFX_HAP_HAS_CHANNEL_LAYOUT
+typedef struct AVChannelLayout AVChannelLayout;
+#endif
 
 namespace ofxHap {
     class AudioResampler {
@@ -50,7 +53,11 @@ namespace ofxHap {
         float       _rate;
         SwrContext *_resampler;
         bool        _reconfigure;
+#if OFX_HAP_HAS_CHANNEL_LAYOUT
+        AVChannelLayout *_layout;
+#else
         uint64_t    _layout;
+#endif
         int         _sampleRateIn;
         int         _sampleRateOut;
         int         _format;
