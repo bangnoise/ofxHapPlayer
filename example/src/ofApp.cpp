@@ -193,8 +193,10 @@ void ofApp::gotMessage(ofMessage msg){
 
 //--------------------------------------------------------------
 void ofApp::dragEvent(ofDragInfo dragInfo){
-	auto fileList = dragInfo.files;
-    load(fileList[0]);
+	if (!dragInfo.files.empty())
+	{
+        load(dragInfo.files[0]);
+	}
 }
 
 ofRectangle ofApp::getBarRectangle() const
