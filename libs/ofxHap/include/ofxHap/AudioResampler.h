@@ -59,8 +59,8 @@ namespace ofxHap {
         uint64_t    _layout;
 #endif
         int         _sampleRateIn;
-        int         _sampleRateOut;
         int         _format;
+        int         _sampleRateOut;
     };
 }
 
