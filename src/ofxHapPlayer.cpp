@@ -340,6 +340,12 @@ void ofxHapPlayer::read(ofxHap::TimeRangeSequence& sequence)
     }
 }
 
+void ofxHapPlayer::update()
+{
+    ofEventArgs args;
+    update(args);
+}
+
 void ofxHapPlayer::update(ofEventArgs & args)
 {
     std::lock_guard<std::mutex> guard(_lock);
