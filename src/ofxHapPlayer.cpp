@@ -45,7 +45,7 @@ extern "C" {
 #if defined(TARGET_WIN32)
 #include <ppl.h>
 #elif defined(TARGET_LINUX)
-#include <dispatch/dispatch.h>
+#include <tbb/parallel_for.h>
 #endif
 
 // This amount will be bufferred before and after the playhead
@@ -86,14 +86,19 @@ namespace ofxHapPY {
 
 #if defined(TARGET_LINUX)
     struct Work {
-        void *p;
-        HapDecodeWorkFunction function;
+        Work(HapDecodeWorkFunction f, void *p)
+        : function_(f), p_(p) { }
+        void operator()(tbb::blocked_range<unsigned int> r) const
+        {
+            for (auto i = r.begin(); i < r.end(); i++)
+            {
+                function_(p_, i);
+            }
+        }
+    private:
+        HapDecodeWorkFunction function_;
+        void *p_;
     };
-    static void decodeWrapper(void *p, size_t i)
-    {
-        struct Work *w = static_cast<struct Work *>(p);
-        w->function(w->p, i);
-    }
 #endif
 
     static void doDecode(HapDecodeWorkFunction function, void *p, unsigned int count, void *info)
@@ -107,8 +112,7 @@ namespace ofxHapPY {
             function(p, i);
         });
 #else
-        struct Work w = {p, function};
-        dispatch_apply_f(count, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), &w, decodeWrapper);
+        tbb::parallel_for(tbb::blocked_range<unsigned int>(0, count), Work(function, p));
 #endif
     }
 

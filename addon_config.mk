@@ -74,65 +74,70 @@ linuxarmv6l:
         ADDON_PKG_CONFIG_LIBRARIES += libavcodec
         ADDON_PKG_CONFIG_LIBRARIES += libavutil
         ADDON_PKG_CONFIG_LIBRARIES += libswresample
+        ADDON_PKG_CONFIG_LIBRARIES += tbb
         ADDON_LIBS_EXCLUDE = libs/ffmpeg
         ADDON_LIBS_EXCLUDE += libs/snappy
         ADDON_INCLUDES_EXCLUDE = libs/ffmpeg
         ADDON_INCLUDES_EXCLUDE += libs/ffmpeg/%
         ADDON_INCLUDES_EXCLUDE += libs/snappy
         ADDON_INCLUDES_EXCLUDE += libs/snappy/%
-        ADDON_LDFLAGS = -lsnappy -ldispatch
+        ADDON_LDFLAGS = -lsnappy
 
 linuxarmv7l:
         ADDON_PKG_CONFIG_LIBRARIES = libavformat
         ADDON_PKG_CONFIG_LIBRARIES += libavcodec
         ADDON_PKG_CONFIG_LIBRARIES += libavutil
         ADDON_PKG_CONFIG_LIBRARIES += libswresample
+        ADDON_PKG_CONFIG_LIBRARIES += tbb
         ADDON_LIBS_EXCLUDE = libs/ffmpeg
         ADDON_LIBS_EXCLUDE += libs/snappy
         ADDON_INCLUDES_EXCLUDE = libs/ffmpeg
         ADDON_INCLUDES_EXCLUDE += libs/ffmpeg/%
         ADDON_INCLUDES_EXCLUDE += libs/snappy
         ADDON_INCLUDES_EXCLUDE += libs/snappy/%
-        ADDON_LDFLAGS = -lsnappy -ldispatch
+        ADDON_LDFLAGS = -lsnappy
 
 linuxaarch64:
         ADDON_PKG_CONFIG_LIBRARIES = libavformat
         ADDON_PKG_CONFIG_LIBRARIES += libavcodec
         ADDON_PKG_CONFIG_LIBRARIES += libavutil
         ADDON_PKG_CONFIG_LIBRARIES += libswresample
+        ADDON_PKG_CONFIG_LIBRARIES += tbb
         ADDON_LIBS_EXCLUDE = libs/ffmpeg
         ADDON_LIBS_EXCLUDE += libs/snappy
         ADDON_INCLUDES_EXCLUDE = libs/ffmpeg
         ADDON_INCLUDES_EXCLUDE += libs/ffmpeg/%
         ADDON_INCLUDES_EXCLUDE += libs/snappy
         ADDON_INCLUDES_EXCLUDE += libs/snappy/%
-        ADDON_LDFLAGS = -lsnappy -ldispatch
+        ADDON_LDFLAGS = -lsnappy
 
 linux64:
 	ADDON_PKG_CONFIG_LIBRARIES = libavformat
 	ADDON_PKG_CONFIG_LIBRARIES += libavcodec
 	ADDON_PKG_CONFIG_LIBRARIES += libavutil
 	ADDON_PKG_CONFIG_LIBRARIES += libswresample
+	ADDON_PKG_CONFIG_LIBRARIES += tbb
 	ADDON_LIBS_EXCLUDE = libs/ffmpeg
 	ADDON_LIBS_EXCLUDE += libs/snappy
 	ADDON_INCLUDES_EXCLUDE = libs/ffmpeg
 	ADDON_INCLUDES_EXCLUDE += libs/ffmpeg/%
 	ADDON_INCLUDES_EXCLUDE += libs/snappy
 	ADDON_INCLUDES_EXCLUDE += libs/snappy/%
-	ADDON_LDFLAGS = -lsnappy -ldispatch
+	ADDON_LDFLAGS = -lsnappy
 
 linux:
 	ADDON_PKG_CONFIG_LIBRARIES = libavformat
 	ADDON_PKG_CONFIG_LIBRARIES += libavcodec
 	ADDON_PKG_CONFIG_LIBRARIES += libavutil
 	ADDON_PKG_CONFIG_LIBRARIES += libswresample
+	ADDON_PKG_CONFIG_LIBRARIES += tbb
 	ADDON_LIBS_EXCLUDE = libs/ffmpeg
 	ADDON_LIBS_EXCLUDE += libs/snappy
 	ADDON_INCLUDES_EXCLUDE = libs/ffmpeg
 	ADDON_INCLUDES_EXCLUDE += libs/ffmpeg/%
 	ADDON_INCLUDES_EXCLUDE += libs/snappy
 	ADDON_INCLUDES_EXCLUDE += libs/snappy/%
-	ADDON_LDFLAGS = -lsnappy -ldispatch
+	ADDON_LDFLAGS = -lsnappy
 
 osx:
 	ADDON_LDFLAGS = -rpath @loader_path/../../../../../../../addons/ofxHapPlayer/libs
