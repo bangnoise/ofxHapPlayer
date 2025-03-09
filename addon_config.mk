@@ -69,6 +69,44 @@ common:
 	# a specific platform
 	# ADDON_INCLUDES_EXCLUDE =
 
+linuxarmv6l:
+        ADDON_PKG_CONFIG_LIBRARIES = libavformat
+        ADDON_PKG_CONFIG_LIBRARIES += libavcodec
+        ADDON_PKG_CONFIG_LIBRARIES += libavutil
+        ADDON_PKG_CONFIG_LIBRARIES += libswresample
+        ADDON_LIBS_EXCLUDE = libs/ffmpeg
+        ADDON_LIBS_EXCLUDE += libs/snappy
+        ADDON_INCLUDES_EXCLUDE = libs/ffmpeg
+        ADDON_INCLUDES_EXCLUDE += libs/ffmpeg/%
+        ADDON_INCLUDES_EXCLUDE += libs/snappy
+        ADDON_INCLUDES_EXCLUDE += libs/snappy/%
+        ADDON_LDFLAGS = -lsnappy -ldispatch
+
+linuxarmv7l:
+        ADDON_PKG_CONFIG_LIBRARIES = libavformat
+        ADDON_PKG_CONFIG_LIBRARIES += libavcodec
+        ADDON_PKG_CONFIG_LIBRARIES += libavutil
+        ADDON_PKG_CONFIG_LIBRARIES += libswresample
+        ADDON_LIBS_EXCLUDE = libs/ffmpeg
+        ADDON_LIBS_EXCLUDE += libs/snappy
+        ADDON_INCLUDES_EXCLUDE = libs/ffmpeg
+        ADDON_INCLUDES_EXCLUDE += libs/ffmpeg/%
+        ADDON_INCLUDES_EXCLUDE += libs/snappy
+        ADDON_INCLUDES_EXCLUDE += libs/snappy/%
+        ADDON_LDFLAGS = -lsnappy -ldispatch
+
+linuxaarch64:
+        ADDON_PKG_CONFIG_LIBRARIES = libavformat
+        ADDON_PKG_CONFIG_LIBRARIES += libavcodec
+        ADDON_PKG_CONFIG_LIBRARIES += libavutil
+        ADDON_PKG_CONFIG_LIBRARIES += libswresample
+        ADDON_LIBS_EXCLUDE = libs/ffmpeg
+        ADDON_LIBS_EXCLUDE += libs/snappy
+        ADDON_INCLUDES_EXCLUDE = libs/ffmpeg
+        ADDON_INCLUDES_EXCLUDE += libs/ffmpeg/%
+        ADDON_INCLUDES_EXCLUDE += libs/snappy
+        ADDON_INCLUDES_EXCLUDE += libs/snappy/%
+        ADDON_LDFLAGS = -lsnappy -ldispatch
 
 linux64:
 	ADDON_PKG_CONFIG_LIBRARIES = libavformat
