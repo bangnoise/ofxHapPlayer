@@ -44,6 +44,8 @@ extern "C" {
 }
 #if defined(TARGET_WIN32)
 #include <ppl.h>
+#elif defined(TARGET_OSX)
+#include <dispatch/dispatch.h>
 #elif defined(TARGET_LINUX)
 #include <tbb/parallel_for.h>
 #endif

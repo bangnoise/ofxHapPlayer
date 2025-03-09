@@ -193,7 +193,7 @@ void ofApp::gotMessage(ofMessage msg){
 
 //--------------------------------------------------------------
 void ofApp::dragEvent(ofDragInfo dragInfo){
-	vector< string > fileList = dragInfo.files;
+	auto fileList = dragInfo.files;
     load(fileList[0]);
 }
 
