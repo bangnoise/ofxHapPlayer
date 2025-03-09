@@ -24,7 +24,7 @@ This step is only necessary on Linux. On macOS and Windows, the required librari
 
 On Linux, ofxHapPlayer uses system libraries. For Ubuntu, the following packages are required:
 
-libsnappy-dev, libswresample-dev, libavcodec-dev, libavformat-dev, libdtbb-dev
+libsnappy-dev, libswresample-dev, libavcodec-dev, libavformat-dev, libtbb-dev
 
     sudo apt-get install libsnappy-dev libswresample-dev libavcodec-dev libavformat-dev libtbb-dev
 
