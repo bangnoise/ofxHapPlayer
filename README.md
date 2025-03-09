@@ -24,11 +24,9 @@ This step is only necessary on Linux. On macOS and Windows, the required librari
 
 On Linux, ofxHapPlayer uses system libraries. For Ubuntu, the following packages are required:
 
-libsnappy-dev, libswresample-dev, libavcodec-dev, libavformat-dev, libdispatch-dev
+libsnappy-dev, libswresample-dev, libavcodec-dev, libavformat-dev, libdtbb-dev
 
-    sudo apt-get install libsnappy-dev libswresample-dev libavcodec-dev libavformat-dev libdispatch-dev
-
-Note that the Raspberry Pi does not support the compressed texture formats used by Hap, so you can't use this addon on a Raspberry Pi.
+    sudo apt-get install libsnappy-dev libswresample-dev libavcodec-dev libavformat-dev libtbb-dev
 
 Pull-requests with instructions for other distributions are welcomed.
 
@@ -74,4 +72,4 @@ Note that if you access the texture directly for a Hap Q movie, you will need to
 Credits and License
 -------------------
 
-ofxHapPlayer was written by [Tom Butterworth](http://kriss.cx/tom), initially in April 2013, supported by [Igloo Vision](http://www.igloovision.com/) and James Sheridan. Since then it has been supported by [Vidvox](http://vidvox.net/). It is released under a [FreeBSD License](http://github.com/bangnoise/ofxHapPlayer/blob/master/LICENSE).
+ofxHapPlayer was written by [Tom Butterworth](https://6a64.xyz), initially in April 2013, supported by [Igloo Vision](http://www.igloovision.com/) and James Sheridan. Since then it has been supported by [Vidvox](http://vidvox.net/). It is released under a [FreeBSD License](http://github.com/bangnoise/ofxHapPlayer/blob/master/LICENSE).
