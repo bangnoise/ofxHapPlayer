@@ -40,7 +40,7 @@ ofxHap::AudioResampler::AudioResampler(const AudioParameters& params, int outRat
 #if OFX_HAP_HAS_CHANNEL_LAYOUT
 _layout(&params.parameters->ch_layout),
 #else
-_layout(&params.parameters->channel_layout),
+_layout(params.parameters->channel_layout),
 #endif
 _sampleRateIn(params.parameters->sample_rate), _format(params.parameters->format),
 #else
