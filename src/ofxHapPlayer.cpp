@@ -43,7 +43,8 @@ extern "C" {
 #include <hap.h>
 }
 #if defined(TARGET_WIN32)
-#include <ppl.h>
+#include <vector>
+#include <future>
 #elif defined(TARGET_OSX)
 #include <dispatch/dispatch.h>
 #elif defined(TARGET_LINUX)
@@ -110,9 +111,20 @@ namespace ofxHapPY {
             function(p, i);
         });
 #elif defined(TARGET_WIN32)
-        concurrency::parallel_for(0U, count, [&](unsigned int i) {
-            function(p, i);
-        });
+        std::vector<std::future<void>> futures;
+        futures.reserve(count);
+
+        // Launch each decoding task asynchronously
+        for (unsigned int i = 0; i < count; ++i)
+        {
+            futures.push_back(std::async(std::launch::async, function, p, i));
+        }
+
+        // Wait for all tasks to complete
+        for (auto &f : futures)
+        {
+            f.get();
+        }
 #else
         tbb::parallel_for(tbb::blocked_range<unsigned int>(0, count), Work(function, p));
 #endif

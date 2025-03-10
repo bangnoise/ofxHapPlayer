@@ -30,6 +30,12 @@ libsnappy-dev, libswresample-dev, libavcodec-dev, libavformat-dev, libtbb-dev
 
 Pull-requests with instructions for other distributions are welcomed.
 
+msys2 Requirements
+------------------
+
+Install the headers for ffmpeg4.4 before compilation
+
+    pacman -S mingw-w64-x86_64-ffmpeg4.4
 
 Usage
 -----
