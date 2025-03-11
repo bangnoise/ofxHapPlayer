@@ -109,7 +109,7 @@ int ofxHap::AudioResampler::resample(const AVFrame *frame, int offset, int srcLe
             swr_free(&_resampler);
         }
 #if OFX_HAP_HAS_CHANNEL_LAYOUT
-        int res = swr_alloc_set_opts2(&_resampler,
+        int result = swr_alloc_set_opts2(&_resampler,
                                       _layout,
                                       AV_SAMPLE_FMT_FLT,
                                       static_cast<int>(_sampleRateOut / _rate),
@@ -131,18 +131,22 @@ int ofxHap::AudioResampler::resample(const AVFrame *frame, int offset, int srcLe
                                         0,
                                         nullptr);
 
+        int result = _resampler ? 0 : -1;
         int channels = av_get_channel_layout_nb_channels(_layout);
 #endif
-        std::vector<double> matrix(channels * channels);
-        for (int i = 0; i < channels; i++) {
-            for (int j = 0; j < channels; j++) {
-                if (j == i)
-                    matrix[i*channels+j] = _volume;
-                else
-                    matrix[i*channels+j] = 0.0;
+        if (result >= 0)
+        {
+            std::vector<double> matrix(channels * channels);
+            for (int i = 0; i < channels; i++) {
+                for (int j = 0; j < channels; j++) {
+                    if (j == i)
+                        matrix[i*channels+j] = _volume;
+                    else
+                        matrix[i*channels+j] = 0.0;
+                }
             }
+            result = swr_set_matrix(_resampler, matrix.data(), channels);
         }
-        int result = swr_set_matrix(_resampler, matrix.data(), channels);
 
         if (result >= 0)
         {
