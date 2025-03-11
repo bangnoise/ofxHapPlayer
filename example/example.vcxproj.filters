@@ -55,34 +55,34 @@
 			<UniqueIdentifier>{d8376475-7454-4a24-b08a-aac121d3ad6f}</UniqueIdentifier>
 		</Filter>
 		<Filter Include="addons">
-			<UniqueIdentifier>{71834F65-F3A9-211E-73B8-DC85}</UniqueIdentifier>
+			<UniqueIdentifier>{D3D0BFFB--436-1-4E-85-9-C48-D91766110B67}</UniqueIdentifier>
 		</Filter>
 		<Filter Include="addons\ofxHapPlayer">
-			<UniqueIdentifier>{3ABF0718-7EF0-C616-645A-BC48}</UniqueIdentifier>
+			<UniqueIdentifier>{68594DC7--4DB-A-4B-0D-A-161-E0CF79A8D082}</UniqueIdentifier>
 		</Filter>
 		<Filter Include="addons\ofxHapPlayer\src">
-			<UniqueIdentifier>{B922E112-1099-333C-0CFD-9815}</UniqueIdentifier>
+			<UniqueIdentifier>{2AD9F154--E42-F-42-69-8-AA3-C12AC0802780}</UniqueIdentifier>
 		</Filter>
 		<Filter Include="addons\ofxHapPlayer\libs">
-			<UniqueIdentifier>{0B971793-EF6D-AFDC-9CC8-D438}</UniqueIdentifier>
+			<UniqueIdentifier>{D530FFBC--52B-8-48-C1-A-B8A-E24CA6BA2805}</UniqueIdentifier>
 		</Filter>
 		<Filter Include="addons\ofxHapPlayer\libs\hap">
-			<UniqueIdentifier>{9657ED59-9D5A-DDF5-E840-7BB3}</UniqueIdentifier>
+			<UniqueIdentifier>{428D007F--D9D-9-45-C8-8-501-D810BF5F81AF}</UniqueIdentifier>
 		</Filter>
 		<Filter Include="addons\ofxHapPlayer\libs\hap\src">
-			<UniqueIdentifier>{49B16A97-1FCF-BC4F-A074-82BC}</UniqueIdentifier>
+			<UniqueIdentifier>{4EDA9231--FAC-9-42-7B-8-67E-17756107A3CB}</UniqueIdentifier>
 		</Filter>
 		<Filter Include="addons\ofxHapPlayer\libs\ofxHap">
-			<UniqueIdentifier>{81854E06-4A3C-EE06-CE8B-A33D}</UniqueIdentifier>
+			<UniqueIdentifier>{D02C35EE--F64-0-43-A6-A-333-32BC5D75467A}</UniqueIdentifier>
 		</Filter>
 		<Filter Include="addons\ofxHapPlayer\libs\ofxHap\include">
-			<UniqueIdentifier>{EB4E97F5-97E8-2DB8-16D6-DBB9}</UniqueIdentifier>
+			<UniqueIdentifier>{4E55C979--313-9-46-0F-B-F3D-8E2F109CB821}</UniqueIdentifier>
 		</Filter>
 		<Filter Include="addons\ofxHapPlayer\libs\ofxHap\include\ofxHap">
-			<UniqueIdentifier>{0AC17D0E-3614-0010-4FC7-24CF}</UniqueIdentifier>
+			<UniqueIdentifier>{DD6B0263--B33-F-48-39-A-8AD-0EBC7F040722}</UniqueIdentifier>
 		</Filter>
 		<Filter Include="addons\ofxHapPlayer\libs\ofxHap\src">
-			<UniqueIdentifier>{E1E4E96B-D25B-812B-6CA6-A094}</UniqueIdentifier>
+			<UniqueIdentifier>{FD7ED061--DE5-1-4B-B8-9-E9A-E800BCCD9A21}</UniqueIdentifier>
 		</Filter>
 	</ItemGroup>
 	<ItemGroup>

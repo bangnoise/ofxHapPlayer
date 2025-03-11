@@ -1,17 +1,9 @@
 <?xml version="1.0"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<ItemGroup Label="ProjectConfigurations">
-		<ProjectConfiguration Include="Debug|Win32">
-			<Configuration>Debug</Configuration>
-			<Platform>Win32</Platform>
-		</ProjectConfiguration>
 		<ProjectConfiguration Include="Debug|x64">
 			<Configuration>Debug</Configuration>
 			<Platform>x64</Platform>
-		</ProjectConfiguration>
-		<ProjectConfiguration Include="Release|Win32">
-			<Configuration>Release</Configuration>
-			<Platform>Win32</Platform>
 		</ProjectConfiguration>
 		<ProjectConfiguration Include="Release|x64">
 			<Configuration>Release</Configuration>
@@ -29,53 +21,27 @@
 		<RootNamespace>example</RootNamespace>
 	</PropertyGroup>
 	<Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-		<ConfigurationType>Application</ConfigurationType>
-		<CharacterSet>Unicode</CharacterSet>
-		<PlatformToolset>v141</PlatformToolset>
-	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
 		<ConfigurationType>Application</ConfigurationType>
 		<CharacterSet>Unicode</CharacterSet>
-		<PlatformToolset>v141</PlatformToolset>
-	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-		<ConfigurationType>Application</ConfigurationType>
-		<CharacterSet>Unicode</CharacterSet>
-		<WholeProgramOptimization>true</WholeProgramOptimization>
-		<PlatformToolset>v141</PlatformToolset>
+		<PlatformToolset>v142</PlatformToolset>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
 		<ConfigurationType>Application</ConfigurationType>
 		<CharacterSet>Unicode</CharacterSet>
 		<WholeProgramOptimization>true</WholeProgramOptimization>
-		<PlatformToolset>v141</PlatformToolset>
+		<PlatformToolset>v142</PlatformToolset>
 	</PropertyGroup>
 	<Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
-	<ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
-		<Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-		<Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksRelease.props" />
-	</ImportGroup>
 	<ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
 		<Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
 		<Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksRelease.props" />
-	</ImportGroup>
-	<ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
-		<Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-		<Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksDebug.props" />
 	</ImportGroup>
 	<ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
 		<Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
 		<Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksDebug.props" />
 	</ImportGroup>
 	<PropertyGroup Label="UserMacros" />
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-		<OutDir>bin\</OutDir>
-		<IntDir>obj\$(Platform)\$(Configuration)\</IntDir>
-		<TargetName>$(ProjectName)_debug</TargetName>
-		<LinkIncremental>true</LinkIncremental>
-		<GenerateManifest>true</GenerateManifest>
-	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
 		<OutDir>bin\</OutDir>
 		<IntDir>obj\$(Platform)\$(Configuration)\</IntDir>
@@ -83,36 +49,11 @@
 		<LinkIncremental>true</LinkIncremental>
 		<GenerateManifest>true</GenerateManifest>
 	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-		<OutDir>bin\</OutDir>
-		<IntDir>obj\$(Platform)\$(Configuration)\</IntDir>
-		<LinkIncremental>false</LinkIncremental>
-	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
 		<OutDir>bin\</OutDir>
 		<IntDir>obj\$(Platform)\$(Configuration)\</IntDir>
 		<LinkIncremental>false</LinkIncremental>
 	</PropertyGroup>
-	<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-		<ClCompile>
-			<Optimization>Disabled</Optimization>
-			<BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
-			<PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
-			<RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-			<WarningLevel>Level3</WarningLevel>
-			<AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;..\..\..\addons\ofxHapPlayer\libs;..\..\..\addons\ofxHapPlayer\libs\ffmpeg;..\..\..\addons\ofxHapPlayer\libs\ffmpeg\include;..\..\..\addons\ofxHapPlayer\libs\ffmpeg\lib;..\..\..\addons\ofxHapPlayer\libs\ffmpeg\lib\vs;..\..\..\addons\ofxHapPlayer\libs\ffmpeg\lib\vs\Win32;..\..\..\addons\ofxHapPlayer\libs\ffmpeg\lib\vs\x64;..\..\..\addons\ofxHapPlayer\libs\hap;..\..\..\addons\ofxHapPlayer\libs\hap\src;..\..\..\addons\ofxHapPlayer\libs\ofxHap;..\..\..\addons\ofxHapPlayer\libs\ofxHap\include;..\..\..\addons\ofxHapPlayer\libs\ofxHap\include\ofxHap;..\..\..\addons\ofxHapPlayer\libs\ofxHap\src;..\..\..\addons\ofxHapPlayer\libs\snappy;..\..\..\addons\ofxHapPlayer\libs\snappy\include;..\..\..\addons\ofxHapPlayer\libs\snappy\lib;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\Win32;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\Win32\Debug;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\Win32\Release;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\x64;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\x64\Debug;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\x64\Release;..\..\..\addons\ofxHapPlayer\libs\snappy\license;..\..\..\addons\ofxHapPlayer\src</AdditionalIncludeDirectories>
-			<CompileAs>CompileAsCpp</CompileAs>
-			<ObjectFileName>$(IntDir)%(RelativeDir)</ObjectFileName>
-		</ClCompile>
-		<Link>
-			<GenerateDebugInformation>true</GenerateDebugInformation>
-			<SubSystem>Console</SubSystem>
-			<RandomizedBaseAddress>false</RandomizedBaseAddress>
-			<AdditionalDependencies>%(AdditionalDependencies);libavcodec.lib;libavformat.lib;libavutil.lib;libswresample.lib;snappyd.lib;bcrypt.lib;Secur32.lib</AdditionalDependencies>
-			<AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);..\..\..\addons\ofxHapPlayer\libs\ffmpeg\lib\vs\Win32;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\Win32\Debug;..\..\..\addons\ofxHapPlayer</AdditionalLibraryDirectories>
-		</Link>
-		<PostBuildEvent />
-	</ItemDefinitionGroup>
 	<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
 		<ClCompile>
 			<Optimization>Disabled</Optimization>
@@ -120,10 +61,12 @@
 			<PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
 			<RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
 			<WarningLevel>Level3</WarningLevel>
-			<AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;..\..\..\addons\ofxHapPlayer\libs;..\..\..\addons\ofxHapPlayer\libs\ffmpeg;..\..\..\addons\ofxHapPlayer\libs\ffmpeg\include;..\..\..\addons\ofxHapPlayer\libs\ffmpeg\lib;..\..\..\addons\ofxHapPlayer\libs\ffmpeg\lib\vs;..\..\..\addons\ofxHapPlayer\libs\ffmpeg\lib\vs\Win32;..\..\..\addons\ofxHapPlayer\libs\ffmpeg\lib\vs\x64;..\..\..\addons\ofxHapPlayer\libs\hap;..\..\..\addons\ofxHapPlayer\libs\hap\src;..\..\..\addons\ofxHapPlayer\libs\ofxHap;..\..\..\addons\ofxHapPlayer\libs\ofxHap\include;..\..\..\addons\ofxHapPlayer\libs\ofxHap\include\ofxHap;..\..\..\addons\ofxHapPlayer\libs\ofxHap\src;..\..\..\addons\ofxHapPlayer\libs\snappy;..\..\..\addons\ofxHapPlayer\libs\snappy\include;..\..\..\addons\ofxHapPlayer\libs\snappy\lib;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\Win32;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\Win32\Debug;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\Win32\Release;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\x64;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\x64\Debug;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\x64\Release;..\..\..\addons\ofxHapPlayer\libs\snappy\license;..\..\..\addons\ofxHapPlayer\src</AdditionalIncludeDirectories>
+			<AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;..\..\..\addons\ofxHapPlayer\libs;..\..\..\addons\ofxHapPlayer\libs\ffmpeg;..\..\..\addons\ofxHapPlayer\libs\ffmpeg\include;..\..\..\addons\ofxHapPlayer\libs\ffmpeg\lib;..\..\..\addons\ofxHapPlayer\libs\ffmpeg\lib\osx;..\..\..\addons\ofxHapPlayer\libs\ffmpeg\lib\vs;..\..\..\addons\ofxHapPlayer\libs\ffmpeg\lib\vs\Win32;..\..\..\addons\ofxHapPlayer\libs\ffmpeg\lib\vs\x64;..\..\..\addons\ofxHapPlayer\libs\hap;..\..\..\addons\ofxHapPlayer\libs\hap\src;..\..\..\addons\ofxHapPlayer\libs\ofxHap;..\..\..\addons\ofxHapPlayer\libs\ofxHap\include;..\..\..\addons\ofxHapPlayer\libs\ofxHap\include\ofxHap;..\..\..\addons\ofxHapPlayer\libs\ofxHap\src;..\..\..\addons\ofxHapPlayer\libs\snappy;..\..\..\addons\ofxHapPlayer\libs\snappy\include;..\..\..\addons\ofxHapPlayer\libs\snappy\lib;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\osx;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\Win32;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\Win32\Debug;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\Win32\Release;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\x64;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\x64\Debug;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\x64\Release;..\..\..\addons\ofxHapPlayer\libs\snappy\license;..\..\..\addons\ofxHapPlayer\src</AdditionalIncludeDirectories>
 			<CompileAs>CompileAsCpp</CompileAs>
 			<MultiProcessorCompilation>true</MultiProcessorCompilation>
-			<ObjectFileName>$(IntDir)%(RelativeDir)</ObjectFileName>
+			<ObjectFileName>$(IntDir)\Build\%(RelativeDir)\$(Configuration)\</ObjectFileName>
+			<LanguageStandard>stdcpp17</LanguageStandard>
+			<AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
 		</ClCompile>
 		<Link>
 			<GenerateDebugInformation>true</GenerateDebugInformation>
@@ -131,29 +74,7 @@
 			<RandomizedBaseAddress>false</RandomizedBaseAddress>
 			<AdditionalDependencies>%(AdditionalDependencies);libavcodec.lib;libavformat.lib;libavutil.lib;libswresample.lib;snappyd.lib;bcrypt.lib;Secur32.lib</AdditionalDependencies>
 			<AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);..\..\..\addons\ofxHapPlayer\libs\ffmpeg\lib\vs\x64;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\x64\Debug;..\..\..\addons\ofxHapPlayer</AdditionalLibraryDirectories>
-		</Link>
-		<PostBuildEvent />
-	</ItemDefinitionGroup>
-	<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-		<ClCompile>
-			<WholeProgramOptimization>false</WholeProgramOptimization>
-			<PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
-			<RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-			<WarningLevel>Level3</WarningLevel>
-			<AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;..\..\..\addons\ofxHapPlayer\libs;..\..\..\addons\ofxHapPlayer\libs\ffmpeg;..\..\..\addons\ofxHapPlayer\libs\ffmpeg\include;..\..\..\addons\ofxHapPlayer\libs\ffmpeg\lib;..\..\..\addons\ofxHapPlayer\libs\ffmpeg\lib\vs;..\..\..\addons\ofxHapPlayer\libs\ffmpeg\lib\vs\Win32;..\..\..\addons\ofxHapPlayer\libs\ffmpeg\lib\vs\x64;..\..\..\addons\ofxHapPlayer\libs\hap;..\..\..\addons\ofxHapPlayer\libs\hap\src;..\..\..\addons\ofxHapPlayer\libs\ofxHap;..\..\..\addons\ofxHapPlayer\libs\ofxHap\include;..\..\..\addons\ofxHapPlayer\libs\ofxHap\include\ofxHap;..\..\..\addons\ofxHapPlayer\libs\ofxHap\src;..\..\..\addons\ofxHapPlayer\libs\snappy;..\..\..\addons\ofxHapPlayer\libs\snappy\include;..\..\..\addons\ofxHapPlayer\libs\snappy\lib;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\Win32;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\Win32\Debug;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\Win32\Release;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\x64;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\x64\Debug;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\x64\Release;..\..\..\addons\ofxHapPlayer\libs\snappy\license;..\..\..\addons\ofxHapPlayer\src</AdditionalIncludeDirectories>
-			<CompileAs>CompileAsCpp</CompileAs>
-			<MultiProcessorCompilation>true</MultiProcessorCompilation>
-			<ObjectFileName>$(IntDir)%(RelativeDir)</ObjectFileName>
-		</ClCompile>
-		<Link>
-			<IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
-			<GenerateDebugInformation>false</GenerateDebugInformation>
-			<SubSystem>Console</SubSystem>
-			<OptimizeReferences>true</OptimizeReferences>
-			<EnableCOMDATFolding>true</EnableCOMDATFolding>
-			<RandomizedBaseAddress>false</RandomizedBaseAddress>
-			<AdditionalDependencies>%(AdditionalDependencies);libavcodec.lib;libavformat.lib;libavutil.lib;libswresample.lib;snappy.lib;bcrypt.lib;Secur32.lib</AdditionalDependencies>
-			<AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);..\..\..\addons\ofxHapPlayer\libs\ffmpeg\lib\vs\Win32;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\Win32\Release;..\..\..\addons\ofxHapPlayer</AdditionalLibraryDirectories>
+			<ForceFileOutput>MultiplyDefinedSymbolOnly</ForceFileOutput>
 		</Link>
 		<PostBuildEvent />
 	</ItemDefinitionGroup>
@@ -163,9 +84,11 @@
 			<PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
 			<RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
 			<WarningLevel>Level3</WarningLevel>
-			<AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;..\..\..\addons\ofxHapPlayer\libs;..\..\..\addons\ofxHapPlayer\libs\ffmpeg;..\..\..\addons\ofxHapPlayer\libs\ffmpeg\include;..\..\..\addons\ofxHapPlayer\libs\ffmpeg\lib;..\..\..\addons\ofxHapPlayer\libs\ffmpeg\lib\vs;..\..\..\addons\ofxHapPlayer\libs\ffmpeg\lib\vs\Win32;..\..\..\addons\ofxHapPlayer\libs\ffmpeg\lib\vs\x64;..\..\..\addons\ofxHapPlayer\libs\hap;..\..\..\addons\ofxHapPlayer\libs\hap\src;..\..\..\addons\ofxHapPlayer\libs\ofxHap;..\..\..\addons\ofxHapPlayer\libs\ofxHap\include;..\..\..\addons\ofxHapPlayer\libs\ofxHap\include\ofxHap;..\..\..\addons\ofxHapPlayer\libs\ofxHap\src;..\..\..\addons\ofxHapPlayer\libs\snappy;..\..\..\addons\ofxHapPlayer\libs\snappy\include;..\..\..\addons\ofxHapPlayer\libs\snappy\lib;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\Win32;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\Win32\Debug;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\Win32\Release;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\x64;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\x64\Debug;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\x64\Release;..\..\..\addons\ofxHapPlayer\libs\snappy\license;..\..\..\addons\ofxHapPlayer\src</AdditionalIncludeDirectories>
+			<AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;..\..\..\addons\ofxHapPlayer\libs;..\..\..\addons\ofxHapPlayer\libs\ffmpeg;..\..\..\addons\ofxHapPlayer\libs\ffmpeg\include;..\..\..\addons\ofxHapPlayer\libs\ffmpeg\lib;..\..\..\addons\ofxHapPlayer\libs\ffmpeg\lib\osx;..\..\..\addons\ofxHapPlayer\libs\ffmpeg\lib\vs;..\..\..\addons\ofxHapPlayer\libs\ffmpeg\lib\vs\Win32;..\..\..\addons\ofxHapPlayer\libs\ffmpeg\lib\vs\x64;..\..\..\addons\ofxHapPlayer\libs\hap;..\..\..\addons\ofxHapPlayer\libs\hap\src;..\..\..\addons\ofxHapPlayer\libs\ofxHap;..\..\..\addons\ofxHapPlayer\libs\ofxHap\include;..\..\..\addons\ofxHapPlayer\libs\ofxHap\include\ofxHap;..\..\..\addons\ofxHapPlayer\libs\ofxHap\src;..\..\..\addons\ofxHapPlayer\libs\snappy;..\..\..\addons\ofxHapPlayer\libs\snappy\include;..\..\..\addons\ofxHapPlayer\libs\snappy\lib;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\osx;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\Win32;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\Win32\Debug;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\Win32\Release;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\x64;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\x64\Debug;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\x64\Release;..\..\..\addons\ofxHapPlayer\libs\snappy\license;..\..\..\addons\ofxHapPlayer\src</AdditionalIncludeDirectories>
 			<CompileAs>CompileAsCpp</CompileAs>
-			<ObjectFileName>$(IntDir)%(RelativeDir)</ObjectFileName>
+			<ObjectFileName>$(IntDir)\Build\%(RelativeDir)\$(Configuration)\</ObjectFileName>
+			<LanguageStandard>stdcpp17</LanguageStandard>
+			<AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
 		</ClCompile>
 		<Link>
 			<IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
@@ -176,6 +99,7 @@
 			<RandomizedBaseAddress>false</RandomizedBaseAddress>
 			<AdditionalDependencies>%(AdditionalDependencies);libavcodec.lib;libavformat.lib;libavutil.lib;libswresample.lib;snappy.lib;bcrypt.lib;Secur32.lib</AdditionalDependencies>
 			<AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);..\..\..\addons\ofxHapPlayer\libs\ffmpeg\lib\vs\x64;..\..\..\addons\ofxHapPlayer\libs\snappy\lib\vs\x64\Release;..\..\..\addons\ofxHapPlayer</AdditionalLibraryDirectories>
+			<ForceFileOutput>MultiplyDefinedSymbolOnly</ForceFileOutput>
 		</Link>
 		<PostBuildEvent />
 	</ItemDefinitionGroup>
@@ -219,7 +143,6 @@
 	</ItemGroup>
 	<ItemGroup>
 		<ResourceCompile Include="icon.rc">
-			<AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">/D_DEBUG %(AdditionalOptions)</AdditionalOptions>
 			<AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">/D_DEBUG %(AdditionalOptions)</AdditionalOptions>
 			<AdditionalIncludeDirectories>$(OF_ROOT)\libs\openFrameworksCompiled\project\vs</AdditionalIncludeDirectories>
 		</ResourceCompile>
