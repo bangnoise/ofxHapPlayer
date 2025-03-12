@@ -153,3 +153,9 @@ vs:
 	ADDON_INCLUDES_EXCLUDE += libs/ffmpeg/include/libavutil
 	ADDON_INCLUDES_EXCLUDE += libs/ffmpeg/include/libavcodec
 	ADDON_INCLUDES_EXCLUDE += libs/ffmpeg/include/libswresample
+
+msys2:
+	ADDON_INCLUDES_EXCLUDE = libs/ffmpeg/%
+	ADDON_INCLUDES_EXCLUDE += libs/snappy/%
+	ADDON_PKG_CONFIG_LIBRARIES = libavformat libavutil libavcodec libswresample
+	ADDON_PKG_CONFIG_LIBRARIES += snappy tbb

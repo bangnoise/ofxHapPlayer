@@ -42,12 +42,12 @@ extern "C" {
 #include <libswresample/swresample.h>
 #include <hap.h>
 }
-#if defined(TARGET_WIN32)
+#if defined(TARGET_WINVS)
 #include <ppl.h>
+#elif defined(TARGET_MINGW) || defined(TARGET_LINUX)
+#include <tbb/parallel_for.h>
 #elif defined(TARGET_OSX)
 #include <dispatch/dispatch.h>
-#elif defined(TARGET_LINUX)
-#include <tbb/parallel_for.h>
 #endif
 
 // This amount will be bufferred before and after the playhead
@@ -86,7 +86,7 @@ namespace ofxHapPY {
         return n;
     }
 
-#if defined(TARGET_LINUX)
+#if defined(TARGET_MINGW) || defined(TARGET_LINUX)
     struct Work {
         Work(HapDecodeWorkFunction f, void *p)
         : function_(f), p_(p) { }
@@ -109,12 +109,18 @@ namespace ofxHapPY {
         dispatch_apply(count, dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^(size_t i) {
             function(p, i);
         });
-#elif defined(TARGET_WIN32)
+#elif defined(TARGET_WINVS)
         concurrency::parallel_for(0U, count, [&](unsigned int i) {
             function(p, i);
         });
-#else
+#elif defined(TARGET_MINGW) || defined(TARGET_LINUX)
         tbb::parallel_for(tbb::blocked_range<unsigned int>(0, count), Work(function, p));
+#else
+        // fallback to single-threaded decode
+        for (unsigned int i = 0; i < count; ++i)
+        {
+            function(p, i);
+        }
 #endif
     }
 

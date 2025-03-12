@@ -30,6 +30,16 @@ libsnappy-dev, libswresample-dev, libavcodec-dev, libavformat-dev, libtbb-dev
 
 Pull-requests with instructions for other distributions are welcomed.
 
+MSYS2 Requirements
+------------------
+
+ofxHapPlayer will use MSYS2-installed libraries. The following are required (assuming you are using the suggested MINGW64):
+
+mingw-w64-x86_64-snappy, mingw-w64-x86_64-tbb, mingw-w64-x86_64-ffmpeg
+
+    pacman -S mingw-w64-x86_64-snappy mingw-w64-x86_64-tbb mingw-w64-x86_64-ffmpeg
+
+Some of these will usually have been installed as dependencies for OpenFrameworks.
 
 Usage
 -----
