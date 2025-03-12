@@ -48,7 +48,7 @@ class ofApp : public ofBaseApp{
         void dragEvent(ofDragInfo dragInfo);
         void gotMessage(ofMessage msg);
 
-        void load(std::string movie);
+        void load(const std::filesystem::path &movie);
         ofRectangle getBarRectangle() const;
         ofxHapPlayer player;
         uint64_t lastMovement;

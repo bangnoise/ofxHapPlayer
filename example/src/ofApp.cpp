@@ -103,10 +103,10 @@ void ofApp::draw(){
     }
 }
 
-void ofApp::load(std::string movie)
+void ofApp::load(const std::filesystem::path &movie)
 {
     ofSetWindowTitle(ofFilePath::getBaseName(movie));
-    player.load(movie);
+    player.load(movie.string());
     player.play();
     lastMovement = ofGetSystemTimeMillis();
 }
