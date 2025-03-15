@@ -676,6 +676,47 @@ void ofxHapPlayer::stop()
     setPaused(true, true);
 }
 
+bool ofxHapPlayer::canPlaythrough(const std::string& name)
+{
+    AVFormatContext* formatContext = avformat_alloc_context();
+    if (!formatContext)
+    {
+        ofLog() << "Failed to allocate AVFormatContext for: " << name;
+        return false;
+    }
+
+    if (avformat_open_input(&formatContext, name.c_str(), nullptr, nullptr) != 0)
+    {
+        ofLog() << "Failed to open input for: " << name;
+        avformat_free_context(formatContext);
+        return false;
+    }
+
+    bool canPlay = false;
+    for (unsigned int i = 0; i < formatContext->nb_streams; ++i)
+    {
+        AVStream* stream = formatContext->streams[i];
+#if OFX_HAP_HAS_CODECPAR
+        if (stream->codecpar->codec_id == AV_CODEC_ID_HAP)
+#else
+        if (stream->codec->codec_id == AV_CODEC_ID_HAP)
+#endif
+        {
+            ofLog() << "Found HAP stream in: " << name;
+            canPlay = true;
+            break;
+        }
+    }
+
+    avformat_close_input(&formatContext);
+    avformat_free_context(formatContext);
+    if (canPlay == false)
+    {
+        ofLog() << "Failed to find HAP stream in: " << name;
+    }
+    return canPlay;
+}
+
 void ofxHapPlayer::setPaused(bool pause)
 {
     std::lock_guard<std::mutex> guard(_lock);

@@ -56,7 +56,9 @@ public:
     
     virtual void                play() override;
     virtual void                stop() override;
-    
+
+    bool canPlaythrough(const std::string &name);
+
     virtual bool                isFrameNew() const override;
     virtual ofPixels&           getPixels() override;
     virtual const ofPixels&     getPixels() const override;
