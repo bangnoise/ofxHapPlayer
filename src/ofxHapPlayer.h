@@ -1,4 +1,4 @@
-/*
+﻿/*
  ofxHapPlayer.h
  ofxHapPlayer
  
@@ -78,8 +78,8 @@ public:
     */
     virtual ofPixelFormat       getPixelFormat() const override;
     virtual string              getMoviePath() const;
-    virtual bool				getHapAvailable() const; // TODO: delete (and mvar)?
-	
+    virtual bool                getHapAvailable() const; // TODO: delete (and mvar)?
+    
     virtual float               getPosition() const override;
     virtual float               getSpeed() const override;
     virtual float               getDuration() const override;
@@ -110,7 +110,15 @@ public:
      */
     int                         getTimeout() const;
     void                        setTimeout(int microseconds);
-private:
+
+    bool                         isEnableAudio() const;
+    void                         setEnableAudio(bool audio);
+    void                         setAudioOutputDeviceIndex(int index);
+    
+    void                         enableAutoUpdate();
+    void                         disableAutoUpdate();
+    bool                         isAutoUpdateEnabled() const;
+protected:
     virtual void    foundMovie(int64_t duration) override;
     virtual void    foundStream(AVStream *stream) override;
     virtual void    foundAllStreams() override;
@@ -131,18 +139,19 @@ private:
     public:
         AudioOutput();
         ~AudioOutput();
-        void configure(int channels, int sampleRate, std::shared_ptr<ofxHap::RingBuffer> buffer);
+        void configure(int channels, int sampleRate, std::shared_ptr<ofxHap::RingBuffer> buffer, int deviceIndex);
         void start();
         void stop();
         void close();
         unsigned int getBestRate(unsigned int rate) const;
         virtual void audioOut(ofSoundBuffer& buffer) override;
-    private:
+    protected:
         bool                                _started;
         int                                 _channels;
         int                                 _sampleRate;
         std::shared_ptr<ofxHap::RingBuffer> _buffer;
         ofSoundStream                       _soundStream;
+        int _desiredDeviceIndex;
     };
     class DecodedFrame {
     public:
@@ -151,6 +160,7 @@ private:
         void    invalidate();
         void    clear();
         std::vector<char>   buffer;
+        std::vector<char>   buffer2; // For HapM alpha texture (A_RGTC1)
         int64_t             pts;
         int64_t             duration;
         int64_t             index;
@@ -165,9 +175,10 @@ private:
     uint64_t            _frameTime;
     ofShader            _shader;
     ofTexture           _texture;
+    ofTexture           _textureAlpha; // Alpha texture for HapM (A_RGTC1)
     bool                _playing;
     bool                _wantsUpload;
-	string              _moviePath;
+    string              _moviePath;
     ofxHap::TimeRangeSet _active;
     ofxHap::LockingPacketCache              _videoPackets;
     std::shared_ptr<ofxHap::Demuxer>        _demuxer;
@@ -177,6 +188,11 @@ private:
     float               _volume;
     std::chrono::microseconds               _timeout;
     float               _positionOnLoad;
+    bool                _enableAudio;
+    int                 _audioOutputDeviceIndex;
+    bool                 _autoUpdateAttached;
+    
+    
 };
 
 #endif /* defined(__ofxHapPlayer__) */
