@@ -631,6 +631,14 @@ string ofxHapPlayer::getMoviePath() const {
 	return _moviePath;
 }
 
+bool ofxHapPlayer::isHapQ() const {
+#if OFX_HAP_HAS_CODECPAR
+    return _videoStream && _videoStream->codecpar->codec_tag == MKTAG('H', 'a', 'p', 'Y');
+#else
+    return _videoStream && _videoStream->codec->codec_tag == MKTAG('H', 'a', 'p', 'Y');
+#endif
+}
+
 void ofxHapPlayer::draw(float x, float y) {
     draw(x,y, getWidth(), getHeight());
 }
@@ -675,6 +683,50 @@ void ofxHapPlayer::stop()
     std::lock_guard<std::mutex> guard(_lock);
     _playing = false;
     setPaused(true, true);
+}
+
+bool ofxHapPlayer::canPlaythrough(const std::string& name) const
+{
+    AVFormatContext* formatContext = avformat_alloc_context();
+    if (!formatContext)
+    {
+        ofLogError("ofxHapPlayer") << "Failed to allocate AVFormatContext for: " << name;
+        return false;
+    }
+
+    if (avformat_open_input(&formatContext, name.c_str(), nullptr, nullptr) != 0)
+    {
+        ofLogError("ofxHapPlayer") << "Failed to open input for: " << name;
+        avformat_close_input(&formatContext);
+        return false;
+    }
+
+    if (avformat_find_stream_info(formatContext, nullptr) < 0)
+    {
+        ofLogWarning("ofxHapPlayer") << "Failed to find stream info for: " << name;
+    }
+
+    bool canPlay = false;
+    for (unsigned int i = 0; i < formatContext->nb_streams; ++i)
+    {
+        AVStream* stream = formatContext->streams[i];
+#if OFX_HAP_HAS_CODECPAR
+        if (stream->codecpar->codec_id == AV_CODEC_ID_HAP)
+#else
+        if (stream->codec->codec_id == AV_CODEC_ID_HAP)
+#endif
+        {
+            canPlay = true;
+            break;
+        }
+    }
+
+    avformat_close_input(&formatContext);
+    if (canPlay == false)
+    {
+        ofLogWarning("ofxHapPlayer") << "Failed to find HAP stream in: " << name;
+    }
+    return canPlay;
 }
 
 void ofxHapPlayer::setPaused(bool pause)
@@ -901,6 +953,9 @@ void ofxHapPlayer::setVideoPTSLoaded(int64_t pts, bool round_up)
 
 void ofxHapPlayer::setPTSLoaded(int64_t pts)
 {
+    _active.clear();
+    _decodedFrame.invalidate();
+    _wantsUpload = false;
     _clock.syncAt(pts, _frameTime);
     if (_audioThread)
     {
@@ -960,21 +1015,60 @@ void ofxHapPlayer::setVolume(float volume)
     }
 }
 
-/*
- // TODO: need clock to understand frame numbers so we can call setVideoPTSLoaded()
 void ofxHapPlayer::setFrame(int frame)
 {
-    if (_demuxer != nullptr && getTotalNumFrames() > 0)
+    std::lock_guard<std::mutex> guard(_lock);
+    if (_loaded && _videoStream)
     {
-        _demuxer->seekFrame(std::max(0, std::min(frame, getTotalNumFrames())));
+        AVRational fps = _videoStream->avg_frame_rate;
+        if (fps.num <= 0 || fps.den <= 0)
+            fps = _videoStream->r_frame_rate;
+        if (fps.num <= 0 || fps.den <= 0)
+            return;
+
+        int64_t start = _videoStream->start_time;
+        if (start == AV_NOPTS_VALUE)
+            start = 0;
+
+        int64_t totalFrames = _videoStream->nb_frames > 0
+                                  ? _videoStream->nb_frames
+                                  : av_rescale_q(_videoStream->duration,
+                                                 _videoStream->time_base,
+                                                 av_inv_q(fps));
+        if (totalFrames > 0)
+            frame = std::max(0, std::min(frame, static_cast<int>(std::min(totalFrames - 1, static_cast<int64_t>(INT_MAX)))));
+        else
+            frame = std::max(0, frame);
+
+        int64_t pts = start + av_rescale_q(frame,
+                                           av_inv_q(fps),
+                                           _videoStream->time_base);
+        setVideoPTSLoaded(pts, false);
     }
 }
-*/
 
 int ofxHapPlayer::getCurrentFrame() const
 {
-    if (_decodedFrame.isValid() && _decodedFrame.index != -1)
-        return _decodedFrame.index;
+    std::lock_guard<std::mutex> guard(_lock);
+    if (_decodedFrame.isValid() && _videoStream)
+    {
+        AVRational fps = _videoStream->avg_frame_rate;
+        if (fps.num <= 0 || fps.den <= 0)
+            fps = _videoStream->r_frame_rate;
+        if (fps.num <= 0 || fps.den <= 0)
+            return 0;
+
+        int64_t start = _videoStream->start_time;
+        if (start == AV_NOPTS_VALUE)
+            start = 0;
+
+        int64_t framePts = _decodedFrame.pts - start;
+        if (framePts < 0)
+            framePts = 0;
+        return static_cast<int>(av_rescale_q(framePts,
+                                             _videoStream->time_base,
+                                             av_inv_q(fps)));
+    }
     return 0;
 }
 

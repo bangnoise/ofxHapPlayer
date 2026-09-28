@@ -140,11 +140,14 @@ linux:
 	ADDON_LDFLAGS = -lsnappy
 
 osx:
-	ADDON_LDFLAGS = -rpath @loader_path/../../../../../../../addons/ofxHapPlayer/libs
-	ADDON_INCLUDES_EXCLUDE = libs/ffmpeg/include/libavformat
-	ADDON_INCLUDES_EXCLUDE += libs/ffmpeg/include/libavutil
-	ADDON_INCLUDES_EXCLUDE += libs/ffmpeg/include/libavcodec
-	ADDON_INCLUDES_EXCLUDE += libs/ffmpeg/include/libswresample
+	# Use the same FFmpeg as the host project (pkg-config) rather than the
+	# addon's bundled libav*.58 dylibs: the bundled headers are excluded, so
+	# compiling against bundled libs would be an ABI mismatch, and mixing two
+	# FFmpeg majors in one process is undesirable. Snappy stays bundled.
+	ADDON_PKG_CONFIG_LIBRARIES = libavformat libavutil libavcodec libswresample
+	ADDON_LIBS_EXCLUDE = libs/ffmpeg/%
+	ADDON_INCLUDES_EXCLUDE = libs/ffmpeg/%
+	ADDON_LDFLAGS = -rpath @loader_path/../../../../../../../addons/ofxHAPPlayer/libs
 
 vs:
 	ADDON_LIBS += bcrypt.lib

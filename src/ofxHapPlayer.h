@@ -56,14 +56,19 @@ public:
     
     virtual void                play() override;
     virtual void                stop() override;
-    
+
+    bool canPlaythrough(const std::string &name) const;
+
     virtual bool                isFrameNew() const override;
     virtual ofPixels&           getPixels() override;
     virtual const ofPixels&     getPixels() const override;
 
     virtual ofTexture *         getTexture();
     virtual ofShader *          getShader();
-    virtual float               getWidth() const override;
+    // True when the stream is Hap Q (HapY) and therefore needs YCoCg decoding.
+    // Use this instead of getShader() to avoid building the addon's GLSL 120
+    // shader on a core profile context.
+    bool                        isHapQ() const;    virtual float               getWidth() const override;
     virtual float               getHeight() const override;
     
     virtual bool                isPaused() const override;
@@ -91,7 +96,7 @@ public:
     virtual void                setVolume(float volume) override; // 0..1
     virtual void                setLoopState(ofLoopType state) override;
     virtual void                setSpeed(float speed) override;
-/*  virtual void                setFrame(int frame) override;  // frame 0 = first frame... // TODO: */
+    virtual void                setFrame(int frame) override;  // frame 0 = first frame...
     virtual int                 getCurrentFrame() const override;
     virtual int                 getTotalNumFrames() const override;
     virtual ofLoopType          getLoopState() const override;
